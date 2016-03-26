@@ -7,6 +7,8 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.tuple.Fields;
 
+import twitter4j.Status;
+
 import java.util.Map;
 import java.util.HashMap;
 
