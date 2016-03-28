@@ -17,8 +17,8 @@ import java.io.FileReader;
 
 
 public class AcronymeBolt extends BaseRichBolt{
-  OutputCollector collector;
-  Map<String,String> dico_acronymes;
+  private OutputCollector collector;
+  private Map<String,String> dico_acronymes;
 
   @Override
   public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){

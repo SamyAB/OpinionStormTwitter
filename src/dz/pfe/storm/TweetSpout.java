@@ -36,7 +36,7 @@ public class TweetSpout extends BaseRichSpout{
 	private FilterQuery requete;
 	private LinkedList<Status> tweets;
 
-  SpoutOutputCollector collector;
+  private SpoutOutputCollector collector;
 
   public TweetSpout(String consKey,String secret,String accToken,String accTokenSecret){
     //Authentification

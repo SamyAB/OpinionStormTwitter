@@ -12,7 +12,7 @@ import twitter4j.Status;
 import java.util.Map;
 
 public class POSTagBolt extends BaseRichBolt{
-  OutputCollector collector;
+  private OutputCollector collector;
 
   @Override
   public void prepare(Map map,TopologyContext topologyContext, OutputCollector outputCollector){
