@@ -27,20 +27,24 @@ public class DAOBolt extends BaseRichBolt{
 	private ResultSet resultSet = null;
 
   private void close(){
-    if(this.resultSet != null){
-      this.resultSet.close();
-    }
-    if(this.declaration != null){
-      this.declaration.close();
-    }
-    if(this.connect != null){
-      this.connect.close();
+    try{
+      if(this.resultSet != null){
+        this.resultSet.close();
+      }
+      if(this.declaration != null){
+        this.declaration.close();
+      }
+      if(this.connect != null){
+        this.connect.close();
+      }
+    } catch (Exception e){
+      e.printStackTrace();
     }
   }
 
   @Override
   public void prepare(Map map,TopologyContext topologyContext, OutputCollector outputCollector){
-    this.outputCollector = outputCollector;
+    this.collector = outputCollector;
 
     //Initialisation des attributs de la base de données
     try{
@@ -90,18 +94,18 @@ public class DAOBolt extends BaseRichBolt{
 
       //tweet :
       //Test de la présence du tweet dans la base de données
-      this.resultSet = this.declarer.executeQuery("SELECT * FORM twitter_analytics.status WHERE id ="+tweet.getId());
+      this.resultSet = this.declaration.executeQuery("SELECT * FORM twitter_analytics.status WHERE id ="+tweet.getId());
       //Insertion du tweet dans la base de données si ce dernier n'existe pas
       if(!this.resultSet.next()){
         //préparation de la requête
         this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.status VALUES(?,?,?,?,?,?,?,?)");
-        this.preparedStatement.setInt(1,tweet.getId());
+        this.preparedStatement.setLong(1,tweet.getId());
         this.preparedStatement.setString(2,tweet.getText());
         this.preparedStatement.setFloat(3,score);
         this.preparedStatement.setTimestamp(4, new java.sql.Timestamp(tweet.getCreatedAt().getTime()));
         this.preparedStatement.setString(5,utilisateur.getScreenName());
         this.preparedStatement.setInt(6,tweet.getFavoriteCount());
-        this.preparedStatement.setInt(7,tweet.getRetweetCount);
+        this.preparedStatement.setInt(7,tweet.getRetweetCount());
         this.preparedStatement.setString(1,tweet.getPlace().getFullName());
         //Envoyer la requête à la base de données
         this.preparedStatement.executeUpdate();

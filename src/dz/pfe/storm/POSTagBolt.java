@@ -4,6 +4,7 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.tuple.Tuple;
+import backtype.storm.tuple.Values;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.tuple.Fields;
 
@@ -29,10 +30,10 @@ public class POSTagBolt extends BaseRichBolt{
     //À ce point il faudrait utiliser le tagger pour tag tweet_text
     //Je ne sais pas quel sera le type de la collection des tweets taggés
     //Supposant que c'est un Map …
-    Map mots_tags = new Map();
+    Map mots_tags = null;
 
     //Emettre pour le moment le status et les mots taggés
-    this.collector.emit(tweet,mots_tags);
+    this.collector.emit(new Values(tweet,mots_tags));
   }
 
   @Override

@@ -14,7 +14,9 @@ import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
 
 import backtype.storm.utils.Utils;
+import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
+import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
@@ -114,9 +116,11 @@ public class TweetSpout extends BaseRichSpout{
 
   @Override
   public void nextTuple(){
-    if(!this.tweets.isEmpty()){
-      Stauts tweet = this.tweets.poll();
-    } else {
+	//Tentative de récupération d'un tweet
+	Status tweet = this.tweets.poll();
+	
+	//Si il n'y a pas de tweet dans la liste
+    if(tweet == null) {
       Utils.sleep(50);
       return;
     }
@@ -136,7 +140,7 @@ public class TweetSpout extends BaseRichSpout{
     // create the component config
     Config config = new Config();
 
-    // set the parallelism for this spout to be 1
+    //Le parallèlisme maximal est de 1
     config.setMaxTaskParallelism(1);
 
     return config;

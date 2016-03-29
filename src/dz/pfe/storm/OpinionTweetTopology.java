@@ -1,12 +1,13 @@
 package dz.pfe.storm;
 
 import backtype.storm.topology.TopologyBuilder;
+import backtype.storm.utils.Utils;
 import backtype.storm.Config;
 import backtype.storm.StormSubmitter;
 import backtype.storm.LocalCluster;
 
 public class OpinionTweetTopology{
-  public static void main(String[] arg){
+  public static void main(String[] args) throws Exception{
     //Instensiation de la topologie
     TopologyBuilder topologie = new TopologyBuilder();
 
@@ -21,7 +22,7 @@ public class OpinionTweetTopology{
     //Attacher l'AcronymeBolt au spout via shuffle avec parallèlisme de 10
     topologie.setBolt("acronymeBolt",new AcronymeBolt(),10).shuffleGrouping("tweetSpout");
     //Attacher le POStagBolt aux AcronymeBolt via shuffle avec un parallelism de 15
-    topologie.setBolt("POStagBolt",new POStagBolt(),15).shuffleGrouping("acronymeBolt");
+    topologie.setBolt("POStagBolt",new POSTagBolt(),15).shuffleGrouping("acronymeBolt");
     //Attacher le ScoreBolt aux POStagBolt via shuffle avec un parallelism de 15
     topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
@@ -57,7 +58,7 @@ public class OpinionTweetTopology{
       Utils.sleep(15000);
 
       //Arrêter la topologie
-      topologie.killTopology("opinionTweetTopology");
+      cluster.killTopology("opinionTweetTopology");
 
       //Arrête du cluster local
       cluster.shutdown();
