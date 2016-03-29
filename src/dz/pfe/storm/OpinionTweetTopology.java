@@ -1,0 +1,66 @@
+package dz.pfe.storm;
+
+import backtype.storm.topology.TopologyBuilder;
+import backtype.storm.Config;
+import backtype.storm.StormSubmitter;
+import backtype.storm.LocalCluster;
+
+public class OpinionTweetTopology{
+  public static void main(String[] arg){
+    //Instensiation de la topologie
+    TopologyBuilder topologie = new TopologyBuilder();
+
+    //Intensiation d'un spout
+    //Ne pas oublier de remplacer par les clés twitter
+    TweetSpout tweetSpout = new TweetSpout("conskey","secret","accToken","accTokenSecret");
+
+    //Création de la topologie
+    //Cette topologie est appelée à changer avec l'insertion d'au moins un autre bolt
+    //parallèlisme de 1
+    topologie.setSpout("tweetSpout",tweetSpout,1);
+    //Attacher l'AcronymeBolt au spout via shuffle avec parallèlisme de 10
+    topologie.setBolt("acronymeBolt",new AcronymeBolt(),10).shuffleGrouping("tweetSpout");
+    //Attacher le POStagBolt aux AcronymeBolt via shuffle avec un parallelism de 15
+    topologie.setBolt("POStagBolt",new POStagBolt(),15).shuffleGrouping("acronymeBolt");
+    //Attacher le ScoreBolt aux POStagBolt via shuffle avec un parallelism de 15
+    topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("POStagBolt");
+    //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
+    topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
+
+    //Crŕation de la configuration de la topologie
+    //Instensiation
+    Config configuration = new Config();
+    //Activer le mode de debug
+    configuration.setDebug(true);
+
+    //Configuration pour cluster si presence d'arguement en entrée
+    if(args != null && args.length > 0){
+      //Configuration du nombre de workers par noeud de la topologie
+      configuration.setNumWorkers(3);
+
+      //Lancement de la topologie sur le cluster
+      StormSubmitter.submitTopology(args[0],conf,topologie.createTopology());
+
+    } else {
+      //Executer la topologie sur un cluster similé localement
+
+      //Configuration du nombre de threads
+      conf.setMaxTaskParallelism(3);
+
+      //Instensiation d'un cluster local
+      LocalCluster cluster = new LocalCluster();
+
+      //lacement de la topologie sur le cluster local
+      cluster.submitTopology("opinionTweetTopology",conf,topologie.createTopology());
+
+      // Pour le moment on va laisser la topologie tourner pendant 15 secondes
+      Utils.sleep(15000);
+
+      //Arrêter la topologie
+      topologie.killTopology("opinionTweetTopology");
+
+      //Arrête du cluster local
+      cluster.shutdown();
+    }
+  }
+}
