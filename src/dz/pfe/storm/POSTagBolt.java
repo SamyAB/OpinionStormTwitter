@@ -25,7 +25,7 @@ public class POSTagBolt extends BaseRichBolt{
     //Récupération des informations reçues dans le tuple
     //Dans ce cas : le status et une chaine de caractère représentant le text du tweet sans acronymes
     Status tweet = (Status) tuple.getValue(0);
-    String tweet_text = (String) tuple.getValue(0);
+    String tweet_text = (String) tuple.getValue(1);
 
     //À ce point il faudrait utiliser le tagger pour tag tweet_text
     //Je ne sais pas quel sera le type de la collection des tweets taggés
