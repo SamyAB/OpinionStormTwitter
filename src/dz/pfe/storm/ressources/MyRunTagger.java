@@ -2,6 +2,7 @@ package dz.pfe.storm.ressources;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 import cmu.arktweetnlp.Tagger;
 import cmu.arktweetnlp.Twokenize;
@@ -10,7 +11,7 @@ import cmu.arktweetnlp.impl.Sentence;
 
 public class MyRunTagger {
 	Tagger tagger;
-	public String[][] taggedWords;
+	public ArrayList<MotTag> taggedWords;
 	// Commandline I/O-ish options
 	public String inputFormat = "auto";
 	public String outputFormat = "auto";
@@ -41,7 +42,7 @@ public class MyRunTagger {
 
 	}
 
-	public String[][] runTagger() throws IOException, ClassNotFoundException {
+	public ArrayList<MotTag> runTagger() throws IOException, ClassNotFoundException {
 		tagger = new Tagger();
 
 		tagger.loadModel(modelFilename);
@@ -65,17 +66,16 @@ public class MyRunTagger {
 	/**
 	 * assume mSent's labels hold the tagging.
 	 */
-	public String[][] outputJustTagging(Sentence lSent, ModelSentence mSent) {
-		taggedWords=new String[lSent.T()][2];
+	public ArrayList<MotTag> outputJustTagging(Sentence lSent, ModelSentence mSent) {
+		//taggedWords=new String[lSent.T()][2];
+		taggedWords = new ArrayList<MotTag>();
 		for (int t=0; t < lSent.T(); t++) {
-			taggedWords[t][0]=lSent.tokens.get(t);
-			taggedWords[t][1]=tagger.model.labelVocab.name(mSent.labels[t]);
-
+			taggedWords.add(new MotTag(lSent.tokens.get(t),tagger.model.labelVocab.name(mSent.labels[t])));
 		}
 		return taggedWords;
 	}
 
-	public static String[][] tagTweet(String outputFormat,String tweet) throws IOException, ClassNotFoundException {
+	public static ArrayList<MotTag> tagTweet(String outputFormat,String tweet) throws IOException, ClassNotFoundException {
 		MyRunTagger tagger = new MyRunTagger();
 
 		tagger.outputFormat=outputFormat;
