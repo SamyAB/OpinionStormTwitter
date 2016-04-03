@@ -13,7 +13,8 @@ public class OpinionTweetTopology{
 
     //Intensiation d'un spout
     //Ne pas oublier de remplacer par les clés twitter
-    TweetSpout tweetSpout = new TweetSpout("conskey","secret","accToken","accTokenSecret");
+    TweetSpout tweetSpout = new TweetSpout("","","","");
+
 
     //Création du schéma de la topologie
     //Cette topologie est appelée à changer avec l'insertion d'au moins un autre bolt

@@ -1,8 +1,5 @@
 package dz.pfe.storm.ressources;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -70,22 +67,17 @@ public class MyRunTagger {
 	 * assume mSent's labels hold the tagging.
 	 */
 	public ArrayList<MotTag> outputJustTagging(Sentence lSent, ModelSentence mSent) {
-		//taggedWords=new String[lSent.T()][2];
 		taggedWords = new ArrayList<MotTag>();
-		BufferedWriter bw = null;
-		File file = new File("Tweets");
 		try {
-			bw = new BufferedWriter(new FileWriter(file));
 			for (int t=0; t < lSent.T(); t++) {
 				taggedWords.add(new MotTag(lSent.tokens.get(t),tagger.model.labelVocab.name(mSent.labels[t])));
-				bw.write(lSent.tokens.get(t) + "/" + tagger.model.labelVocab.name(mSent.labels[t]) + "\n" );
 			}
-			bw.close();	
 		} catch (Exception e){
 			e.printStackTrace();
 		}
 		return taggedWords;
 	}
+
 	public static ArrayList<MotTag> tagTweet(String outputFormat,String tweet) throws IOException, ClassNotFoundException {
 		MyRunTagger tagger = new MyRunTagger();
 

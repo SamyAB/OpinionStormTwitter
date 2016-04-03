@@ -13,7 +13,6 @@ import backtype.storm.tuple.Fields;
 import twitter4j.Status;
 
 import java.util.Map;
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -35,12 +34,12 @@ public class POSTagBolt extends BaseRichBolt{
     //À ce point il faudrait utiliser le tagger pour tag tweet_text
     //Je ne sais pas quel sera le type de la collection des tweets taggés
     ArrayList<MotTag> mots_tags = null;
-    try {
-		mots_tags = MyRunTagger.tagTweet("conll",tweet_text);
-	} catch (ClassNotFoundException | IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+
+    try{
+      mots_tags = MyRunTagger.tagTweet("conll",tweet_text);
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
 
     //Emettre pour le moment le status et les mots taggés
     this.collector.emit(new Values(tweet,tweet_text,mots_tags));
