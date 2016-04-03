@@ -55,7 +55,7 @@ public class DAOBolt extends BaseRichBolt{
       //Connexion au serveur de base de donnée
       //IMPORTANT : Ne pas oublier de mettre le mot de passe pour pour twitter_admin
       //Ceci dit bla 3yate
-      this.connect = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&MotDePasseIci");
+      this.connect = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&MotDePasseDeTwitterAdmin");
 
     } catch (Exception e) {
       e.printStackTrace();

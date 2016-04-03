@@ -3,8 +3,11 @@ package dz.pfe.storm;
 import backtype.storm.topology.base.BaseRichBolt;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,9 +67,9 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		//Création du dictionnaire des verbes
 		this.verbes = new HashMap<String,String>();
 
-		String txtFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/regular_iregular_verbs.txt";
-		BufferedReader br = null;
-		String line = "";
+		txtFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/regular_iregular_verbs.txt";
+		br = null;
+		line = "";
 
 		try {
 			br = new BufferedReader(new FileReader(txtFile));
@@ -92,7 +95,7 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		}
 	}
 
-  private String singularNoun(String noun){
+	private String singularNoun(String noun){
 		if(this.pluriel_singulier.get(noun.toLowerCase())!=null){
 			noun=this.pluriel_singulier.get(noun.toLowerCase());
 		}
@@ -116,14 +119,9 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		return noun;
 	}
 
-  private String presentVerb(String verb){
+	private String presentVerb(String verb){
 		if( this.verbes.get(verb.toLowerCase())!=null){
-      verb=this.verbes.get(verb.toLowerCase());
-    }
-		else{
-			if(verb.substring(verb.length()-1).toLowerCase().equals("s")){
-				verb=verb.substring(0,verb.length()-1).toLowerCase();
-			}
+			verb=this.verbes.get(verb.toLowerCase());
 		}
 		return verb;
 	}
@@ -135,20 +133,20 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		String tweet_text = (String) tuple.getValue(1);
 		ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(2);
 
-    //Désambiguisation des mots dans la ArrayList mots_tags
-    for(int i=0;i < mots_tags.size();i++){
-      MotTag mt = mots_tags.get(i);
-      if(mt.getTag().equals("V")){
-        mt.setMot(presentVerb(mt.getMot()));
-        mots_tags.set(i,mt);
-      } else if(mt.getTag.equals("N") || mt.getTag.equals("A")){
-        mt.setMot(singularNoun(mt.getMot()));
-        mots_tags.set(i,mt);
-      }
-    }
+		//Désambiguisation des mots dans la ArrayList mots_tags
+		for(int i=0;i < mots_tags.size();i++){
+			MotTag mt = mots_tags.get(i);
+			if(mt.getTag().equals("V")){
+				mt.setMot(presentVerb(mt.getMot()));
+				mots_tags.set(i,mt);
+			} else if(mt.getTag().equals("N") || mt.getTag().equals("A")){
+				mt.setMot(singularNoun(mt.getMot()));
+				mots_tags.set(i,mt);
+			}
+		}
 
-    //Emettre le tweet la chaine sans abbréviation et les mots taggés désanbiguisés
-    this.collector.emit(new Values(tweet,tweet_text,mots_tags));
+		//Emettre le tweet la chaine sans abbréviation et les mots taggés désanbiguisés
+		this.collector.emit(new Values(tweet,tweet_text,mots_tags));
 	}
 
 	@Override
