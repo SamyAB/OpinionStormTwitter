@@ -5,15 +5,17 @@ import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
+import dz.pfe.storm.ressources.MotTag;
+import dz.pfe.storm.ressources.MyRunTagger;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.tuple.Fields;
 
 import twitter4j.Status;
 
 import java.util.Map;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import ressources.*;
 
 public class POSTagBolt extends BaseRichBolt{
   private OutputCollector collector;
@@ -32,8 +34,13 @@ public class POSTagBolt extends BaseRichBolt{
 
     //À ce point il faudrait utiliser le tagger pour tag tweet_text
     //Je ne sais pas quel sera le type de la collection des tweets taggés
-    ArrayList<MotTag> mots_tags = new ArrayList<MotTag>();
-
+    ArrayList<MotTag> mots_tags = null;
+    try {
+		mots_tags = MyRunTagger.tagTweet("conll",tweet_text);
+	} catch (ClassNotFoundException | IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
     //Emettre pour le moment le status et les mots taggés
     this.collector.emit(new Values(tweet,tweet_text,mots_tags));
