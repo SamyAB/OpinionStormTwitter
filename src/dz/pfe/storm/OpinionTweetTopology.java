@@ -24,8 +24,10 @@ public class OpinionTweetTopology{
     topologie.setBolt("acronymeBolt",new AcronymeBolt(),10).shuffleGrouping("tweetSpout");
     //Attacher le POStagBolt aux AcronymeBolt via shuffle avec un parallelism de 15
     topologie.setBolt("POStagBolt",new POSTagBolt(),15).shuffleGrouping("acronymeBolt");
-    //Attacher le ScoreBolt aux POStagBolt via shuffle avec un parallelism de 15
-    topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("POStagBolt");
+    //Attacher le DesambiguisationBolt aux POSTagBolt via shuffle un parallelism de 15
+    topologie.setBolt("DesambiguisationBolt",new DesambiguisationBolt(),15).shuffleGrouping("POStagBolt");
+    //Attacher le ScoreBolt aux DesambiguisationBolt via shuffle avec un parallelism de 15
+    topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("DesambiguisationBolt");
     //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
     topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
 
