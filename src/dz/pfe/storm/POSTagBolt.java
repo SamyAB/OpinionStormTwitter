@@ -35,13 +35,14 @@ public class POSTagBolt extends BaseRichBolt{
     //Je ne sais pas quel sera le type de la collection des tweets taggés
     ArrayList<MotTag> mots_tags = null;
 
+    //Tag le tweet
     try{
       mots_tags = MyRunTagger.tagTweet("conll",tweet_text);
     } catch(Exception e) {
       e.printStackTrace();
     }
 
-    //Emettre pour le moment le status et les mots taggés
+    //Emettre pour le status le tweet sans acronymes et les mots taggés
     this.collector.emit(new Values(tweet,tweet_text,mots_tags));
   }
 
