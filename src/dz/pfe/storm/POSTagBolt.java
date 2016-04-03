@@ -11,6 +11,9 @@ import backtype.storm.tuple.Fields;
 import twitter4j.Status;
 
 import java.util.Map;
+import java.util.ArrayList;
+
+import ressources.*;
 
 public class POSTagBolt extends BaseRichBolt{
   private OutputCollector collector;
@@ -29,15 +32,15 @@ public class POSTagBolt extends BaseRichBolt{
 
     //À ce point il faudrait utiliser le tagger pour tag tweet_text
     //Je ne sais pas quel sera le type de la collection des tweets taggés
-    //Supposant que c'est un Map …
-    Map mots_tags = null;
+    ArrayList<MotTag> mots_tags = new ArrayList<MotTag>();
+
 
     //Emettre pour le moment le status et les mots taggés
-    this.collector.emit(new Values(tweet,mots_tags));
+    this.collector.emit(new Values(tweet,tweet_text,mots_tags));
   }
 
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer){
-    declarer.declare(new Fields("tweet","mots_tags"));
+    declarer.declare(new Fields("tweet","tweet_text","mots_tags"));
   }
 }
