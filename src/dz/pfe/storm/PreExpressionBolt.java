@@ -80,7 +80,7 @@ public class PreExpressionBolt extends BaseRichBolt{
 					if(exp.equals(String.join(" ", expMot))){
 						MotTag mt = new MotTag(exp_,"EXP");
             mots_tags.set(i,mt);
-						for(int j=i+1;  j<i+tailleExp-1;j++){
+						for(int j=i+1;j<i+tailleExp;j++){
 							mots_tags.remove(j);
 						}
 					}
