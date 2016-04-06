@@ -65,11 +65,12 @@ public class DAOBolt extends BaseRichBolt{
 
   @Override
   public void execute(Tuple tuple){
-    //En supposant que le status est à la position 0
-    Status tweet = (Status) tuple.getValue(0);
+    String[] motCles = (String[]) tuple.getValue(0);
+    //En supposant que le status est à la position 1
+    Status tweet = (Status) tuple.getValue(1);
     User utilisateur = tweet.getUser();
-    //En supposant que le score est à la position 1
-    float score = (float) tuple.getValue(1);
+    //En supposant que le score est à la position 2
+    float score = (float) tuple.getValue(2);
 
     //Insertions dans la base de données
     try{
@@ -118,6 +119,26 @@ public class DAOBolt extends BaseRichBolt{
         this.preparedStatement.executeUpdate();
       }
 
+      //Parcourt de motCles
+      for(String m_c : motCles){
+        if(tweet.getText().contains(m_c)){
+          //tweet motCles:
+          //Test de la présence du tweet avec ce mot clé dans la base de données
+          //Création de la déclaration
+          this.declaration = this.connect.createStatement();
+          this.resultSet = this.declaration.executeQuery("SELECT * FROM twitter_analytics.tweet_mot_cle WHERE id_tweet = '"+tweet.getId()+"' AND mot_cle = '"+m_c+"'");
+          //Insertion du tweet dans la base de données si ce dernier n'existe pas
+          if(!this.resultSet.next()){
+            //préparation de la requête
+            this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.tweet_mot_cle VALUES(?,?)");
+            this.preparedStatement.setString(1,String.valueOf(tweet.getId()));
+            this.preparedStatement.setString(2,m_c);
+
+            //Envoyer la requête à la base de données
+            this.preparedStatement.executeUpdate();
+          }
+        }
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -24,10 +24,10 @@ public class AcronymeBolt extends BaseRichBolt{
   @Override
   public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
     this.collector = outputCollector;
-    
+
     //Création d'un bufferedReader
     BufferedReader br = null;
-    
+
     //Chargement du dictionnaire d'acronymes
     this.dico_acronymes = new HashMap<String,String> ();
     String ligne;
@@ -56,7 +56,8 @@ public class AcronymeBolt extends BaseRichBolt{
   @Override
   public void execute(Tuple tuple){
     //Essai de récupération de status envoyé par le spout
-    Status tweet = (Status) tuple.getValue(0);
+    String[] motCles = (String[]) tuple.getValue(0);
+    Status tweet = (Status) tuple.getValue(1);
 
     //Les délimiteurs
     String delimiteurs = "[ .,:!?]+";
@@ -71,11 +72,11 @@ public class AcronymeBolt extends BaseRichBolt{
     }
 
     //emettre le status tweet et le texte sans acronymes
-    this.collector.emit(new Values(tweet,tweet_text));
+    this.collector.emit(new Values(motCles,tweet,tweet_text));
   }
 
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer){
-    declarer.declare(new Fields("tweet","tweet_text"));
+    declarer.declare(new Fields("motCles","tweet","tweet_text"));
   }
 }

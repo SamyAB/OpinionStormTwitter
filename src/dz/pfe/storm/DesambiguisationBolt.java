@@ -76,8 +76,8 @@ public class DesambiguisationBolt extends BaseRichBolt{
 
 			while ((line = br.readLine()) != null) {
 				String[] verb = line.split(" ");
-				for(int i=1;i<verb.length;i++){
-					this.verbes.put(verb[i].toLowerCase(),verb[0].toLowerCase());
+				for(int i=2;i<verb.length;i++){
+					this.verbes.put(verb[i].toLowerCase(),verb[1].toLowerCase());
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -129,9 +129,10 @@ public class DesambiguisationBolt extends BaseRichBolt{
 	@Override
 	public void execute(Tuple tuple){
 		//Récupération des informations reçues X bolt (on verra quel bolt)
-		Status tweet = (Status) tuple.getValue(0);
-		String tweet_text = (String) tuple.getValue(1);
-		ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(2);
+		String[] motCles = (String[]) tuple.getValue(0);
+		Status tweet = (Status) tuple.getValue(1);
+		String tweet_text = (String) tuple.getValue(2);
+		ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(3);
 
 		//Désambiguisation des mots dans la ArrayList mots_tags
 		for(int i=0;i < mots_tags.size();i++){
@@ -146,12 +147,12 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		}
 
 		//Emettre le tweet la chaine sans abbréviation et les mots taggés désanbiguisés
-		this.collector.emit(new Values(tweet,tweet_text,mots_tags));
+		this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
 	}
 
 	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer){
 		//mots_tags dans l'expression suivante peut changer :3
-		declarer.declare(new Fields("tweet","tweet_text","mots_tags"));
+		declarer.declare(new Fields("motCles","tweet","tweet_text","mots_tags"));
 	}
 }

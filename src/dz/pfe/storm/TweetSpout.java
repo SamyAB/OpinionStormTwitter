@@ -71,7 +71,10 @@ public class TweetSpout extends BaseRichSpout{
 			//Méthode qui permet de récupérer les tweet (status)
 			@Override
 			public void onStatus(Status tweet){
-				tweets.add(tweet);
+        //Check que le tweet n'est pas un retweet
+        if (!tweet.isRetweet()){
+          tweets.add(tweet);
+        }
 			}
 
 			@Override
@@ -107,7 +110,8 @@ public class TweetSpout extends BaseRichSpout{
 
     //Création de la réquête
 		this.requete= new FilterQuery();
-		this.requete.track(new String[]{"lol"});
+    this.motCles = new String[]{"lol"};
+		this.requete.track(this.motCles);
 		this.requete.language("en");
 
 		//Ajout de la requête au flux
@@ -118,7 +122,7 @@ public class TweetSpout extends BaseRichSpout{
   public void nextTuple(){
 	//Tentative de récupération d'un tweet
 	Status tweet = this.tweets.poll();
-	
+
 	//Si il n'y a pas de tweet dans la liste
     if(tweet == null) {
       Utils.sleep(50);
@@ -126,7 +130,7 @@ public class TweetSpout extends BaseRichSpout{
     }
 
     //Enettre le tweet au prochain bolt
-    collector.emit(new Values(tweet));
+    collector.emit(new Values(this.motCles,tweet));
   }
 
   @Override
@@ -148,6 +152,6 @@ public class TweetSpout extends BaseRichSpout{
 
   @Override
   public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer){
-    outputFieldsDeclarer.declare(new Fields("tweet"));
+    outputFieldsDeclarer.declare(new Fields("motCles","tweet"));
   }
 }

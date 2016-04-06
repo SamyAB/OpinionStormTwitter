@@ -25,7 +25,8 @@ public class ScoreBolt extends BaseRichBolt{
   public void execute(Tuple tuple){
     //Récupération des informations reçues dans le tuple
     //Pour le moment on ne suppose que le status tweet
-    Status tweet = (Status) tuple.getValue(0);
+    String[] motCles = (String[]) tuple.getValue(0);
+    Status tweet = (Status) tuple.getValue(1);
 
     //Initialisation du score à 0
     float score = (float) 0;
@@ -34,12 +35,12 @@ public class ScoreBolt extends BaseRichBolt{
     //Pour le moment on suppose que le score est 0
 
     //Emettre le status et son score
-    this.collector.emit(new Values(tweet,score));
+    this.collector.emit(new Values(motCles,tweet,score));
   }
 
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer){
-    declarer.declare(new Fields("tweet","score"));
+    declarer.declare(new Fields("motCles","tweet","score"));
   }
 
 }
