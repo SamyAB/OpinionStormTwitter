@@ -25,7 +25,7 @@ public class OpinionTweetTopology{
     //Attacher le POStagBolt aux AcronymeBolt via shuffle avec un parallelism de 15
     topologie.setBolt("POStagBolt",new POSTagBolt(),15).shuffleGrouping("acronymeBolt");
     //Attacher le PreExpressionBolt aux POSTagBolt via shuffle un parallelism de 15
-    topologie.setBolt("PreExpressionBolt",new PreExpressionBolt(),15).shuffleGrouping("POStagBolt")
+    topologie.setBolt("PreExpressionBolt",new PreExpressionBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher le DesambiguisationBolt aux PreExpressionBolt via shuffleGrouping parallelism de 15
     topologie.setBolt("DesambiguisationBolt",new DesambiguisationBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher le PostExpressionBolt au DesambiguisationBolt via shuffleGrouping parallelism de 15

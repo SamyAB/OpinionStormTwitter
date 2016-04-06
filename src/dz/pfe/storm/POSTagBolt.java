@@ -26,25 +26,27 @@ public class POSTagBolt extends BaseRichBolt{
 
   @Override
   public void execute(Tuple tuple){
-    //Récupération des informations reçues dans le tuple
-    //Dans ce cas : le status et une chaine de caractère représentant le text du tweet sans acronymes
-    String[] motCles = (String[]) tuple.getValue(0);
-    Status tweet = (Status) tuple.getValue(1);
-    String tweet_text = (String) tuple.getValue(2);
+    if(tuple!=null){
+      //Récupération des informations reçues dans le tuple
+      //Dans ce cas : le status et une chaine de caractère représentant le text du tweet sans acronymes
+      String[] motCles = (String[]) tuple.getValue(0);
+      Status tweet = (Status) tuple.getValue(1);
+      String tweet_text = (String) tuple.getValue(2);
 
-    //À ce point il faudrait utiliser le tagger pour tag tweet_text
-    //Je ne sais pas quel sera le type de la collection des tweets taggés
-    ArrayList<MotTag> mots_tags = null;
+      //À ce point il faudrait utiliser le tagger pour tag tweet_text
+      //Je ne sais pas quel sera le type de la collection des tweets taggés
+      ArrayList<MotTag> mots_tags = null;
 
-    //Tag le tweet
-    try{
-      mots_tags = MyRunTagger.tagTweet("conll",tweet_text);
-    } catch(Exception e) {
-      e.printStackTrace();
+      //Tag le tweet
+      try{
+        mots_tags = MyRunTagger.tagTweet("conll",tweet_text);
+      } catch(Exception e) {
+        e.printStackTrace();
+      }
+
+      //Emettre pour le status le tweet sans acronymes et les mots taggés
+      this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
     }
-
-    //Emettre pour le status le tweet sans acronymes et les mots taggés
-    this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
   }
 
   @Override

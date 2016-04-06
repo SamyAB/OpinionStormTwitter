@@ -57,39 +57,41 @@ public class PostExpressionBolt extends BaseRichBolt{
 
   @Override
   public void execute(Tuple tuple){
-    //Récupération des valeurs dans le Tuple
-    String[] motCles = (String[]) tuple.getValue(0);
-    Status tweet = (Status) tuple.getValue(1);
-    String tweet_text = (String) tuple.getValue(2);
-    ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(3);
+    if(tuple!=null){
+      //Récupération des valeurs dans le Tuple
+      String[] motCles = (String[]) tuple.getValue(0);
+      Status tweet = (Status) tuple.getValue(1);
+      String tweet_text = (String) tuple.getValue(2);
+      ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(3);
 
-    //Remplacement des expressions dans mots_tags
-    //Parcours des expressions
-    for (HashMap.Entry<String, String> entry : this.expDict.entrySet()){
-			String exp = entry.getKey();
-			String exp_ = entry.getValue();
-			if(tweet_text.contains(exp)){
-				int tailleExp = exp.split(" ").length;
-				int i=0;
-        //Parcours des mots tags
-				while(i<mots_tags.size()-tailleExp+1){
-					ArrayList<String> expMot = new ArrayList<String>();
-					for(int j=i; j<i+tailleExp;j++){
-						expMot.add(mots_tags.get(j).getMot().replaceAll("_"," "));
-					}
-					if(exp.equals(String.join(" ", expMot))){
-						MotTag mt = new MotTag(exp_,"EXP");
-            mots_tags.set(i,mt);
-						for(int j=i+1; j<i+tailleExp;j++){
-							mots_tags.remove(j);
-						}
-					}
-					i++;
-				}
-			}
-		}
+      //Remplacement des expressions dans mots_tags
+      //Parcours des expressions
+      for (HashMap.Entry<String, String> entry : this.expDict.entrySet()){
+        String exp = entry.getKey();
+        String exp_ = entry.getValue();
+        if(tweet_text.contains(exp)){
+          int tailleExp = exp.split(" ").length;
+          int i=0;
+          //Parcours des mots tags
+          while(i<mots_tags.size()-tailleExp+1){
+            ArrayList<String> expMot = new ArrayList<String>();
+            for(int j=i; j<i+tailleExp;j++){
+              expMot.add(mots_tags.get(j).getMot().replaceAll("_"," "));
+            }
+            if(exp.equals(String.join(" ", expMot))){
+              MotTag mt = new MotTag(exp_,"EXP");
+              mots_tags.set(i,mt);
+              for(int j=i+1; j<i+tailleExp;j++){
+                mots_tags.remove(j);
+              }
+            }
+            i++;
+          }
+        }
+      }
 
-    this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
+      this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
+    }
   }
 
   @Override

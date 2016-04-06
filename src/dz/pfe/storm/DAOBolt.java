@@ -55,7 +55,7 @@ public class DAOBolt extends BaseRichBolt{
       //Connexion au serveur de base de donnée
       //IMPORTANT : Ne pas oublier de mettre le mot de passe pour pour twitter_admin
       //Ceci dit bla 3yate
-      this.connect = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&MotDePasseDeTwitterAdmin");
+      this.connect = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&password=MotDePasse");
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -65,82 +65,84 @@ public class DAOBolt extends BaseRichBolt{
 
   @Override
   public void execute(Tuple tuple){
-    String[] motCles = (String[]) tuple.getValue(0);
-    //En supposant que le status est à la position 1
-    Status tweet = (Status) tuple.getValue(1);
-    User utilisateur = tweet.getUser();
-    //En supposant que le score est à la position 2
-    float score = (float) tuple.getValue(2);
+    if(tuple!=null){
+      String[] motCles = (String[]) tuple.getValue(0);
+      //En supposant que le status est à la position 1
+      Status tweet = (Status) tuple.getValue(1);
+      User utilisateur = tweet.getUser();
+      //En supposant que le score est à la position 2
+      float score = (float) tuple.getValue(2);
 
-    //Insertions dans la base de données
-    try{
-      //Utilisateur :
-      //Création de la déclaration
-      this.declaration = this.connect.createStatement();
-      //Test de la présence de l'utilisateur dans la base de données
-      this.resultSet= this.declaration.executeQuery("SELECT * FROM twitter_analytics.utilisateur WHERE nom_ecran = '"+utilisateur.getScreenName()+"'");
-      //Insrtion de l'utilisateur dans la base de données si ce dernier n'existe pas
-      if(!this.resultSet.next()){
-        //Préparation de la déclaration d'insertion
-        this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.utilisateur VALUES(?,?,?,?,?)");
-        //Remplissage de la requête (les indices commencent à partir de 1)
-        this.preparedStatement.setString(1,utilisateur.getScreenName());
-        this.preparedStatement.setInt(2,utilisateur.getFollowersCount());
-        this.preparedStatement.setInt(3,utilisateur.getFriendsCount());
-        this.preparedStatement.setInt(4,utilisateur.getStatusesCount());
-        this.preparedStatement.setString(5,utilisateur.getName());
-        //Envoyer la requête à la base de données
-        this.preparedStatement.executeUpdate();
-      }
-
-      //tweet :
-      //Test de la présence du tweet dans la base de données
-      //Création de la déclaration
-      this.declaration = this.connect.createStatement();
-      this.resultSet = this.declaration.executeQuery("SELECT * FROM twitter_analytics.status WHERE id = '"+tweet.getId()+"'");
-      //Insertion du tweet dans la base de données si ce dernier n'existe pas
-      if(!this.resultSet.next()){
-        //préparation de la requête
-        this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.status VALUES(?,?,?,?,?,?,?,?)");
-        this.preparedStatement.setString(1,String.valueOf(tweet.getId()));
-        this.preparedStatement.setString(2,tweet.getText());
-        this.preparedStatement.setFloat(3,score);
-        this.preparedStatement.setTimestamp(4, new java.sql.Timestamp(tweet.getCreatedAt().getTime()));
-        this.preparedStatement.setString(5,utilisateur.getScreenName());
-        this.preparedStatement.setInt(6,tweet.getFavoriteCount());
-        this.preparedStatement.setInt(7,tweet.getRetweetCount());
-        if(tweet.getPlace() != null && tweet.getPlace().getFullName() != null){
-          this.preparedStatement.setString(8,tweet.getPlace().getName());
+      //Insertions dans la base de données
+      try{
+        //Utilisateur :
+        //Création de la déclaration
+        this.declaration = this.connect.createStatement();
+        //Test de la présence de l'utilisateur dans la base de données
+        this.resultSet= this.declaration.executeQuery("SELECT * FROM twitter_analytics.utilisateur WHERE nom_ecran = '"+utilisateur.getScreenName()+"'");
+        //Insrtion de l'utilisateur dans la base de données si ce dernier n'existe pas
+        if(!this.resultSet.next()){
+          //Préparation de la déclaration d'insertion
+          this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.utilisateur VALUES(?,?,?,?,?)");
+          //Remplissage de la requête (les indices commencent à partir de 1)
+          this.preparedStatement.setString(1,utilisateur.getScreenName());
+          this.preparedStatement.setInt(2,utilisateur.getFollowersCount());
+          this.preparedStatement.setInt(3,utilisateur.getFriendsCount());
+          this.preparedStatement.setInt(4,utilisateur.getStatusesCount());
+          this.preparedStatement.setString(5,utilisateur.getName());
+          //Envoyer la requête à la base de données
+          this.preparedStatement.executeUpdate();
         }
-        else{
-          this.preparedStatement.setNull(8,Types.VARCHAR);
+
+        //tweet :
+        //Test de la présence du tweet dans la base de données
+        //Création de la déclaration
+        this.declaration = this.connect.createStatement();
+        this.resultSet = this.declaration.executeQuery("SELECT * FROM twitter_analytics.status WHERE id = '"+tweet.getId()+"'");
+        //Insertion du tweet dans la base de données si ce dernier n'existe pas
+        if(!this.resultSet.next()){
+          //préparation de la requête
+          this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.status VALUES(?,?,?,?,?,?,?,?)");
+          this.preparedStatement.setString(1,String.valueOf(tweet.getId()));
+          this.preparedStatement.setString(2,tweet.getText());
+          this.preparedStatement.setFloat(3,score);
+          this.preparedStatement.setTimestamp(4, new java.sql.Timestamp(tweet.getCreatedAt().getTime()));
+          this.preparedStatement.setString(5,utilisateur.getScreenName());
+          this.preparedStatement.setInt(6,tweet.getFavoriteCount());
+          this.preparedStatement.setInt(7,tweet.getRetweetCount());
+          if(tweet.getPlace() != null && tweet.getPlace().getFullName() != null){
+            this.preparedStatement.setString(8,tweet.getPlace().getName());
+          }
+          else{
+            this.preparedStatement.setNull(8,Types.VARCHAR);
+          }
+          //Envoyer la requête à la base de données
+          this.preparedStatement.executeUpdate();
         }
-        //Envoyer la requête à la base de données
-        this.preparedStatement.executeUpdate();
-      }
 
-      //Parcourt de motCles
-      for(String m_c : motCles){
-        if(tweet.getText().contains(m_c)){
-          //tweet motCles:
-          //Test de la présence du tweet avec ce mot clé dans la base de données
-          //Création de la déclaration
-          this.declaration = this.connect.createStatement();
-          this.resultSet = this.declaration.executeQuery("SELECT * FROM twitter_analytics.tweet_mot_cle WHERE id_tweet = '"+tweet.getId()+"' AND mot_cle = '"+m_c+"'");
-          //Insertion du tweet dans la base de données si ce dernier n'existe pas
-          if(!this.resultSet.next()){
-            //préparation de la requête
-            this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.tweet_mot_cle VALUES(?,?)");
-            this.preparedStatement.setString(1,String.valueOf(tweet.getId()));
-            this.preparedStatement.setString(2,m_c);
+        //Parcourt de motCles
+        for(String m_c : motCles){
+          if(tweet.getText().contains(m_c)){
+            //tweet motCles:
+            //Test de la présence du tweet avec ce mot clé dans la base de données
+            //Création de la déclaration
+            this.declaration = this.connect.createStatement();
+            this.resultSet = this.declaration.executeQuery("SELECT * FROM twitter_analytics.tweet_mot_cle WHERE id_tweet = '"+tweet.getId()+"' AND mot_cle = '"+m_c+"'");
+            //Insertion du tweet dans la base de données si ce dernier n'existe pas
+            if(!this.resultSet.next()){
+              //préparation de la requête
+              this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.tweet_mot_cle VALUES(?,?)");
+              this.preparedStatement.setString(1,String.valueOf(tweet.getId()));
+              this.preparedStatement.setString(2,m_c);
 
-            //Envoyer la requête à la base de données
-            this.preparedStatement.executeUpdate();
+              //Envoyer la requête à la base de données
+              this.preparedStatement.executeUpdate();
+            }
           }
         }
+      } catch (Exception e) {
+        e.printStackTrace();
       }
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 

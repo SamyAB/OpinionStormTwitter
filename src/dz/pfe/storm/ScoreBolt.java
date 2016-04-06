@@ -23,19 +23,21 @@ public class ScoreBolt extends BaseRichBolt{
 
   @Override
   public void execute(Tuple tuple){
-    //Récupération des informations reçues dans le tuple
-    //Pour le moment on ne suppose que le status tweet
-    String[] motCles = (String[]) tuple.getValue(0);
-    Status tweet = (Status) tuple.getValue(1);
+    if(tuple!=null){
+      //Récupération des informations reçues dans le tuple
+      //Pour le moment on ne suppose que le status tweet
+      String[] motCles = (String[]) tuple.getValue(0);
+      Status tweet = (Status) tuple.getValue(1);
 
-    //Initialisation du score à 0
-    float score = (float) 0;
+      //Initialisation du score à 0
+      float score = (float) 0;
 
-    //Utilisation des dictionnaires pour donner un score au tweets reçus
-    //Pour le moment on suppose que le score est 0
+      //Utilisation des dictionnaires pour donner un score au tweets reçus
+      //Pour le moment on suppose que le score est 0
 
-    //Emettre le status et son score
-    this.collector.emit(new Values(motCles,tweet,score));
+      //Emettre le status et son score
+      this.collector.emit(new Values(motCles,tweet,score));
+    }
   }
 
   @Override

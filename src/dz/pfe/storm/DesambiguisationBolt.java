@@ -128,26 +128,28 @@ public class DesambiguisationBolt extends BaseRichBolt{
 
 	@Override
 	public void execute(Tuple tuple){
-		//Récupération des informations reçues X bolt (on verra quel bolt)
-		String[] motCles = (String[]) tuple.getValue(0);
-		Status tweet = (Status) tuple.getValue(1);
-		String tweet_text = (String) tuple.getValue(2);
-		ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(3);
+		if(tuple!=null){
+			//Récupération des informations reçues X bolt (on verra quel bolt)
+			String[] motCles = (String[]) tuple.getValue(0);
+			Status tweet = (Status) tuple.getValue(1);
+			String tweet_text = (String) tuple.getValue(2);
+			ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(3);
 
-		//Désambiguisation des mots dans la ArrayList mots_tags
-		for(int i=0;i < mots_tags.size();i++){
-			MotTag mt = mots_tags.get(i);
-			if(mt.getTag().equals("V")){
-				mt.setMot(presentVerb(mt.getMot()));
-				mots_tags.set(i,mt);
-			} else if(mt.getTag().equals("N") || mt.getTag().equals("A")){
-				mt.setMot(singularNoun(mt.getMot()));
-				mots_tags.set(i,mt);
+			//Désambiguisation des mots dans la ArrayList mots_tags
+			for(int i=0;i < mots_tags.size();i++){
+				MotTag mt = mots_tags.get(i);
+				if(mt.getTag().equals("V")){
+					mt.setMot(presentVerb(mt.getMot()));
+					mots_tags.set(i,mt);
+				} else if(mt.getTag().equals("N") || mt.getTag().equals("A")){
+					mt.setMot(singularNoun(mt.getMot()));
+					mots_tags.set(i,mt);
+				}
 			}
-		}
 
-		//Emettre le tweet la chaine sans abbréviation et les mots taggés désanbiguisés
-		this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
+			//Emettre le tweet la chaine sans abbréviation et les mots taggés désanbiguisés
+			this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
+		}
 	}
 
 	@Override
