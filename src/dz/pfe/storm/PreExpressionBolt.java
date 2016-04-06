@@ -7,14 +7,21 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import com.sun.org.apache.xpath.internal.operations.String;
+import dz.pfe.storm.ressources.MotTag;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 import twitter4j.Status;
+
 
 public class PreExpressionBolt extends BaseRichBolt{
   private OutputCollector collector;
-  private Map expDict;
+  private HashMap<String,String> expDict;
 
   @Override
   public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
@@ -58,10 +65,10 @@ public class PreExpressionBolt extends BaseRichBolt{
 
     //Remplacement des expressions dans mots_tags
     //Parcours des expressions
-    for (Map.Entry<String, String> entry : this.expDict.entrySet()){
+    for (HashMap.Entry<String, String> entry : this.expDict.entrySet()){
 			String exp = entry.getKey();
 			String exp_ = entry.getValue();
-			if(tweet.contains(exp)){
+			if(tweet_text.contains(exp)){
 				int tailleExp = exp.split(" ").length;
 				int i=0;
         //Parcours des mots tags
