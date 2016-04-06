@@ -122,7 +122,7 @@ public class DAOBolt extends BaseRichBolt{
 
         //Parcourt de motCles
         for(String m_c : motCles){
-          if(tweet.getText().contains(m_c)){
+          if(tweet.getText().toLowerCase().contains(m_c.toLowerCase())){
             //tweet motCles:
             //Test de la présence du tweet avec ce mot clé dans la base de données
             //Création de la déclaration
@@ -133,7 +133,7 @@ public class DAOBolt extends BaseRichBolt{
               //préparation de la requête
               this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.tweet_mot_cle VALUES(?,?)");
               this.preparedStatement.setString(1,String.valueOf(tweet.getId()));
-              this.preparedStatement.setString(2,m_c);
+              this.preparedStatement.setString(2,m_c.toLowerCase());
 
               //Envoyer la requête à la base de données
               this.preparedStatement.executeUpdate();

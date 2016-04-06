@@ -63,7 +63,7 @@ public class AcronymeBolt extends BaseRichBolt{
       //Les délimiteurs
       String delimiteurs = "[ .,:!?]+";
 
-      String tweet_text = tweet.getText();
+      String tweet_text = tweet.getText().toLowerCase();
       String[] tokens = tweet_text.split(delimiteurs);
 
       for(String token : tokens){
@@ -74,7 +74,7 @@ public class AcronymeBolt extends BaseRichBolt{
 
       //emettre le status tweet et le texte sans acronymes
       this.collector.emit(new Values(motCles,tweet,tweet_text));
-    }    
+    }
   }
 
   @Override
