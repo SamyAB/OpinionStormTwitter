@@ -33,3 +33,13 @@ CREATE TABLE twitter_analytics.status (
     REFERENCES utilisateur(nom_ecran)
 )
 ENGINE=InnoDB;
+
+CREATE TABLE twitter_analytics.tweet_mot_cle(
+  id_tweet VARCHAR(23) NOT NULL,
+  mot_cle VARCHAR(200) NOT NULL,
+  PRIMARY KEY (id_tweet,mot_cle),
+  CONSTRAINT fk_status_tweet_mot_cle
+    FOREIGN KEY (id_tweet)
+    REFERENCES status(id)
+)
+ENGINE=InnoDB;
