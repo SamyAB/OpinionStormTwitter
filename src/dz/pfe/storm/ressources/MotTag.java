@@ -24,4 +24,8 @@ public class MotTag{
   public void setTag(String tag){
     this.tag = tag;
   }
+
+  public String toString(){
+    return this.mot+"/"+this.tag;
+  }
 }

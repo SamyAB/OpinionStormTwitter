@@ -44,9 +44,7 @@ public class MyRunTagger {
 
 	public ArrayList<MotTag> runTagger() throws IOException, ClassNotFoundException {
 		tagger = new Tagger();
-
 		tagger.loadModel(modelFilename);
-
 		this.inputFormat="text";
 		String text=this.tweet;
 
@@ -80,7 +78,6 @@ public class MyRunTagger {
 
 	public static ArrayList<MotTag> tagTweet(String outputFormat,String tweet) throws IOException, ClassNotFoundException {
 		MyRunTagger tagger = new MyRunTagger();
-
 		tagger.outputFormat=outputFormat;
 		tagger.tweet=tweet;
 

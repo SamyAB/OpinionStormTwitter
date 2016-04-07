@@ -15,6 +15,8 @@ import twitter4j.Status;
 import java.util.Map;
 import java.util.ArrayList;
 
+import cmu.arktweetnlp.Tagger;
+
 
 public class POSTagBolt extends BaseRichBolt{
   private OutputCollector collector;
@@ -22,6 +24,7 @@ public class POSTagBolt extends BaseRichBolt{
   @Override
   public void prepare(Map map,TopologyContext topologyContext, OutputCollector outputCollector){
     this.collector = outputCollector;
+
   }
 
   @Override

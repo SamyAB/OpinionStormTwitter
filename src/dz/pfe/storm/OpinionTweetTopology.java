@@ -6,6 +6,8 @@ import backtype.storm.Config;
 import backtype.storm.StormSubmitter;
 import backtype.storm.LocalCluster;
 
+import dz.pfe.storm.ressources.MyRunTagger;
+
 public class OpinionTweetTopology{
   public static void main(String[] args) throws Exception{
     //Instensiation de la topologie
@@ -15,7 +17,6 @@ public class OpinionTweetTopology{
     //Ne pas oublier de remplacer par les clés twitter
     TweetSpout tweetSpout = new TweetSpout("","","","");
 
-
     //Création du schéma de la topologie
     //Cette topologie est appelée à changer avec l'insertion d'au moins un autre bolt
     //TweetSpout avec un parallèlisme de 1
@@ -23,15 +24,15 @@ public class OpinionTweetTopology{
     //Attacher l'AcronymeBolt au spout via shuffle avec parallèlisme de 10
     topologie.setBolt("acronymeBolt",new AcronymeBolt(),10).shuffleGrouping("tweetSpout");
     //Attacher le POStagBolt aux AcronymeBolt via shuffle avec un parallelism de 15
-    topologie.setBolt("POStagBolt",new POSTagBolt(),15).shuffleGrouping("acronymeBolt");
+    topologie.setBolt("POStagBolt",new POSTagBolt(),1).shuffleGrouping("acronymeBolt");
     //Attacher le PreExpressionBolt aux POSTagBolt via shuffle un parallelism de 15
     topologie.setBolt("PreExpressionBolt",new PreExpressionBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher le DesambiguisationBolt aux PreExpressionBolt via shuffleGrouping parallelism de 15
-    topologie.setBolt("DesambiguisationBolt",new DesambiguisationBolt(),15).shuffleGrouping("POStagBolt");
+    //topologie.setBolt("DesambiguisationBolt",new DesambiguisationBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher le PostExpressionBolt au DesambiguisationBolt via shuffleGrouping parallelism de 15
-    topologie.setBolt("PostExpressionBolt",new PostExpressionBolt(),15).shuffleGrouping("DesambiguisationBolt");
+    //topologie.setBolt("PostExpressionBolt",new PostExpressionBolt(),15).shuffleGrouping("DesambiguisationBolt");
     //Attacher le ScoreBolt aux PostExpressionBolt via shuffle avec un parallelism de 15
-    topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("PostExpressionBolt");
+    topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("PreExpressionBolt");
     //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
     topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
 

@@ -55,7 +55,7 @@ public class DAOBolt extends BaseRichBolt{
       //Connexion au serveur de base de donnée
       //IMPORTANT : Ne pas oublier de mettre le mot de passe pour pour twitter_admin
       //Ceci dit bla 3yate
-      this.connect = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&password=MotDePasse");
+      this.connect = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&password=");
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -127,7 +127,7 @@ public class DAOBolt extends BaseRichBolt{
             //Test de la présence du tweet avec ce mot clé dans la base de données
             //Création de la déclaration
             this.declaration = this.connect.createStatement();
-            this.resultSet = this.declaration.executeQuery("SELECT * FROM twitter_analytics.tweet_mot_cle WHERE id_tweet = '"+tweet.getId()+"' AND mot_cle = '"+m_c+"'");
+            this.resultSet = this.declaration.executeQuery("SELECT * FROM twitter_analytics.tweet_mot_cle WHERE id_tweet = '"+tweet.getId()+"' AND mot_cle = '"+m_c.toLowerCase()+"'");
             //Insertion du tweet dans la base de données si ce dernier n'existe pas
             if(!this.resultSet.next()){
               //préparation de la requête

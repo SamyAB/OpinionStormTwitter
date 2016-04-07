@@ -9,12 +9,14 @@ GRANT ALL ON twitter_analytics.* TO 'twitter_admin'@'localhost' IDENTIFIED BY 'l
 USE twitter_analytics;
 
 CREATE TABLE twitter_analytics.utilisateur (
+  id VARCHAR(23) NOT NULL,
   nom_ecran VARCHAR(30) NOT NULL,
+  date_enree DATETIME NOT NULL,
   nombre_followers INT NOT NULL,
   nombre_follows INT NOT NULL,
   nombre_tweets INT NOT NULL,
   nom VARCHAR(75) NOT NULL,
-  PRIMARY KEY (nom_ecran)
+  PRIMARY KEY (id)
 )
 ENGINE=InnoDB;
 
@@ -23,14 +25,14 @@ CREATE TABLE twitter_analytics.status (
   text_tweet VARCHAR(200) NOT NULL,
   score FLOAT,
   temps_tweet DATETIME NOT NULL,
-  utilisateur_tweet VARCHAR(30) NOT NULL,
+  utilisateur_tweet VARCHAR(23) NOT NULL,
   nombre_favoris INT,
   nombre_retweet INT,
   ville_tweet VARCHAR(50),
   PRIMARY KEY ( id ),
   CONSTRAINT fk_utilisateur_status
     FOREIGN KEY (utilisateur_tweet)
-    REFERENCES utilisateur(nom_ecran)
+    REFERENCES utilisateur(id)
 )
 ENGINE=InnoDB;
 
