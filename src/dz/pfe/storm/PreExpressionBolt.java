@@ -23,10 +23,8 @@ public class PreExpressionBolt extends BaseRichBolt{
   private OutputCollector collector;
   private HashMap<String,String> expDict;
 
-  @Override
-  public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
-    this.collector = outputCollector;
-
+  public PreExpressionBolt(){
+    super();
     //Création du dictionnaire d'expression
     this.expDict = new HashMap<String,String>();
     String swnFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/ExpressionSWN.txt";
@@ -53,6 +51,11 @@ public class PreExpressionBolt extends BaseRichBolt{
 				}
 			}
 		}
+  }
+
+  @Override
+  public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
+    this.collector = outputCollector;
   }
 
   @Override

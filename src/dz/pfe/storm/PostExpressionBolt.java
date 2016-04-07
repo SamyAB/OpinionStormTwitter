@@ -23,10 +23,8 @@ public class PostExpressionBolt extends BaseRichBolt{
   private OutputCollector collector;
   private HashMap<String,String> expDict;
 
-  @Override
-  public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
-    this.collector = outputCollector;
-
+  public PostExpressionBolt(){
+    super();
     //Création du dictionnaire d'expression
     this.expDict = new HashMap<String,String>();
     String swnFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/ExpressionSWN.txt";
@@ -40,19 +38,24 @@ public class PostExpressionBolt extends BaseRichBolt{
           this.expDict.put(line,line.replaceAll(" ", "_"));
         }
     } catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (br != null) {
+        try {
+          br.close();
 
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+  @Override
+  public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
+    this.collector = outputCollector;
   }
 
   @Override

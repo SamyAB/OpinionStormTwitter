@@ -21,10 +21,9 @@ public class AcronymeBolt extends BaseRichBolt{
   private OutputCollector collector;
   private Map<String,String> dico_acronymes;
 
-  @Override
-  public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
-    this.collector = outputCollector;
-
+  public AcronymeBolt(){
+    super();
+    //Lecture du dictionnaire d'acronymes
     //Création d'un bufferedReader
     BufferedReader br = null;
 
@@ -51,6 +50,12 @@ public class AcronymeBolt extends BaseRichBolt{
         }
       }
     }
+  }
+
+  @Override
+  public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
+    this.collector = outputCollector;
+
   }
 
   @Override

@@ -31,10 +31,8 @@ public class DesambiguisationBolt extends BaseRichBolt{
 	//Dictionnaire des verbes (présent passé pp)
 	private HashMap<String,String> verbes = null;
 
-	@Override
-	public void prepare(Map map,TopologyContext topologyContext, OutputCollector outputCollector){
-		this.collector = outputCollector;
-
+	public DesambiguisationBolt(){
+		super();
 		//Création du dictionnaires des plurieles irréguliers
 		pluriel_singulier = new HashMap<String,String>();
 
@@ -93,6 +91,11 @@ public class DesambiguisationBolt extends BaseRichBolt{
 				}
 			}
 		}
+	}
+
+	@Override
+	public void prepare(Map map,TopologyContext topologyContext, OutputCollector outputCollector){
+		this.collector = outputCollector;
 	}
 
 	private String singularNoun(String noun){
