@@ -36,6 +36,8 @@ public class OpinionTweetTopology{
     //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
     topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
 
+    Utils.sleep(10000);
+
     //Crŕation de la configuration de la topologie
     //Instensiation
     Config configuration = new Config();
@@ -63,7 +65,7 @@ public class OpinionTweetTopology{
       cluster.submitTopology("opinionTweetTopology",configuration,topologie.createTopology());
 
       // Pour le moment on va laisser la topologie tourner pendant 15 secondes
-      Utils.sleep(15000);
+      Utils.sleep(60000);
 
       //Arrêter la topologie
       cluster.killTopology("opinionTweetTopology");

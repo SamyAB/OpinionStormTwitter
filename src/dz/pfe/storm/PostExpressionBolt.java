@@ -92,7 +92,7 @@ public class PostExpressionBolt extends BaseRichBolt{
           }
         }
       }
-
+      System.out.println("\n\n\n\n\nPOST EXPRESSION BOLT\n\n\n");
       this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
     }
   }
