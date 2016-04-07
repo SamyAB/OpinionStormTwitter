@@ -79,20 +79,36 @@ public class DAOBolt extends BaseRichBolt{
         //Création de la déclaration
         this.declaration = this.connect.createStatement();
         //Test de la présence de l'utilisateur dans la base de données
-        this.resultSet= this.declaration.executeQuery("SELECT * FROM twitter_analytics.utilisateur WHERE nom_ecran = '"+utilisateur.getScreenName()+"'");
-        //Insrtion de l'utilisateur dans la base de données si ce dernier n'existe pas
-        if(!this.resultSet.next()){
-          //Préparation de la déclaration d'insertion
-          this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.utilisateur VALUES(?,?,?,?,?)");
-          //Remplissage de la requête (les indices commencent à partir de 1)
+        this.resultSet= this.declaration.executeQuery("SELECT * FROM twitter_analytics.utilisateur WHERE id = '"+utilisateur.getId()+"'");
+        //Insertion de l'utilisateur dans la base de données si ce dernier existe on mets à jour son tuple et on le réinsert
+        if(this.resultSet.next()){
+          //L'utilisateur existe dans la base de donnée
+          this.preparedStatement = connect.prepareStatement("UPDATE twitter_analytics.utilisateur SET nom_ecran = ? , date_entree = ? , nombre_followers = ? , nombre_follows = ? , nombre_tweets = ? , nom = ? WHERE id = ?");
           this.preparedStatement.setString(1,utilisateur.getScreenName());
-          this.preparedStatement.setInt(2,utilisateur.getFollowersCount());
-          this.preparedStatement.setInt(3,utilisateur.getFriendsCount());
-          this.preparedStatement.setInt(4,utilisateur.getStatusesCount());
-          this.preparedStatement.setString(5,utilisateur.getName());
+          this.preparedStatement.setTimestamp(2, new java.sql.Timestamp(tweet.getCreatedAt().getTime()));
+          this.preparedStatement.setInt(3,utilisateur.getFollowersCount());
+          this.preparedStatement.setInt(4,utilisateur.getFriendsCount());
+          this.preparedStatement.setInt(5,utilisateur.getStatusesCount());
+          this.preparedStatement.setString(6,utilisateur.getName());
+          this.preparedStatement.setString(7,String.valueOf(utilisateur.getId()));
+          //Envoyer la requête à la base de données
+          this.preparedStatement.executeUpdate();
+        } else {
+          //L'utilisateur n'existe pas dans la base de donnée on doit l'
+          //Préparation de la déclaration d'insertion
+          this.preparedStatement = connect.prepareStatement("INSERT INTO twitter_analytics.utilisateur VALUES(?,?,?,?,?,?,?)");
+          //Remplissage de la requête (les indices commencent à partir de 1)
+          this.preparedStatement.setString(1,String.valueOf(utilisateur.getId()));
+          this.preparedStatement.setString(2,utilisateur.getScreenName());
+          this.preparedStatement.setTimestamp(3, new java.sql.Timestamp(tweet.getCreatedAt().getTime()));
+          this.preparedStatement.setInt(4,utilisateur.getFollowersCount());
+          this.preparedStatement.setInt(5,utilisateur.getFriendsCount());
+          this.preparedStatement.setInt(6,utilisateur.getStatusesCount());
+          this.preparedStatement.setString(7,utilisateur.getName());
           //Envoyer la requête à la base de données
           this.preparedStatement.executeUpdate();
         }
+
 
         //tweet :
         //Test de la présence du tweet dans la base de données
@@ -107,7 +123,7 @@ public class DAOBolt extends BaseRichBolt{
           this.preparedStatement.setString(2,tweet.getText());
           this.preparedStatement.setFloat(3,score);
           this.preparedStatement.setTimestamp(4, new java.sql.Timestamp(tweet.getCreatedAt().getTime()));
-          this.preparedStatement.setString(5,utilisateur.getScreenName());
+          this.preparedStatement.setString(5,String.valueOf(utilisateur.getId()));
           this.preparedStatement.setInt(6,tweet.getFavoriteCount());
           this.preparedStatement.setInt(7,tweet.getRetweetCount());
           if(tweet.getPlace() != null && tweet.getPlace().getFullName() != null){

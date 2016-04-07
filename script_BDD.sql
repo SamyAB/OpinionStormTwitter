@@ -11,7 +11,7 @@ USE twitter_analytics;
 CREATE TABLE twitter_analytics.utilisateur (
   id VARCHAR(23) NOT NULL,
   nom_ecran VARCHAR(30) NOT NULL,
-  date_enree DATETIME NOT NULL,
+  date_entree DATETIME NOT NULL,
   nombre_followers INT NOT NULL,
   nombre_follows INT NOT NULL,
   nombre_tweets INT NOT NULL,
