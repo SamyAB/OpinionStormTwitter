@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.commons.codec.language.DoubleMetaphone;
 import org.apache.commons.codec.language.Metaphone;
 
-import cmu.arktweetnlp.impl.features.FeatureExtractor.FeatureExtractorInterface;
-import cmu.arktweetnlp.impl.features.FeatureExtractor.PositionFeaturePairs;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor.FeatureExtractorInterface;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor.PositionFeaturePairs;
 
 /** We should test if these are obsolete yet **/
 public class MetaphoneFeatures {

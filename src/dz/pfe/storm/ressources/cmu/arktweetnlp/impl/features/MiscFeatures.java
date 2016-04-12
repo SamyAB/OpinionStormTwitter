@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import cmu.arktweetnlp.Twokenize;
-import cmu.arktweetnlp.impl.features.FeatureExtractor.FeatureExtractorInterface;
-import cmu.arktweetnlp.impl.features.FeatureExtractor.PositionFeaturePairs;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.Twokenize;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor.FeatureExtractorInterface;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor.PositionFeaturePairs;
 
 public class MiscFeatures {
 

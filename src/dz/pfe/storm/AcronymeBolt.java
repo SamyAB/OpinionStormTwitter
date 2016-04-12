@@ -31,7 +31,7 @@ public class AcronymeBolt extends BaseRichBolt{
     this.dico_acronymes = new HashMap<String,String> ();
     String ligne;
     try{
-      br = new BufferedReader(new FileReader("/home/samy/Workspaces/topology_pfe/Dictionnaires/acronymes.txt"));
+      br = new BufferedReader(new FileReader("Dictionnaires/acronymes.txt"));
 
       //Lecture ligne par ligne
       while((ligne=br.readLine()) != null){

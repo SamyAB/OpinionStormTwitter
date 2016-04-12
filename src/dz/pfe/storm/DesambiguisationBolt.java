@@ -18,7 +18,6 @@ import backtype.storm.task.TopologyContext;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import dz.pfe.storm.ressources.MotTag;
-import dz.pfe.storm.ressources.MyRunTagger;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.tuple.Fields;
 

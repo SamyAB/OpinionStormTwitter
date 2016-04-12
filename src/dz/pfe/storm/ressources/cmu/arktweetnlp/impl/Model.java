@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import cmu.arktweetnlp.util.BasicFileIO;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.util.BasicFileIO;
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.Triple;
 import edu.stanford.nlp.math.ArrayMath;

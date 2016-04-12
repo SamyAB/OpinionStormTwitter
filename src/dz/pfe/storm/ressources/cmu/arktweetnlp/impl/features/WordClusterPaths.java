@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import cmu.arktweetnlp.Twokenize;
-import cmu.arktweetnlp.impl.features.FeatureExtractor.FeatureExtractorInterface;
-import cmu.arktweetnlp.impl.features.FeatureExtractor.PositionFeaturePairs;
-import cmu.arktweetnlp.util.BasicFileIO;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.Twokenize;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor.FeatureExtractorInterface;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor.PositionFeaturePairs;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.util.BasicFileIO;
 import edu.stanford.nlp.util.StringUtils;
 
 /**
@@ -18,7 +18,7 @@ import edu.stanford.nlp.util.StringUtils;
 public class WordClusterPaths implements FeatureExtractorInterface {
 
 	/** TODO this should be moved into config somehow **/
-	public String clusterResourceName = "/home/hakubi/Téléchargements/OpinionStormTwitter-master/Dictionnaires/50mpaths2";
+	public String clusterResourceName = "/home/samy/Workspaces/topology_pfe/Dictionnaires/50mpaths2";
 
 	public HashMap<String,String> wordToPath;
 

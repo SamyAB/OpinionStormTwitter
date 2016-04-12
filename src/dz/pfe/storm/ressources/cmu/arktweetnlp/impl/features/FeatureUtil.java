@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import com.twitter.Regex;
 
-import cmu.arktweetnlp.Twokenize;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.Twokenize;
 
 //import com.twitter.Regex;
 

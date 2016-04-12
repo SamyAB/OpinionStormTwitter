@@ -6,8 +6,6 @@ import backtype.storm.Config;
 import backtype.storm.StormSubmitter;
 import backtype.storm.LocalCluster;
 
-import dz.pfe.storm.ressources.MyRunTagger;
-
 public class OpinionTweetTopology{
   public static void main(String[] args) throws Exception{
     //Instensiation de la topologie

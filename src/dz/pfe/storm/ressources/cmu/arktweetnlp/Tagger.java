@@ -6,10 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import cmu.arktweetnlp.impl.Model;
-import cmu.arktweetnlp.impl.ModelSentence;
-import cmu.arktweetnlp.impl.Sentence;
-import cmu.arktweetnlp.impl.features.FeatureExtractor;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.Model;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.ModelSentence;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.Sentence;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor;
 import dz.pfe.storm.ressources.MotTag;
 
 /**
@@ -86,7 +86,7 @@ public class Tagger {
 		//if (args.length < 1) {
 		//	System.out.println("Supply the model filename as first argument.");
 		//}
-		String modelFilename = "/home/hakubi/Téléchargements/OpinionStormTwitter-master/Dictionnaires/model.20120919";//args[0];
+		String modelFilename = "/home/samy/Workspaces/topology_pfe/Dictionnaires/model.20120919";//args[0];
 
 		Tagger tagger = new Tagger();
 		tagger.loadModel(modelFilename);

@@ -6,7 +6,6 @@ import backtype.storm.task.TopologyContext;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import dz.pfe.storm.ressources.MotTag;
-import dz.pfe.storm.ressources.MyRunTagger;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.tuple.Fields;
 
@@ -15,7 +14,7 @@ import twitter4j.Status;
 import java.util.Map;
 import java.util.ArrayList;
 
-import cmu.arktweetnlp.Tagger;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.Tagger;
 
 
 public class POSTagBolt extends BaseRichBolt{
@@ -42,7 +41,8 @@ public class POSTagBolt extends BaseRichBolt{
 
       //Tag le tweet
       try{
-        mots_tags = MyRunTagger.tagTweet("conll",tweet_text);
+        Tagger tagger = new Tagger();
+        mots_tags = tagger.tagTweet(tweet_text);
       } catch(Exception e) {
         e.printStackTrace();
       }

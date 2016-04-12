@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import cmu.arktweetnlp.impl.Model;
-import cmu.arktweetnlp.impl.ModelSentence;
-import cmu.arktweetnlp.impl.Sentence;
-import cmu.arktweetnlp.util.Util;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.Model;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.ModelSentence;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.Sentence;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.util.Util;
 import edu.stanford.nlp.util.Pair;
 
 /**

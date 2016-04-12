@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cmu.arktweetnlp.impl.Sentence;
-import cmu.arktweetnlp.util.BasicFileIO;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.Sentence;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.util.BasicFileIO;
 import edu.stanford.nlp.util.Pair;
 
 

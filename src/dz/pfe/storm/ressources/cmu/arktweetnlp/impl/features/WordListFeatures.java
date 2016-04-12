@@ -7,10 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import cmu.arktweetnlp.Twokenize;
-import cmu.arktweetnlp.impl.features.FeatureExtractor.FeatureExtractorInterface;
-import cmu.arktweetnlp.impl.features.FeatureExtractor.PositionFeaturePairs;
-import cmu.arktweetnlp.util.BasicFileIO;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.Twokenize;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor.FeatureExtractorInterface;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.impl.features.FeatureExtractor.PositionFeaturePairs;
+import dz.pfe.storm.ressources.cmu.arktweetnlp.util.BasicFileIO;
 
 public class WordListFeatures {
 
@@ -114,7 +114,7 @@ public class WordListFeatures {
 
 	private HashSet<String> initDict(String dict) throws IOException {
 		BasicFileIO bfIO = new BasicFileIO();
-		BufferedReader bReader = bfIO.openFileOrResource("/home/hakubi/Téléchargements/OpinionStormTwitter-master/Dictionnaires/" + dict);
+		BufferedReader bReader = bfIO.openFileOrResource("/home/samy/Workspaces/topology_pfe/Dictionnaires/" + dict);
 		/*BufferedReader bReader = bfIO.getResourceReader("/home/hakubi/Téléchargements/OpinionStormTwitter-master/Dictionnaires/" + dict);*/
 		HashSet<String> dictset = new HashSet<String>();
 		String line=bfIO.getLine(bReader);
