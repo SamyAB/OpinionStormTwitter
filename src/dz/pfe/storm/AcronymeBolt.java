@@ -64,11 +64,10 @@ public class AcronymeBolt extends BaseRichBolt{
     if(tuple!=null){
       String[] motCles = (String[]) tuple.getValue(0);
       Status tweet = (Status) tuple.getValue(1);
-
+      String tweet_text = (String) tuple.getValue(2);
       //Les délimiteurs
       String delimiteurs = "[ .,:!?]+";
 
-      String tweet_text = tweet.getText().toLowerCase();
       String[] tokens = tweet_text.split(delimiteurs);
 
       for(String token : tokens){

@@ -104,6 +104,7 @@ public class ScoreBolt extends BaseRichBolt{
 			}
 		}
 
+    //Chargement du dictionnaire emoji
     String txtFile = "Dictionnaires/emojiSentiment.txt";
 		br = null;
 		line = "";
@@ -114,8 +115,7 @@ public class ScoreBolt extends BaseRichBolt{
 			br = new BufferedReader(new FileReader(txtFile));
 
 			while ((line = br.readLine()) != null) {
-
-				String[] emoji = line.split(delim);
+			    String[] emoji = line.split(delim);
 
 					ArrayList<String> emojiElem=new ArrayList<String>();
 					emojiElem.add(emoji[2]); //unicode
