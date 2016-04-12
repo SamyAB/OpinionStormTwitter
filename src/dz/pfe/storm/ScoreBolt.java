@@ -65,7 +65,7 @@ public class ScoreBolt extends BaseRichBolt{
     this.emojiDictionary = new HashMap<String,ArrayList<String>>();
     this.nonRepertoriedEmoji = new ArrayList<String>();
     //Lecture du dictionnaire SentiWordNet
-    String swnFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/SentiWordNet_3.0.0_20130122.txt";
+    String swnFile = "Dictionnaires/SentiWordNet_3.0.0_20130122.txt";
 		BufferedReader br = null;
 		String line = "";
 		String swnSplitBy = "	";
@@ -104,7 +104,7 @@ public class ScoreBolt extends BaseRichBolt{
 			}
 		}
 
-    String txtFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/emojiSentiment.txt";
+    String txtFile = "Dictionnaires/emojiSentiment.txt";
 		br = null;
 		line = "";
 		String delim = "	";

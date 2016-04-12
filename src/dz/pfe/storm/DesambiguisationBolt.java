@@ -35,7 +35,7 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		//Création du dictionnaires des plurieles irréguliers
 		pluriel_singulier = new HashMap<String,String>();
 
-		String txtFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/iregular_noun.txt";
+		String txtFile = "Dictionnaires/iregular_noun.txt";
 		BufferedReader br = null;
 		String line = "";
 

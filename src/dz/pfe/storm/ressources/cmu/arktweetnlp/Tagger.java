@@ -86,7 +86,7 @@ public class Tagger {
 		//if (args.length < 1) {
 		//	System.out.println("Supply the model filename as first argument.");
 		//}
-		String modelFilename = "/home/samy/Workspaces/topology_pfe/Dictionnaires/model.20120919";//args[0];
+		String modelFilename = "Dictionnaires/model.20120919";//args[0];
 
 		Tagger tagger = new Tagger();
 		tagger.loadModel(modelFilename);

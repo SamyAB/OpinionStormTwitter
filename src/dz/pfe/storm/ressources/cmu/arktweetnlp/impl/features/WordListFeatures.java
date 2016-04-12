@@ -114,7 +114,7 @@ public class WordListFeatures {
 
 	private HashSet<String> initDict(String dict) throws IOException {
 		BasicFileIO bfIO = new BasicFileIO();
-		BufferedReader bReader = bfIO.openFileOrResource("/home/samy/Workspaces/topology_pfe/Dictionnaires/" + dict);
+		BufferedReader bReader = bfIO.openFileOrResource("Dictionnaires/" + dict);
 		/*BufferedReader bReader = bfIO.getResourceReader("/home/hakubi/Téléchargements/OpinionStormTwitter-master/Dictionnaires/" + dict);*/
 		HashSet<String> dictset = new HashSet<String>();
 		String line=bfIO.getLine(bReader);

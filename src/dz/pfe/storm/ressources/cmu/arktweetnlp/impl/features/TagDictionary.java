@@ -33,7 +33,7 @@ public class TagDictionary {
         HashMap<String, List<String>> wordToPos  =
                 new HashMap<String, List<String>>();
         BasicFileIO bfIO = new BasicFileIO();
-		BufferedReader in = bfIO.openFileOrResource("/home/samy/Workspaces/topology_pfe/Dictionnaires/tagdict.txt");
+		BufferedReader in = bfIO.openFileOrResource("Dictionnaires/tagdict.txt");
 		String line;
         try {
             while((line = in.readLine()) != null) {

@@ -18,7 +18,7 @@ import edu.stanford.nlp.util.StringUtils;
 public class WordClusterPaths implements FeatureExtractorInterface {
 
 	/** TODO this should be moved into config somehow **/
-	public String clusterResourceName = "/home/samy/Workspaces/topology_pfe/Dictionnaires/50mpaths2";
+	public String clusterResourceName = "Dictionnaires/50mpaths2";
 
 	public HashMap<String,String> wordToPath;
 

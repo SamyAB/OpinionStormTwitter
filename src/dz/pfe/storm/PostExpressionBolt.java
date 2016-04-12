@@ -27,15 +27,18 @@ public class PostExpressionBolt extends BaseRichBolt{
     super();
     //Création du dictionnaire d'expression
     this.expDict = new HashMap<String,String>();
-    String swnFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/ExpressionSWN.txt";
+    String swnFile = "Dictionnaires/Expression-_SWN.txt";
     BufferedReader br = null;
     String line = "";
 
     try{
       br = new BufferedReader(new FileReader(swnFile));
+      String line_=null;
       while ((line = br.readLine()) != null) {
         if(this.expDict.get(line)==null)
-          this.expDict.put(line,line.replaceAll(" ", "_"));
+          line_ = line.replaceAll("_"," ");
+          line_ = line_.replaceAll("-"," ");
+          this.expDict.put(line_,line);
         }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -92,7 +95,7 @@ public class PostExpressionBolt extends BaseRichBolt{
           }
         }
       }
-      System.out.println("\n\n\n\n\nPOST EXPRESSION BOLT\n\n\n");
+
       this.collector.emit(new Values(motCles,tweet,tweet_text,mots_tags));
     }
   }
