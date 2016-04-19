@@ -236,53 +236,18 @@ public class ScoreBolt extends BaseRichBolt{
   //Calcule general du score des emoticons et emojis du tweet
   public float[] evaluateTweetEmoList(ArrayList<MotTag> taggedTwt, int twtlenght){
 
-		String[][] normalizedTwt = new String[twtlenght][2];
 		float[] scores = new float[2];
 		scores[0]=0;
 		scores[1]=0;
 		int j=0;
-		for(int i=0;i<taggedTwt.size();i++){
-			if(taggedTwt.get(i).getTag().equals(",") ||taggedTwt.get(i).getTag().equals("!") ||taggedTwt.get(i).getTag().equals("E") || taggedTwt.get(i).getTag().equals("G") || taggedTwt.get(i).getTag().equals("^") || taggedTwt.get(i).getTag().equals("~")){
-
-				int matcher = EmojiUtils.countEmojis(taggedTwt.get(i).getMot().replaceAll("[a-zA-Z0-9=,;.*-+!:()/ \\ @ \"\'ゞ_^]",""));
-		        if(matcher>0 /*&& EmojiUtils.isEmoji(taggedTwt[i][0].replaceAll("[a-zA-Z0-9=,;:()/ \"\']","")) */) {
-
-		        	//si on trouve des emoji on decortique
-		        	String emo = taggedTwt.get(i).getMot().replaceAll(".(?=.)", "$0 ");
-		        	String[] emoL = emo.split(" ");
-		        	for(int k=0;k<emoL.length;k++){
-		        		if(emoL[k].matches("[a-zA-Z]")){
-		        			normalizedTwt[j][0]=emoL[k];
-							    normalizedTwt[j][1]="L";
-							j++;
-		        		}else{
-		        			normalizedTwt[j][0]=emoL[k];
-				    			normalizedTwt[j][1]="E";
-						    	j++;
-		        		}
-		        	}
-		        }else{ //sinon on ajoute directement le mot
-		        	normalizedTwt[j][0]=taggedTwt.get(i).getMot();
-					    normalizedTwt[j][1]=taggedTwt.get(i).getTag();
-					    j++;
-		        }
-			}else{
-				//cas de V,O ect on ajoute directement
-				normalizedTwt[j][0]=taggedTwt.get(i).getMot();
-				normalizedTwt[j][1]=taggedTwt.get(i).getTag();
-				j++;
-			}
-
-		}
-
 
 		int i=0; float coef=0;
-		while(i< normalizedTwt.length && normalizedTwt[i][0]!=null){
+		while(i < taggedTwt.size()){
 			int count =0;
 			j=i;
-			if(normalizedTwt[i][1].equals(",") ||normalizedTwt[i][1].equals("!") || normalizedTwt[i][1].equals("E") || normalizedTwt[i][1].equals("G") ||normalizedTwt[i][1].equals("^") ||normalizedTwt[i][1].equals("~")){
+			if(taggedTwt.get(i).getTag().equals(",") || taggedTwt.get(i).getTag().equals("!") || taggedTwt.get(i).getTag().equals("E") || taggedTwt.get(i).getTag().equals("G") || taggedTwt.get(i).getTag().equals("^") || taggedTwt.get(i).getTag().equals("~")){
 
-				while(j<normalizedTwt.length && normalizedTwt[i][0].equals(normalizedTwt[j][0])){
+				while( j< taggedTwt.size() && taggedTwt.get(i).getMot().equals(taggedTwt.get(j).getMot())){
 					count++; j++;
 				}
 				if(count==1) coef=(float)1.0;
@@ -291,14 +256,14 @@ public class ScoreBolt extends BaseRichBolt{
 				float[] semoti= new float[2];
 				float[] semoji= new float[2];
 				//ajout de la produit avec le coef
-				if(!normalizedTwt[i][0].replaceAll("[a-zA-Z0-9=,;.*-+!:()/ \\ @ \"\'ゞ_^]", "").equals("") && (nonRepertoriedEmoji.contains(normalizedTwt[i][0].replaceAll("[a-zA-Z0-9=,;.*-+!:()/ \\ @ \"\'ゞ_^]", ""))|| EmojiUtils.isEmoji(normalizedTwt[i][0].replaceAll("[a-zA-Z0-9=,;.*-+!:()/ \\ @ \"\'ゞ_^]", "")))){
-					semoji= this.getEmojiScoreIfExiste(normalizedTwt[i][0]);
+				if(!taggedTwt.get(i).getMot().replaceAll("[a-zA-Z0-9=,;.*-+!:()/ \\ @ \"\'ゞ_^]", "").equals("") && (nonRepertoriedEmoji.contains(taggedTwt.get(i).getMot().replaceAll("[a-zA-Z0-9=,;.*-+!:()/ \\ @ \"\'ゞ_^]", ""))|| EmojiUtils.isEmoji(taggedTwt.get(i).getMot().replaceAll("[a-zA-Z0-9=,;.*-+!:()/ \\ @ \"\'ゞ_^]", "")))){
+					semoji= this.getEmojiScoreIfExiste(taggedTwt.get(i).getMot());
 
 				  scores[0]+=(float)(semoji[0]*coef);
 					scores[1]+=(float)(semoji[1]*coef);
 
 				}else{
-					semoti= this.getEmoticonScoreIfExiste(normalizedTwt[i][0]);
+					semoti= this.getEmoticonScoreIfExiste(taggedTwt.get(i).getMot());
 					scores[0]+=(float)(semoti[0]*coef);
 					scores[1]+=(float)(semoti[1]*coef);
 				}
