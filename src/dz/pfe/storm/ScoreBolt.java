@@ -339,7 +339,7 @@ public class ScoreBolt extends BaseRichBolt{
           estNegation = true ;
           negationPrec = mt.getMot();
         }
-      } else if(mt.getTag().equals("A") || mt.getTag().equals("V") || mt.getTag().equals("R") || mt.getTag().equals("EXP")){
+      } else if(mt.getTag().equals("N") || mt.getTag().equals("A") || mt.getTag().equals("V") || mt.getTag().equals("R") || mt.getTag().equals("EXP")){
         //Si ce n'est pas une négation
         float[] score = this.searchWordScore(mt.getMot(),(mt.getTag().replace("EXP","R")).toLowerCase());
         if(score[0] == (float)-1 && estNegation){

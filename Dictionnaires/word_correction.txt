@@ -179,3 +179,4 @@ thats:that is
 theres:there is
 theyre:they are
 wasnt:was not
+urself:yourself

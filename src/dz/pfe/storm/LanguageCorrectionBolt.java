@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class LanguageCorrectionBolt extends BaseRichBolt{
   private OutputCollector collector;
   private HashMap<String,String> slangDictionary=null;
+  private ArrayList<String> ingDictionnary = null;
 
   public LanguageCorrectionBolt(){
     this.slangDictionary= new HashMap<String,String>();
@@ -38,6 +39,32 @@ public class LanguageCorrectionBolt extends BaseRichBolt{
 			while ((line = br.readLine()) != null) {
 				String[] slangWord = line.split(delim);
 				this.slangDictionary.put(slangWord[0],slangWord[1]);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+    //Dico des mots en ing
+    ingDictionnary = new ArrayList<String>();
+    txtFile = "Dictionnaires/word_ending_with_in.txt";
+		br = null;
+		line = "";
+
+		try {
+			br = new BufferedReader(new FileReader(txtFile));
+			while ((line = br.readLine()) != null) {
+				String ingWord = line;
+				this.ingDictionnary.add(ingWord);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -76,7 +103,13 @@ public class LanguageCorrectionBolt extends BaseRichBolt{
   			if(this.slangDictionary.get(tweetTokens[i])!=null){
   				tweet_text = tweet_text.replaceAll(tweetTokens[i],this.slangDictionary.get(tweetTokens[i]));
   			}
+
+        if(tweetTokens[i].replaceAll("'","").endsWith("in") && !this.ingDictionnary.contains(tweetTokens[i].replaceAll("'",""))){
+						tweet_text = tweet_text.replaceAll(tweetTokens[i],tweetTokens[i].replaceAll("'","")+"g");
+				}
   		}
+
+
 
       //Emettre pour le status le tweet sans acronymes et les mots taggés
       this.collector.emit(new Values(motCles,tweet,tweet_text));
