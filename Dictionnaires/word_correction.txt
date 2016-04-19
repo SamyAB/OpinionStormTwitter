@@ -1,0 +1,181 @@
+ain't:am not
+'cos:because
+'cause:because
+i'mma:i am going to
+she'da:she would have
+he'da:he would have
+i'da:i would have
+they'da:they would have
+you'da:you would have
+c'mon:come on
+s'more:some more
+aren't:are not
+couldn't:could not
+didn't:did not
+don't:do not
+doesn't:does not
+hadn't:had not
+haven't:have not
+he's:he is
+he'll:he will
+he'd:he would
+here's:here is
+i'm:i am
+i've:i have
+i'll:i will
+i'd:i would
+we're:we are
+we've:we have
+we'll:we will
+we'd:we would
+weren't:were not
+what's:what is
+where's:where is
+who's:who is
+who'll:who will
+won't:will not
+wouldn't:would not
+you're:you are
+you've:you have
+you'll:you will
+you'd:you would
+isn't:is not
+it's:it is
+it'll:it will
+mustn't:must not
+she's:she is
+she'll:she will
+she'd:she would
+shouldn't:should not
+that's:that is
+there's:there is
+they're:they are
+they've:they have
+they'll:they will
+they'd:they would
+wasn't:was not
+dis:this
+dat:that
+gimme:give me
+dunno:do not know
+lotta:lot of
+watcha:what are you
+gotcha:got you 
+gonna:going to
+wanna:want to
+gotta:have got to
+oughta:ought to
+kinda:kind of
+lotsa:lots of
+outta:out of
+lemme:let me
+dunno:do not know
+shoulda:should have
+coulda:could have
+woulda:would have
+ain’t:am not
+cuz:because
+’cos:because
+’cause:because
+i’mma:i am going to
+imma:i am going to
+hafta:have to
+haveta:have to
+ya:you
+u:you
+yar:your
+sorta:sort of
+dontcha:do not you
+didntcha:did not you
+wontcha:will not you
+betcha:bet you
+mighta:might have
+couldna:could not have
+shouldna:should not have
+wouldna:would not have
+she’da:she would have
+he’da:he would have
+i’da:i would have
+they’da:they would have
+you’da:you would have
+cuppa:cup of
+needa:need to
+hasta:has to
+useta:used to
+tellem:tell them
+c’mon:come on
+s’more:some more
+supposeta:supposed to
+musta:must have
+aren’t:are not
+cannot:can not
+couldn’t:could not
+didn’t:did not
+don’t:do not
+doesn’t:does not
+hadn’t:had not
+haven’t:have not
+he’s:he is
+he’ll:he will
+he’d:he would
+here’s:here is
+i’m:i am
+i’ve:i have
+i’ll:i will
+i’d:i would
+we’re:we are
+we’ve:we have
+we’ll:we will
+we’d:we would
+weren’t:were not
+what’s:what is
+where’s:where is
+who’s:who is
+who’ll:who will
+won’t:will not
+wouldn’t:would not
+you’re:you are
+you’ve:you have
+you’ll:you will
+you’d:you would
+isn’t:is not
+it’s:it is
+it’ll:it will
+mustn’t:must not
+she’s:she is
+she’ll:she will
+she’d:she would
+shouldn’t:should not
+that’s:that is
+there’s:there is
+they’re:they are
+they’ve:they have
+they’ll:they will
+they’d:they would
+wasn’t:was not
+aint:am not
+cos:because
+cause:because
+cmon:come on
+smore:some more
+arent:are not
+couldnt:could not
+didnt:did not
+dont:do not
+doesnt:does not
+hadnt:had not
+havent:have not
+im:i am
+ive:i have
+werent:were not
+whats:what is
+wont:will not
+wouldnt:would not
+youre:you are
+isnt:is not
+mustnt:must not
+shouldnt:should not
+thats:that is
+theres:there is
+theyre:they are
+wasnt:was not

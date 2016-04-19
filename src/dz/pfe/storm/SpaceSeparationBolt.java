@@ -79,7 +79,7 @@ public class SpaceSeparationBolt extends BaseRichBolt{
       String[] motCles = (String[]) tuple.getValue(0);
       Status tweet = (Status) tuple.getValue(1);
 
-      String tweet_text = tweet.getText();
+      String tweet_text = tweet.getText().toLowerCase();
       String[] tweettoken = tweet_text.split(" ");
 
 		  for(int i=0; i< tweettoken.length;i++){

@@ -21,8 +21,10 @@ public class OpinionTweetTopology{
     topologie.setSpout("tweetSpout",tweetSpout,1);
     //Attacher le SpaceSeparationBolt au spout via shuffle avec parallelism 10
     topologie.setBolt("SpaceSepatarionBolt",new SpaceSeparationBolt(),10).shuffleGrouping("tweetSpout");
-    //Attacher l'AcronymeBolt au SpaceSepatarionBolt via shuffle avec parallèlisme de 10
-    topologie.setBolt("acronymeBolt",new AcronymeBolt(),10).shuffleGrouping("SpaceSepatarionBolt");
+    //Attacher le bolt de correction au bolt SpaceSepatarionBolt avec un parallelism de 10
+    topologie.setBolt("LanguageCorrectionBolt",new LanguageCorrectionBolt(),10).shuffleGrouping("SpaceSepatarionBolt");
+    //Attacher l'AcronymeBolt au LanguageCorrectionBolt via shuffle avec parallèlisme de 10
+    topologie.setBolt("acronymeBolt",new AcronymeBolt(),10).shuffleGrouping("LanguageCorrectionBolt");
     //Attacher le POStagBolt aux AcronymeBolt via shuffle avec un parallelism de 15
     topologie.setBolt("POStagBolt",new POSTagBolt(),15).shuffleGrouping("acronymeBolt");
     //Attacher le PreExpressionBolt aux POSTagBolt via shuffle un parallelism de 15
@@ -42,7 +44,7 @@ public class OpinionTweetTopology{
     //Instensiation
     Config configuration = new Config();
     //Activer le mode de debug
-    configuration.setDebug(true);
+    //configuration.setDebug(true);
 
     //Configuration pour cluster si presence d'arguements en entrée
     if(args != null && args.length > 0){
