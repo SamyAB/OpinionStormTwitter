@@ -64,7 +64,7 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		//Création du dictionnaire des verbes
 		this.verbes = new HashMap<String,String>();
 
-		txtFile = "/home/samy/Workspaces/topology_pfe/Dictionnaires/regular_iregular_verbs.txt";
+		txtFile = "Dictionnaires/regular_iregular_verbs.txt";
 		br = null;
 		line = "";
 
