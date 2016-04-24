@@ -28,6 +28,8 @@ public class OpinionTweetTopology{
     //Attacher le POStagBolt aux AcronymeBolt via shuffle avec un parallelism de 15
     topologie.setBolt("POStagBolt",new POSTagBolt(),15).shuffleGrouping("acronymeBolt");
     //Attacher le PreExpressionBolt aux POSTagBolt via shuffle un parallelism de 15
+    //topologie.setBolt("LettresBolt",new LettresBolt(),15).shuffleGrouping("POStagBolt");
+    //Attacher le PreExpressionBolt aux POSTagBolt via shuffle un parallelism de 15
     topologie.setBolt("PreExpressionBolt",new PreExpressionBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher le DesambiguisationBolt aux PreExpressionBolt via shuffleGrouping parallelism de 15
     topologie.setBolt("DesambiguisationBolt",new DesambiguisationBolt(),15).shuffleGrouping("POStagBolt");
@@ -36,7 +38,7 @@ public class OpinionTweetTopology{
     //Attacher le ScoreBolt aux PostExpressionBolt via shuffle avec un parallelism de 15
     topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("PostExpressionBolt");
     //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
-    topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
+    //topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
 
     Utils.sleep(10000);
 
@@ -44,7 +46,7 @@ public class OpinionTweetTopology{
     //Instensiation
     Config configuration = new Config();
     //Activer le mode de debug
-    //configuration.setDebug(true);
+    configuration.setDebug(true);
 
     //Configuration pour cluster si presence d'arguements en entrée
     if(args != null && args.length > 0){
