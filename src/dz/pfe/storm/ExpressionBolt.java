@@ -19,11 +19,11 @@ import java.util.HashMap;
 import twitter4j.Status;
 
 
-public class PreExpressionBolt extends BaseRichBolt{
+public class ExpressionBolt extends BaseRichBolt{
   private OutputCollector collector;
   private HashMap<String,String> expDict;
 
-  public PreExpressionBolt(){
+  public PostExpressionBolt(){
     super();
     //Création du dictionnaire d'expression
     this.expDict = new HashMap<String,String>();
@@ -41,19 +41,19 @@ public class PreExpressionBolt extends BaseRichBolt{
           this.expDict.put(line_,line);
         }
     } catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (br != null) {
+        try {
+          br.close();
 
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
   }
 
   @Override
@@ -87,7 +87,7 @@ public class PreExpressionBolt extends BaseRichBolt{
             if(exp.equals(String.join(" ", expMot))){
               MotTag mt = new MotTag(exp_,"EXP");
               mots_tags.set(i,mt);
-              for(int j=i+1;j<i+tailleExp && j<mots_tags.size();j++){
+              for(int j=i+1; j<i+tailleExp && j<mots_tags.size();j++){
                 mots_tags.remove(j);
               }
             }
