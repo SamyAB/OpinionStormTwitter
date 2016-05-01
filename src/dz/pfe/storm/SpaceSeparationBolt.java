@@ -52,7 +52,7 @@ public class SpaceSeparationBolt extends BaseRichBolt{
 					emojiElem.add(emoji[5]);//neg
 					emojiElem.add(emoji[8]);//score ????
 					this.emojiDictionary.put(emoji[0],emojiElem);	//character, list of unicode, neg, pos
-					if(emoji4j.EmojiUtils.isEmoji(emoji[0])==false) ;nonRepertoriedEmoji.add(emoji[0]);
+					if(emoji4j.EmojiUtils.isEmoji(emoji[0])==false) nonRepertoriedEmoji.add(emoji[0]);
 			}
 		} catch (FileNotFoundException e) {
 				e.printStackTrace();
