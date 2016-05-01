@@ -23,7 +23,7 @@ public class ExpressionBolt extends BaseRichBolt{
   private OutputCollector collector;
   private HashMap<String,String> expDict;
 
-  public PostExpressionBolt(){
+  public ExpressionBolt(){
     super();
     //Création du dictionnaire d'expression
     this.expDict = new HashMap<String,String>();

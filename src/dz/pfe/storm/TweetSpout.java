@@ -22,9 +22,15 @@ import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.Config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class TweetSpout extends BaseRichSpout{
 
@@ -108,9 +114,41 @@ public class TweetSpout extends BaseRichSpout{
 			}
 		});
 
+    //Lecture des mot clés
+    //Ce fichier doit être rempli à partir de l'application web
+    String fichierMotCles = "keywords";
+    BufferedReader br = null;
+    String line = "";
+    List<String> keywords = new ArrayList<String>();
+
+    try {
+      br = new BufferedReader(new FileReader(fichierMotCles));
+
+      //Parcours des ligne du fichier, chaque ligne représente un mot clé
+      while((line = br.readLine()) != null) {
+        keywords.add(line);
+      }
+
+    } catch (FileNotFoundException e){
+      e.printStackTrace();
+    } catch (IOException e){
+      e.printStackTrace();
+    } finally {
+      if(br != null){
+        try {
+          br.close();
+        } catch (IOException e){
+          e.printStackTrace();
+        }
+      }
+    }
+
+    //Transformation de la liste en tableau
+    this.motCles = new String[keywords.size()];
+    keywords.toArray(this.motCles);
+
     //Création de la réquête
 		this.requete= new FilterQuery();
-    this.motCles = new String[]{"lol"};
 		this.requete.track(this.motCles);
 		this.requete.language("en");
 
