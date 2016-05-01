@@ -29,8 +29,11 @@ public class SpaceSeparationBolt extends BaseRichBolt{
   public SpaceSeparationBolt(){
     super();
 
+    //Instanciation des dictionnaires
     this.emojiDictionary = new HashMap<String,ArrayList<String>>();
     this.nonRepertoriedEmoji = new ArrayList<String>();
+
+    //Lecture du dictionnaire d'emojis
     BufferedReader br = null;
 
     String txtFile = "Dictionnaires/emojiSentiment.txt";
@@ -38,7 +41,6 @@ public class SpaceSeparationBolt extends BaseRichBolt{
 		String delim = "	";
 
 		try {
-
 			br = new BufferedReader(new FileReader(txtFile));
 
 			while ((line = br.readLine()) != null) {
@@ -52,19 +54,19 @@ public class SpaceSeparationBolt extends BaseRichBolt{
 					this.emojiDictionary.put(emoji[0],emojiElem);	//character, list of unicode, neg, pos
 					if(emoji4j.EmojiUtils.isEmoji(emoji[0])==false) ;nonRepertoriedEmoji.add(emoji[0]);
 			}
-			} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 				e.printStackTrace();
-			} catch (IOException e) {
+		} catch (IOException e) {
 				e.printStackTrace();
-			} finally {
-				if (br != null) {
-					try {
-						br.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+		} finally {
+      if (br != null) {
+        try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+			  }
 			}
+		}
   }
 
   @Override
@@ -76,21 +78,28 @@ public class SpaceSeparationBolt extends BaseRichBolt{
   @Override
   public void execute(Tuple tuple){
     if(tuple!=null){
+      //Récupération des informations du tuple
       String[] motCles = (String[]) tuple.getValue(0);
       Status tweet = (Status) tuple.getValue(1);
 
+      //Création de tweet_text !
       String tweet_text = tweet.getText().toLowerCase();
+      //Split le texte par espace
       String[] tweettoken = tweet_text.split(" ");
 
+      //Parcourt des tokens_par_espace du texte
 		  for(int i=0; i< tweettoken.length;i++){
+        //Ajout d'espace avant et après les emojis
   			String[] token = tweettoken[i].replaceAll(".(?=.)", "$0 ").split(" ");
   			for(int j=0; j<token.length;j++){
-  				if(this.emojiDictionary.get(token[j])!=null|| this.nonRepertoriedEmoji.contains(token[j])){
+  				if(this.emojiDictionary.get(token[j])!=null || this.nonRepertoriedEmoji.contains(token[j])){
   					token[j]=" "+token[j]+" ";
   				}
   			}
   			tweettoken[i]=String.join("", token);
 		  }
+
+      //Reformer tweet_text
 		  tweet_text= String.join(" ", tweettoken);
 
       //Emettre pour le status le tweet sans acronymes et les mots taggés

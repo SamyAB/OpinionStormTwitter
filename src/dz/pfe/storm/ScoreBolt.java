@@ -61,9 +61,11 @@ public class ScoreBolt extends BaseRichBolt{
   public ScoreBolt(){
     super();
 
+    //Instenciation des Dictionnaires
     this.dico_senti = new HashMap<ArrayList<String>, ArrayList<String>>();
     this.emojiDictionary = new HashMap<String,ArrayList<String>>();
     this.nonRepertoriedEmoji = new ArrayList<String>();
+
     //Lecture du dictionnaire SentiWordNet
     String swnFile = "Dictionnaires/SentiWordNet_3.0.0_20130122.txt";
 		BufferedReader br = null;
@@ -167,25 +169,19 @@ public class ScoreBolt extends BaseRichBolt{
 
   //Recupere le score d'un emoji si il existe dans le dico ou la liste d'emoji non repértorié
   public float[] getEmojiScoreIfExiste(String emo){
-		  float[] score = new float[2];
-		  score[0]=(float)0;
-		  score[1]=(float)0;
+	  float[] score = new float[2];
+	  score[0]=(float)0;
+	  score[1]=(float)0;
 
-		  int matcher = EmojiUtils.countEmojis(emo.replaceAll("[a-zA-Z0-9=,;:()/+-<>゜・.# \"\'ゞ_^~]",""));
-
-          if(matcher>0) {
-
-                if(this.emojiDictionary.get(emo) != null){
-                   ArrayList<String> emojiElem=this.emojiDictionary.get(emo);
-                   score[0]=(float)(Float.parseFloat(emojiElem.get(1)));
-                   score[1] = (float)(Float.parseFloat(emojiElem.get(2)));
-
-                }
-
-
-          }
-
-          return score;
+		int matcher = EmojiUtils.countEmojis(emo.replaceAll("[a-zA-Z0-9=,;:()/+-<>゜・.# \"\'ゞ_^~]",""));
+    if(matcher>0) {
+      if(this.emojiDictionary.get(emo) != null){
+         ArrayList<String> emojiElem=this.emojiDictionary.get(emo);
+         score[0]=(float)(Float.parseFloat(emojiElem.get(1)));
+         score[1] = (float)(Float.parseFloat(emojiElem.get(2)));
+      }
+    }
+    return score;
 	}
 
   //Recpere le score d'un emoticon si il existe dans les listes d'emoticons
@@ -329,6 +325,7 @@ public class ScoreBolt extends BaseRichBolt{
 
     return scoreWords;
   }
+
   @Override
   public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
     this.collector = outputCollector;
@@ -353,6 +350,7 @@ public class ScoreBolt extends BaseRichBolt{
       scoreEmo[0]=(float)0;
       scoreEmo[1]=(float)0;
 
+      //Evaluation des score pour les mots et des scores pour les émojis
       scoreWords= this.evaluateTweetWord(mots_tags);
       scoreEmo = this.evaluateTweetEmoList(mots_tags, tweet_text.length());
 
@@ -372,5 +370,4 @@ public class ScoreBolt extends BaseRichBolt{
   public void declareOutputFields(OutputFieldsDeclarer declarer){
     declarer.declare(new Fields("motCles","tweet","score"));
   }
-
 }

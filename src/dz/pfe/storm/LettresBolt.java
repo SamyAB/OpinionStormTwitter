@@ -31,6 +31,7 @@ public class LettresBolt extends BaseRichBolt{
   private HashMap<String,ArrayList<String>> sentiWords = null;
 
   public LettresBolt(){
+    //Création du dictionnaire pluriel_singulier
     this.pluriel_singulier = new HashMap<String,String>();
 
     BufferedReader br=null;
@@ -145,6 +146,7 @@ public class LettresBolt extends BaseRichBolt{
 		}
   }
 
+  //Là aussi à réviser
   private String singularNoun(String noun){
     if(this.pluriel_singulier.get(noun.toLowerCase())!=null){
       noun=this.pluriel_singulier.get(noun.toLowerCase());
@@ -171,11 +173,13 @@ public class LettresBolt extends BaseRichBolt{
 
   private String presentVerb(String verb){
     if( this.verbes.get(verb.toLowerCase())!=null){
+      //Si le verbe est conjugué le remettre à l'infinitif
       verb=this.verbes.get(verb.toLowerCase());
     }
     return verb;
   }
 
+  //Je suppose que c'est à revoir aussi
   public MotTag compactWord(MotTag mt){
     String mot = mt.getMot();
 		String[] Mot = mot.replaceAll(".(?=.)", "$0 ").split(" ");
@@ -281,13 +285,15 @@ public class LettresBolt extends BaseRichBolt{
   public void execute(Tuple tuple){
     if(tuple!=null){
       //Récupération des informations reçues dans le tuple
-      //Dans ce cas : le status et une chaine de caractère représentant le text du tweet sans acronymes
       String[] motCles = (String[]) tuple.getValue(0);
       Status tweet = (Status) tuple.getValue(1);
       String tweet_text = (String) tuple.getValue(2);
       ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(3);
 
+      //Parcours des mots dans mots_tags
       for(int i=0; i<mots_tags.size(); i++){
+        //Remplace le mot tag à la position i par le mot tag envoyé après
+        //passage par compactWord
         mots_tags.set(i,compactWord(mots_tags.get(i)));
       }
 

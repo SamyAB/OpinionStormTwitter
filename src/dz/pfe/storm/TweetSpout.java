@@ -141,7 +141,7 @@ public class TweetSpout extends BaseRichSpout{
   @Override
   public Map<String, Object> getComponentConfiguration()
   {
-    // create the component config
+    // Création de la config
     Config config = new Config();
 
     //Le parallèlisme maximal est de 1

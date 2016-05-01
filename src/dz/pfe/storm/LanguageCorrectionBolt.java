@@ -63,21 +63,21 @@ public class LanguageCorrectionBolt extends BaseRichBolt{
   public void execute(Tuple tuple){
     if(tuple!=null){
       //Récupération des informations reçues dans le tuple
-      //Dans ce cas : le status et une chaine de caractère représentant le text du tweet sans acronymes
       String[] motCles = (String[]) tuple.getValue(0);
       Status tweet = (Status) tuple.getValue(1);
       String tweet_text = (String) tuple.getValue(2);
 
+      //split le texte du tweet selon les délimiteurs
       String delimiteurs = "[ .,:!?\n]+";
-
       String[] tweetTokens= tweet_text.split(delimiteurs);
+
+      //Parcours des tokens formant le texte du tweet
   		for(int i=0;i<tweetTokens.length;i++){
   			if(this.slangDictionary.get(tweetTokens[i])!=null){
+          //Si le mot est dans le dictionnaire de mots à corriger, on remplace le mot par sa correction
   				tweet_text = tweet_text.replaceAll(tweetTokens[i],this.slangDictionary.get(tweetTokens[i]));
   			}
   		}
-
-
 
       //Emettre pour le status le tweet sans acronymes et les mots taggés
       this.collector.emit(new Values(motCles,tweet,tweet_text));

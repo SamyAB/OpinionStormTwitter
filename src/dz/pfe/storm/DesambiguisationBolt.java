@@ -97,24 +97,30 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		this.collector = outputCollector;
 	}
 
+	//À REVOIR (bla 3yate)
 	private String singularNoun(String noun){
+		//Passe le nom au pluriel au dictionnaire tel-quel et récupération de son singulier
 		if(this.pluriel_singulier.get(noun.toLowerCase())!=null){
 			noun=this.pluriel_singulier.get(noun.toLowerCase());
 		}
+		// Si le mot fini en ses, xes ou zes supprimer les 3 dernière lettres
 		else if( noun.length()>=4 &&(noun.substring(noun.length()-3).toLowerCase().equals("ses")
 				|| noun.substring(noun.length()-3).toLowerCase().equals("xes")
 				|| noun.substring(noun.length()-3).toLowerCase().equals("zes"))){
 
 			noun=noun.substring(0,noun.length()-3).toLowerCase();
 		}
+		// Si le mot fini par ches ou shes
 		else if( noun.length()>=5 && (noun.substring(noun.length()-4).toLowerCase().equals("ches")
 				|| noun.substring(noun.length()-4).toLowerCase().equals("shes"))){
 
 			noun=noun.substring(0,noun.length()-4).toLowerCase();
 		}
+		//Si le mot fini en ies
 		else if(noun.length()>=4 && noun.substring(noun.length()-3).toLowerCase().equals("ies")){
 			noun=noun.substring(0,noun.length()-3).toLowerCase() + "y";
 		}
+		//Si le mot fini en s
 		else if(noun.length()>=2 && noun.substring(noun.length()-1).toLowerCase().equals("s")){
 			noun=noun.substring(0,noun.length()-1).toLowerCase();
 		}

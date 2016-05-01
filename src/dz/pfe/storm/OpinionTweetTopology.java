@@ -38,7 +38,7 @@ public class OpinionTweetTopology{
     //Attacher le ScoreBolt aux PostExpressionBolt via shuffle avec un parallelism de 15
     topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("PostExpressionBolt");
     //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
-    //topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
+    topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
 
     Utils.sleep(10000);
 

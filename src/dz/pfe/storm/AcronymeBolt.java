@@ -22,7 +22,9 @@ public class AcronymeBolt extends BaseRichBolt{
   private Map<String,String> dico_acronymes;
 
   public AcronymeBolt(){
+    //Création du bolt en utilisant le constructeur par défaut de la classe mère
     super();
+
     //Lecture du dictionnaire d'acronymes
     //Création d'un bufferedReader
     BufferedReader br = null;
@@ -54,29 +56,34 @@ public class AcronymeBolt extends BaseRichBolt{
 
   @Override
   public void prepare(Map map, TopologyContext topologyContext,OutputCollector outputCollector){
+    //Préaparer l'outputCollector
     this.collector = outputCollector;
-
   }
 
   @Override
   public void execute(Tuple tuple){
-    //Essai de récupération de status envoyé par le spout
+    //Essai de récupération de status envoyé par le SpaceSeparationBolt
     if(tuple!=null){
+      //Récupération des objets envoyés par le spout
       String[] motCles = (String[]) tuple.getValue(0);
       Status tweet = (Status) tuple.getValue(1);
       String tweet_text = (String) tuple.getValue(2);
+
       //Les délimiteurs
       String delimiteurs = "[ .,:!?]+";
 
+      //Split le texte du tweet
       String[] tokens = tweet_text.split(delimiteurs);
 
+      //Parcour du texte du tweet à la recherche d'acronyme
       for(String token : tokens){
         if(this.dico_acronymes.containsKey(token.toUpperCase())){
+          //Remplace l'acronyme, si trouvé par sa valeur textuelle
           tweet_text = tweet_text.replaceAll(token,this.dico_acronymes.get(token.toUpperCase()));
         }
       }
 
-      //emettre le status tweet et le texte sans acronymes
+      //emettre les mot clés, status tweet. et le texte sans acronymes
       this.collector.emit(new Values(motCles,tweet,tweet_text.toLowerCase()));
     }
   }
