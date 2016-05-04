@@ -7,8 +7,9 @@
 </head>
 <body>
   <header>
-    <p>
-      Ceci est la page d'acceuil du projet : Suivi de la propagation des opinions en temps réel
+    <a href="test.php"><img src="logo.png" alt="logo"/></a>
+    <p id="opinion">
+      L'opinion de la twittosphère
     </p>
     <nav>
       <ul>
@@ -32,7 +33,7 @@
     Donnez dans le formulaire suivant les mots-clefs à viser pour la suivie des opinions sur twitter
   </p>
   <section id="recherche">
-    <form action="cible.php" method="post">
+    <form action="visualization.php" method="post">
       <label for="motCles">Mots-clefs</label>
       <input type="text" name="motCles" />
       <input type="submit" value="Valider" />

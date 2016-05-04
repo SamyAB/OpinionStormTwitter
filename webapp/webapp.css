@@ -1,11 +1,27 @@
 body{
   font-family: 'Product Sans', Arial, sans-serif;
+/*  background-image: url("twitter2.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;*/
 }
 
 /*header*/
 header{
   text-align: center;
   width: 100%;
+  background-color: white;
+  border : 1px solid #e7e7e7;
+}
+#opinion{
+  padding : 0px 8px;
+  float: right;
+  text-align: right;
+}
+header a img{
+  float: left;
+  padding : 5px;
+  margin : 6px 0;
 }
 
 /* Nav CSS */
@@ -13,9 +29,10 @@ nav ul {
   border: 1px solid #e7e7e7;
   background-color: #f3f3f3;
   list-style-type: none;
-  margin: 0;
+  margin: 0 0px;
   padding: 0;
   overflow: hidden;
+  clear: both;
 }
 
 nav ul li{
@@ -30,12 +47,13 @@ nav ul li a {
   text-decoration: none;
   display: block;
   padding: 8px;
+  transition: 0.3s;
 }
 nav ul li a:hover {
   background-color: #55acee;
   color : white;
 }
-.active{
+nav ul li a:focus, .active{
   color: white;
   background-color: #2b7bb9;
 }
@@ -75,11 +93,21 @@ input[type=submit]:hover {
   background-color: #55acee;
 }
 
+/* onglets */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
 /* bas de page */
 footer{
   width : 99%;
-  position: absolute;
+  background-color: white;
+  padding : 5px 2px;
   bottom: 0;
   font-size: 14px;
   text-align: center;
+  border : 1px solid #e7e7e7;
 }
