@@ -1,0 +1,85 @@
+body{
+  font-family: 'Product Sans', Arial, sans-serif;
+}
+
+/*header*/
+header{
+  text-align: center;
+  width: 100%;
+}
+
+/* Nav CSS */
+nav ul {
+  border: 1px solid #e7e7e7;
+  background-color: #f3f3f3;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+nav ul li{
+  float: left;
+}
+#lastnav{
+  float: right;
+}
+
+nav ul li a {
+  color: #666;
+  text-decoration: none;
+  display: block;
+  padding: 8px;
+}
+nav ul li a:hover {
+  background-color: #55acee;
+  color : white;
+}
+.active{
+  color: white;
+  background-color: #2b7bb9;
+}
+
+/*form css*/
+#recherche{
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 40px;
+}
+
+input[type=text]{
+  width: 100%;
+  padding: 6px 20px;
+  margin : 8px 0px;
+  border: 3px solid #ccc;
+  -webkit-transition: 0.5s;
+  box-sizing: border-box;
+  outline: none;
+}
+input[type=text]:focus{
+  border: 3px solid #2b7bb9;
+}
+
+input[type=submit]{
+  width: 100%;
+  background-color: #2b7bb9;
+  color : white;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 4px;
+  margin : 8px 0px;
+}
+input[type=submit]:hover {
+  background-color: #55acee;
+}
+
+/* bas de page */
+footer{
+  width : 99%;
+  position: absolute;
+  bottom: 0;
+  font-size: 14px;
+  text-align: center;
+}
