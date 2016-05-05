@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Formulaire</title>
+  <title>Twitter's Opinion : Acceuil</title>
   <meta charset = "utf-8"/>
   <link rel="stylesheet" type="text/css" href="webapp.css" />
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
@@ -13,11 +13,11 @@
     </h3>
     <a href="test.php"><img src="logo.png" alt="logo"/></a>
   </header>
-  
+
   <nav>
     <ul>
       <li>
-        <a class="active" href="test.php">Acceuil</a>
+        <a class="active" href="index.php">Acceuil</a>
       </li>
       <li>
         <a href="#">Mémoire</a>

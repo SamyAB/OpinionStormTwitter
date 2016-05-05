@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>À propos</title>
+  <title>Twitter's Opinion : À propos</title>
   <meta charset = "utf-8"/>
   <link rel="stylesheet" type="text/css" href="webapp.css" />
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css' />
