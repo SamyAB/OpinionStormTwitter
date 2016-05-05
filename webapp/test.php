@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
   <title>Formulaire</title>
   <meta charset = "utf-8"/>
@@ -7,29 +8,27 @@
 </head>
 <body>
   <header>
-    <div id="banner">
-      <h3 id="opinion">
-        L'opinion de la twittosphère anglophone
-      </h3>
-      <a href="test.php"><img src="logo.png" alt="logo"/></a>
-    </div>
-    <nav>
-      <ul>
-        <li>
-          <a class="active" href="test.php">Acceuil</a>
-        </li>
-        <li>
-          <a href="#">Mémoire</a>
-        </li>
-        <li>
-          <a href="#">Code source du projet</a>
-        </li>
-        <li id="lastnav">
-          <a href="#">À propos</a>
-        </li>
-      </ul>
-    </nav>
+    <h3 id="opinion">
+      L'opinion de la twittosphère anglophone
+    </h3>
+    <a href="test.php"><img src="logo.png" alt="logo"/></a>
   </header>
+  <nav>
+    <ul>
+      <li>
+        <a class="active" href="test.php">Acceuil</a>
+      </li>
+      <li>
+        <a href="#">Mémoire</a>
+      </li>
+      <li>
+        <a href="#">Code source du projet</a>
+      </li>
+      <li id="lastnav">
+        <a href="about.php">À propos</a>
+      </li>
+    </ul>
+  </nav>
   <section id="recherche">
     <h3>Mot-clefs</h3>
     <p>
