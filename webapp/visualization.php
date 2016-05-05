@@ -7,6 +7,14 @@
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
+
+  <header>
+    <h3 id="opinion">
+      L'opinion de la twittosphère anglophone
+    </h3>
+    <a href="test.php"><img src="logo.png" alt="logo"/></a>
+  </header>
+
   <?php
     if(!isset($_POST["motCles"]) || empty($_POST["motCles"])){
       echo "<p>
@@ -24,25 +32,23 @@
       //Lance l'execution de la topologie storm
       //exec("storm jar ../target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology > ouput_storm");
   ?>
-  <header>
-    <h3>Mot-clefs : <? echo $_POST["motCles"]; ?></h3>
-    <nav>
-      <ul>
-        <li>
-          <a href="#" class="tablinks" onclick="openViz(event, 'visualization1')">Visualization 1</a>
-        </li>
-        <li>
-          <a href="#" class="tablinks" onclick="openViz(event, 'visualization2')">Visualization 2</a>
-        </li>
-        <li>
-          <a href="#" class="tablinks" onclick="openViz(event, 'visualization3')">Visualization 3</a>
-        </li>
-        <li>
-          <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Visualization 4</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
+
+  <nav>
+    <ul>
+      <li>
+        <a href="#" class="tablinks" onclick="openViz(event, 'visualization1')">Visualization 1</a>
+      </li>
+      <li>
+        <a href="#" class="tablinks" onclick="openViz(event, 'visualization2')">Visualization 2</a>
+      </li>
+      <li>
+        <a href="#" class="tablinks" onclick="openViz(event, 'visualization3')">Visualization 3</a>
+      </li>
+      <li>
+        <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Visualization 4</a>
+      </li>
+    </ul>
+  </nav>
 
   <section id="visualization1" class="tabcontent">
     <h3>Visualization 1</h3>
@@ -72,6 +78,11 @@
   <?php
     }
   ?>
+
+  <footer>
+    Réalisé dans le cadre d'un projet de fin d'études de master.
+  </footer>
+
   <script>
   function openViz(evt, vizNumber){
     var i, tabcontent, tablinks;

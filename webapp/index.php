@@ -13,6 +13,7 @@
     </h3>
     <a href="test.php"><img src="logo.png" alt="logo"/></a>
   </header>
+  
   <nav>
     <ul>
       <li>
@@ -29,6 +30,7 @@
       </li>
     </ul>
   </nav>
+
   <section id="recherche">
     <h3>Mot-clefs</h3>
     <p>
@@ -39,8 +41,10 @@
       <input type="submit" value="Valider" />
     </form>
   </section>
+
   <footer>
     Réalisé dans le cadre d'un projet de fin d'études de master.
   </footer>
+
 </body>
 </html>

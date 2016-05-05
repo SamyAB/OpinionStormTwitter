@@ -17,7 +17,7 @@
   <nav>
     <ul>
       <li>
-        <a href="test.php">Acceuil</a>
+        <a href="index.php">Acceuil</a>
       </li>
       <li>
         <a href="#">Mémoire</a>
