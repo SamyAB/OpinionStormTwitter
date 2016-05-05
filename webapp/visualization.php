@@ -22,7 +22,7 @@
       fclose($fichier);
 
       //Lance l'execution de la topologie storm
-      //exec("storm jar ../target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology");
+      //exec("storm jar ../target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology > ouput_storm");
   ?>
   <header>
     <h3>Mot-clefs : <? echo $_POST["motCles"]; ?></h3>

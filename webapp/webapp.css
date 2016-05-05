@@ -12,11 +12,18 @@ header{
   width: 100%;
   background-color: white;
   border : 1px solid #e7e7e7;
+  margin : 5px 0;
 }
 #opinion{
   padding : 0px 8px;
   float: right;
   text-align: right;
+  font-size: 20px;
+  font-weight: bold;
+}
+header a{
+  display: inline-block;
+  float: left;
 }
 header a img{
   float: left;
@@ -63,6 +70,9 @@ nav ul li a:focus, .active{
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 40px;
+  width: 30%;
+  margin: 50px auto ;
+  text-align: center;
 }
 
 input[type=text]{
@@ -109,5 +119,4 @@ footer{
   bottom: 0;
   font-size: 14px;
   text-align: center;
-  border : 1px solid #e7e7e7;
 }

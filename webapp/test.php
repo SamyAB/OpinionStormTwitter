@@ -7,10 +7,12 @@
 </head>
 <body>
   <header>
-    <a href="test.php"><img src="logo.png" alt="logo"/></a>
-    <p id="opinion">
-      L'opinion de la twittosphère
-    </p>
+    <div id="banner">
+      <h3 id="opinion">
+        L'opinion de la twittosphère anglophone
+      </h3>
+      <a href="test.php"><img src="logo.png" alt="logo"/></a>
+    </div>
     <nav>
       <ul>
         <li>
@@ -28,20 +30,15 @@
       </ul>
     </nav>
   </header>
-  <h3>Mot-clefs</h3>
-  <p>
-    Donnez dans le formulaire suivant les mots-clefs à viser pour la suivie des opinions sur twitter
-  </p>
   <section id="recherche">
+    <h3>Mot-clefs</h3>
+    <p>
+      Donnez dans le formulaire suivant les mot-clefs à viser pour la suivie des opinions sur twitter
+    </p>
     <form action="visualization.php" method="post">
-      <label for="motCles">Mots-clefs</label>
-      <input type="text" name="motCles" />
+      <input type="text" name="motCles" placeholder="Mot-clefs" />
       <input type="submit" value="Valider" />
     </form>
-  </section>
-  <section id="info projet">
-    <h3>Code source</h3>
-    Retrouvez le code source du projet sur <a href="https://github.com/SamyAB/OpinionStormTwitter" >github</a>
   </section>
   <footer>
     Réalisé dans le cadre d'un projet de fin d'études de master.
