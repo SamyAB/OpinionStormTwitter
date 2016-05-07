@@ -8,12 +8,7 @@
 </head>
 <body>
 
-  <header>
-    <h3 id="opinion">
-      L'opinion de la twittosphère anglophone
-    </h3>
-    <a href="/webapp/"><img src="logo.png" alt="logo"/></a>
-  </header>
+  <?php include("header.php"); ?>
 
   <?php
     if(!isset($_POST["motCles"]) || empty($_POST["motCles"])){
@@ -82,9 +77,7 @@
     }
   ?>
 
-  <footer>
-    Réalisé dans le cadre d'un projet de fin d'études de master.
-  </footer>
+  <?php include("footer.php"); ?>
 
   <script>
   function openViz(evt, vizNumber){

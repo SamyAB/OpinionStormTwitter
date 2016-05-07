@@ -7,12 +7,8 @@
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
-  <header>
-    <h3 id="opinion">
-      L'opinion de la twittosphère anglophone
-    </h3>
-    <a href="/webapp/"><img src="logo.png" alt="logo"/></a>
-  </header>
+
+  <?php include("header.php"); ?>
 
   <nav>
     <ul>
@@ -38,9 +34,7 @@
     </p>
   </section>
 
-  <footer>
-    Réalisé dans le cadre d'un projet de fin d'études de master.
-  </footer>
+  <?php include("footer.php"); ?>
 
 </body>
 </html>
