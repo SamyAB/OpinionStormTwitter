@@ -12,8 +12,7 @@ body{
   font-family: 'Product Sans', Arial, sans-serif;
 
   /*background */
-  /*pour les navigateurs qui ne supportent pas les gradient*/
-  background: white;
+  background: white; /*pour les navigateurs qui ne supportent pas les gradient*/
   background: -webkit-linear-gradient(red, yellow); /* pour Safari 5.1 à 6.0 */
   background: -o-linear-gradient(red, yellow); /* pour Opera 11.1 à 12.0 */
   background: -moz-linear-gradient(red, yellow); /* pour Firefox 3.6 à 15 */
@@ -138,6 +137,9 @@ input[type=submit]:hover {
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
+}
+#visualization1{
+  display: block;
 }
 
 /* à propos */

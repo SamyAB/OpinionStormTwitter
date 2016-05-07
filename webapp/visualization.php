@@ -31,7 +31,7 @@
   <nav>
     <ul>
       <li>
-        <a href="#" class="tablinks" onclick="openViz(event, 'visualization1')">Visualization 1</a>
+        <a href="#" class="tablinks active" onclick="openViz(event, 'visualization1')">Visualization 1</a>
       </li>
       <li>
         <a href="#" class="tablinks" onclick="openViz(event, 'visualization2')">Visualization 2</a>
