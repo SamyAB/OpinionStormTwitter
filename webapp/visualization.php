@@ -18,7 +18,7 @@
   <?php
     if(!isset($_POST["motCles"]) || empty($_POST["motCles"])){
       echo "<p>
-      Erreur : Veuillez introduire un mot clé sur la page <a href=\"test.php\">précédante</a>
+      Erreur : Veuillez introduire un mot clé sur la page <a href=\"/webapp/\">précédante</a>
       </p>";
     } else {
       //Écriture des mots clés dans le fichier keywords
