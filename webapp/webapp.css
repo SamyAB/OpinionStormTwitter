@@ -1,5 +1,6 @@
 html {
   min-height: 100%;
+  position: relative;
 }
 
 body{
@@ -12,9 +13,6 @@ body{
   background: -o-linear-gradient(red, yellow); /* pour Opera 11.1 à 12.0 */
   background: -moz-linear-gradient(red, yellow); /* pour Firefox 3.6 à 15 */
   background: linear-gradient(#7bb5dd, white);
-
-  /*Pour prendre toute la fenêtre*/
-  /*min-height: 100%;*/
 
   margin : 0;
   padding : 0;
@@ -31,13 +29,17 @@ header{
   border-left : 1px solid #e7e7e7;
   border-right : 1px solid #e7e7e7;
   margin: 0;
+  position:relative;
 }
 #opinion{
   padding : 0px 8px;
-  float: right;
+  /*float: right;*/
   text-align: right;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
+  position : absolute;
+  bottom: 5px;
+  right : 5px;
 }
 header a{
   display: inline-block;
@@ -154,5 +156,5 @@ footer{
   bottom: 0;
   font-size: 14px;
   text-align: center;
-  position : relative;
+  position : absolute;
 }

@@ -47,6 +47,9 @@
       <li>
         <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Visualization 4</a>
       </li>
+      <li id="lastnav">
+        <a href="/webapp/">Acceuil</a>
+      </li>
     </ul>
   </nav>
 
