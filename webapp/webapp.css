@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Old Republic';
+    src: url(Old_R.ttf);
+}
+
 html {
   min-height: 100%;
   position: relative;
@@ -33,10 +38,10 @@ header{
 }
 #opinion{
   padding : 0px 8px;
-  /*float: right;*/
+  color : #1b5284;
+  font-family: 'Old Republic', Arial, sans-serif;
   text-align: right;
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 18px;
   position : absolute;
   bottom: 5px;
   right : 5px;
