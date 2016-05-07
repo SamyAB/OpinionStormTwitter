@@ -31,8 +31,6 @@ header{
   background-repeat: repeat;
   overflow: hidden;
   border-top : 1px solid #e7e7e7;
-  border-left : 1px solid #e7e7e7;
-  border-right : 1px solid #e7e7e7;
   margin: 0;
   position:relative;
 }
@@ -47,10 +45,9 @@ header{
   right : 5px;
 }
 header a{
-  display: inline-block;
-  float: left;
+  display: block;
 }
-header a img{
+header img{
   float: left;
   padding : 5px;
   margin : 6px 0;
