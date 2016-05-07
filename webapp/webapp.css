@@ -1,18 +1,36 @@
+html {
+  min-height: 100%;
+}
+
 body{
   font-family: 'Product Sans', Arial, sans-serif;
-/*  background-image: url("twitter2.jpeg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;*/
+
+  /*background */
+  /*pour les navigateurs qui ne supportent pas les gradient*/
+  background: white;
+  background: -webkit-linear-gradient(red, yellow); /* pour Safari 5.1 à 6.0 */
+  background: -o-linear-gradient(red, yellow); /* pour Opera 11.1 à 12.0 */
+  background: -moz-linear-gradient(red, yellow); /* pour Firefox 3.6 à 15 */
+  background: linear-gradient(#7bb5dd, white);
+
+  /*Pour prendre toute la fenêtre*/
+  /*min-height: 100%;*/
+
+  margin : 0;
+  padding : 0;
 }
 
 /*header*/
 header{
   text-align: center;
   width: 100%;
-  background-color: white;
-  border : 1px solid #e7e7e7;
-  margin : 5px 0;
+  background-image: url("texture.png");
+  background-repeat: repeat;
+  overflow: hidden;
+  border-top : 1px solid #e7e7e7;
+  border-left : 1px solid #e7e7e7;
+  border-right : 1px solid #e7e7e7;
+  margin: 0;
 }
 #opinion{
   padding : 0px 8px;
@@ -32,6 +50,11 @@ header a img{
 }
 
 /* Nav CSS */
+nav{
+  border-bottom : 1px solid #e7e7e7;
+  border-left : 1px solid #e7e7e7;
+  border-right : 1px solid #e7e7e7;
+}
 nav ul {
   border: 1px solid #e7e7e7;
   background-color: #f3f3f3;
@@ -67,6 +90,7 @@ nav ul li a:focus, .active{
 
 /*form css*/
 #recherche{
+  border: 2px solid #e7e7e7;
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 40px;
@@ -105,16 +129,27 @@ input[type=submit]:hover {
 
 /* onglets */
 .tabcontent {
+  background-color: white;
   display: none;
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
 }
 
+/* à propos */
+#about{
+  border: 2px solid #e7e7e7;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 75%;
+  margin: 50px auto ;
+  text-align: left;
+}
+
 /* bas de page */
 footer{
   width : 99%;
-  background-color: white;
   padding : 5px 2px;
   bottom: 0;
   font-size: 14px;

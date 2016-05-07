@@ -11,13 +11,13 @@
     <h3 id="opinion">
       L'opinion de la twittosphère anglophone
     </h3>
-    <a href="test.php"><img src="logo.png" alt="logo"/></a>
+    <a href="/webapp/"><img src="logo.png" alt="logo"/></a>
   </header>
 
   <nav>
     <ul>
       <li>
-        <a href="index.php">Acceuil</a>
+        <a href="/webapp/">Acceuil</a>
       </li>
       <li>
         <a href="#">Mémoire</a>
@@ -31,7 +31,7 @@
     </ul>
   </nav>
 
-  <section>
+  <section id="about">
     <h3>À propos</h3>
     <p>
       Réalisé dans le cadre d'un projet de fin d'études de master en Systèmes Informatiques

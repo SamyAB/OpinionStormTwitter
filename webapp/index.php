@@ -11,13 +11,13 @@
     <h3 id="opinion">
       L'opinion de la twittosphère anglophone
     </h3>
-    <a href="test.php"><img src="logo.png" alt="logo"/></a>
+    <a href="/webapp/"><img src="logo.png" alt="logo"/></a>
   </header>
 
   <nav>
     <ul>
       <li>
-        <a class="active" href="index.php">Acceuil</a>
+        <a class="active" href="/webapp/">Acceuil</a>
       </li>
       <li>
         <a href="#">Mémoire</a>

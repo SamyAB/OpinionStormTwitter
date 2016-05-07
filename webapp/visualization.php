@@ -12,7 +12,7 @@
     <h3 id="opinion">
       L'opinion de la twittosphère anglophone
     </h3>
-    <a href="test.php"><img src="logo.png" alt="logo"/></a>
+    <a href="/webapp/"><img src="logo.png" alt="logo"/></a>
   </header>
 
   <?php
