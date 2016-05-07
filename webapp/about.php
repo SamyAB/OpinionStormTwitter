@@ -20,10 +20,10 @@
         <a href="/webapp/">Acceuil</a>
       </li>
       <li>
-        <a href="#">Mémoire</a>
+        <a href="memoire.php">Mémoire</a>
       </li>
       <li>
-        <a href="#">Code source du projet</a>
+        <a href="code.php">Code source du projet</a>
       </li>
       <li id="lastnav">
         <a class="active" href="about.php">À propos</a>
