@@ -142,7 +142,7 @@ input[type=submit]:hover {
   display: block;
 }
 
-/* à propos */
+/* à propos, code, memoire */
 #about, #code, #memoire{
   border: 2px solid #e7e7e7;
   border-radius: 5px;
