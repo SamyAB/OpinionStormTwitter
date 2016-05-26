@@ -13,7 +13,7 @@
   <nav>
     <ul>
       <li>
-        <a href="/webapp/">Acceuil</a>
+        <a href="index.php">Acceuil</a>
       </li>
       <li>
         <a class="active" href="#">Mémoire</a>
