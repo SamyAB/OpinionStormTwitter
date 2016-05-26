@@ -25,7 +25,7 @@
       fclose($fichier);
 
       //Lance l'execution de la topologie storm
-      //exec("storm jar ../target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology > ouput_storm");
+      exec("storm jar ../target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology > ouput_storm");
   ?>
 
   <nav>

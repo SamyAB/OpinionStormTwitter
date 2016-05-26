@@ -97,7 +97,7 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		this.collector = outputCollector;
 	}
 
-	public String singularNoun(String noun){
+	/*public String singularNoun(String noun){
 		//Check si le nom est un pluriel
 		if(this.NounDictionary.get(noun.toLowerCase())!=null){
 			noun=this.NounDictionary.get(noun.toLowerCase());
@@ -121,7 +121,7 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		}
 
 		return noun;
-}
+}*/
 
 	private String presentVerb(String verb){
 		if( this.verbes.get(verb.toLowerCase())!=null){
@@ -145,10 +145,10 @@ public class DesambiguisationBolt extends BaseRichBolt{
 				if(mt.getTag().equals("V")){
 					mt.setMot(presentVerb(mt.getMot()));
 					mots_tags.set(i,mt);
-				} else if(mt.getTag().equals("N") || mt.getTag().equals("A")){
+				} /*else if(mt.getTag().equals("N") || mt.getTag().equals("A")){
 					mt.setMot(singularNoun(mt.getMot()));
 					mots_tags.set(i,mt);
-				}
+				}*/
 			}
 
 			//Emettre le tweet la chaine sans abbréviation et les mots taggés désanbiguisés
