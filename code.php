@@ -13,7 +13,7 @@
   <nav>
     <ul>
       <li>
-        <a href="index.php">Acceuil</a>
+        <a href="index.php">Accueil</a>
       </li>
       <li>
         <a href="memoire.php">Mémoire</a>
