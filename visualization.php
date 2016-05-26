@@ -18,14 +18,14 @@
     } else {
       //Écriture des mots clés dans le fichier keywords
       //ouverture du fichier en mode écriture (supprimer son contenu et réecrit dessus)
-      $fichier = fopen("../keywords","w");
+      $fichier = fopen("keywords","w");
       //Écrit le le mot clé dans le fichier ouvert
       fputs($fichier,$_POST["motCles"]);
       //Ferme le fichier
       fclose($fichier);
 
       //Lance l'execution de la topologie storm
-      exec("storm jar ../target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology > ouput_storm");
+      exec("storm jar ../target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology > output_storm");
   ?>
 
   <nav>
