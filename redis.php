@@ -10,7 +10,8 @@
     //Récupération des élétements de la liste TweetsList
     //CàD tout les tweets et leurs score placés dans la liste sur redis par ReportBolt
     while($elem = $redis->rpop("TweetsList")){
-      array_push($tweets,$elem);
+      $aMettre = explode(" | ",$elem);
+      array_push($tweets,$aMettre);
     }
 
     //Création d'un objet à transmettre à viz
