@@ -80,7 +80,32 @@
 
   <?php include("footer.php"); ?>
 
+  <!--Inclusion du script de jquery depuis le CDN google -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  <!-- Scirpts custom, changement d'onglets et mise à jour des viz -->
   <script>
+  //interval entre chaque update de données
+  var updareInterval = 2000; // 2 secondes
+
+  //Lancement de l'update chaque updateInterval
+  window.setInterval(update,updateInterval);
+
+  //Fonction de rechargement des vizualisations
+  function update(){
+    $(function(){
+      $.get(
+        'redis.php', //Script serveur qui récupère les informations de redis
+        'false', //On n'envoie aucun paramètre à redis.php
+        function(data){
+          //Ici se troue tout ce qu'on doit faire après avoir récupérer les informations de Redis
+        },
+        'json' //Type de données reçues de redis.php, la on aime bien le json
+      );
+    });
+  }
+
+  //Fonction de changement d'onglet
   function openViz(evt, vizNumber){
     var i, tabcontent, tablinks;
 

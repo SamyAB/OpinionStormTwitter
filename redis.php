@@ -10,7 +10,10 @@
     //Récupération des élétements de la liste TweetsList
     //CàD tout les tweets et leurs score placés dans la liste sur redis par ReportBolt
     while($elem = $redis->rpop("TweetsList")){
+      //Séparation des éléments de la chaine de caractère envoyée par ReportBolt
       $aMettre = explode(" | ",$elem);
+
+      //Ajout de l'array des informations d'un élémente de la liste de TweetList dans tweets
       array_push($tweets,$aMettre);
     }
 
