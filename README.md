@@ -17,11 +17,12 @@ La topologie Apache Storm est utilisable séparément, et récupère les résult
 Français
 
 ###Language de programmation
-* Java
-* HTML/CSS
-* JavaScript
-* PHP
+* Java (apache storm, lettuce(redis), mysql)
+* HTML5/CSS3
+* JavaScript (D3, jQuery)
+* PHP (phpredis(redis))
+* SQL
 
 ##Utilisation
-Il est primordial de posséder une distribution fonctionnelle de Apache Storm (Fonctionnel sous la version 0.9.6).
+Il est primordial de posséder une distribution fonctionnelle de Apache Storm (testé sous la version 0.9.6).
 Pour profiter de la visualisation de données avec D3, déployez l'application web sur un serveur. (Pas encore implémenté)

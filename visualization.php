@@ -125,6 +125,20 @@
     document.getElementById(vizNumber).style.display = "block";
     evt.currentTarget.className += " active";
   }
+
+  //Tuer storm en cas de leave de la page
+  $.(function(){
+    $(window).bind('beforeunload', function(){
+      $.get(
+        'killall.php', //Script serveur qui tue storm
+        'false', //On n'envoie aucun paramètre à killall.php
+        function(data){
+          //Ne rien faire :o
+        },
+        'text' //Type de données reçues, on ne sait jamais :o
+      );
+    });
+  });
   </script>
 </body>
 </html>

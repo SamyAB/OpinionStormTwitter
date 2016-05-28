@@ -39,10 +39,13 @@ public class OpinionTweetTopology{
     topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("PostExpressionBolt");
     //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
     topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
+    //Attacher un ReportBolt aux scoreBolt via global avec un parallelisme de 1
+    topologie.setBolt("ReportBolt",new ReportBolt(),1).globalGrouping("scoreBolt");
 
-    Utils.sleep(10000);
+    //Un petit sleep le temps de charger tout les dictionnaires
+    Utils.sleep(5000); // 5 secondes
 
-    //Crŕation de la configuration de la topologie
+    //Création de la configuration de la topologie
     //Instensiation
     Config configuration = new Config();
     //Activer le mode de debug
