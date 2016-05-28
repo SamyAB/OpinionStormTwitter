@@ -4,5 +4,4 @@ passwords
 .classpath
 lib/
 /bin/
-keywords
-webapp/output_storm
+output_storm

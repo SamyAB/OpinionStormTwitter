@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Twitter's Opinion : Acceuil</title>
+  <title>Twitter's Opinion : Mémoire</title>
   <meta charset = "utf-8"/>
   <link rel="stylesheet" type="text/css" href="webapp.css" />
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
@@ -13,10 +13,10 @@
   <nav>
     <ul>
       <li>
-        <a class="active" href="/webapp/">Acceuil</a>
+        <a href="index.php">Accueil</a>
       </li>
       <li>
-        <a href="memoire.php">Mémoire</a>
+        <a class="active" href="#">Mémoire</a>
       </li>
       <li>
         <a href="code.php">Code source du projet</a>
@@ -27,15 +27,11 @@
     </ul>
   </nav>
 
-  <section id="recherche">
-    <h3>Mot-clefs</h3>
+  <section id="memoire">
+    <h3>Code source</h3>
     <p>
-      Donnez dans le formulaire suivant les mot-clefs à viser pour la suivie des opinions sur twitter
+      Le fichier PDF du mémoire de master de ce projet sera bientot disponible.
     </p>
-    <form action="visualization.php" method="post">
-      <input type="text" name="motCles" placeholder="Mot-clefs" />
-      <input type="submit" value="Valider" />
-    </form>
   </section>
 
   <?php include("footer.php"); ?>

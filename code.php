@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Twitter's Opinion : Mémoire</title>
+  <title>Twitter's Opinion : Code Source</title>
   <meta charset = "utf-8"/>
   <link rel="stylesheet" type="text/css" href="webapp.css" />
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
@@ -13,13 +13,13 @@
   <nav>
     <ul>
       <li>
-        <a href="/webapp/">Acceuil</a>
+        <a href="index.php">Accueil</a>
       </li>
       <li>
-        <a class="active" href="#">Mémoire</a>
+        <a href="memoire.php">Mémoire</a>
       </li>
       <li>
-        <a href="code.php">Code source du projet</a>
+        <a class="active" href="code.php">Code source du projet</a>
       </li>
       <li id="lastnav">
         <a href="about.php">À propos</a>
@@ -27,10 +27,10 @@
     </ul>
   </nav>
 
-  <section id="memoire">
+  <section id="code">
     <h3>Code source</h3>
     <p>
-      Le fichier PDF du mémoire de master de ce projet sera bientot disponible.
+      Le code source du projet est disponible sur <a href="https://github.com/SamyAB/OpinionStormTwitter">github</a>.
     </p>
   </section>
 
