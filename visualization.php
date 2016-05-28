@@ -28,6 +28,9 @@
 
       exec("storm jar target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology > output_storm 2>&1 &");
   ?>
+  <!--Chargement de apache storm-->
+  <div class="loading" id="divChargement"> </div>
+  <img src="loading.gif" alt="loading" class="loading" id="imgChargement"/>
 
   <nav>
     <ul>
@@ -87,9 +90,19 @@
   <script>
   //interval entre chaque update de données
   var updareInterval = 2000; // 2 secondes
+  //Temps de chargement de apache storm
+  var loadingTime = 10000; // 10 secondes
 
-  //Lancement de l'update chaque updateInterval
-  window.setInterval(update,updateInterval);
+  //Attente du temps de lancement de apache storm avant de lancer l'affichage des viz
+  window.setTimeout(function(){
+    //Cacher l'animation de chargement
+    $(function(){
+        $(".loading").fadeOut();
+    });
+
+    //Lancement de l'update chaque updateInterval
+    window.setInterval(update,updateInterval);
+  },loadingTime);
 
   //Fonction de rechargement des vizualisations
   function update(){
@@ -127,7 +140,7 @@
   }
 
   //Tuer storm en cas de leave de la page
-  $.(function(){
+  $(function(){
     $(window).bind('beforeunload', function(){
       $.get(
         'killall.php', //Script serveur qui tue storm
