@@ -21,39 +21,41 @@ import twitter4j.Status;
 
 public class ExpressionBolt extends BaseRichBolt{
   private OutputCollector collector;
-  private HashMap<String,String> expDict;
+  private HashMap<String,ArrayList<String>> expDict;
 
   public ExpressionBolt(){
     super();
+
     //Création du dictionnaire d'expression
-    this.expDict = new HashMap<String,String>();
+    this.expDict = new HashMap<String,ArrayList<String>>();
     String swnFile = "Dictionnaires/Expression-_SWN.txt";
-    BufferedReader br = null;
-    String line = "";
+		BufferedReader br = null;
+		String line = "";
+		String[] exp = null;
 
-    try{
-      br = new BufferedReader(new FileReader(swnFile));
-      String line_=null;
-      while ((line = br.readLine()) != null) {
-        if(this.expDict.get(line)==null)
-          line_ = line.replaceAll("_"," ");
-          line_ = line_.replaceAll("-"," ");
-          this.expDict.put(line_,line);
-        }
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      if (br != null) {
-        try {
-          br.close();
+		try {
+			br = new BufferedReader(new FileReader(swnFile));
+			while ((line = br.readLine()) != null) {
+				if(this.expDict.get(line)==null)
+					exp= line.split(" ");
+					ArrayList<String> tags= new ArrayList<String>();
+					for(int i=1;i<exp.length;i++) tags.add(exp[i]);
+					this.expDict.put(exp[0],tags);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
 
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-    }
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
   }
 
   @Override
@@ -72,9 +74,10 @@ public class ExpressionBolt extends BaseRichBolt{
 
       //Remplacement des expressions dans mots_tags
       //Parcours des expressions
-      for (HashMap.Entry<String, String> entry : this.expDict.entrySet()){
-        String exp = entry.getKey();
-        String exp_ = entry.getValue();
+      for(HashMap.Entry<String, ArrayList<String>> entry : this.expDict.entrySet()){
+        String exp_ = entry.getKey();
+        String exp= exp_.replaceAll("_"," ").replaceAll("-"," ");
+        String tag = entry.getValue().get(0);
         if(tweet_text.contains(exp)){
           int tailleExp = exp.split(" ").length;
           int i=0;
@@ -82,10 +85,10 @@ public class ExpressionBolt extends BaseRichBolt{
           while(i<mots_tags.size()-tailleExp+1){
             ArrayList<String> expMot = new ArrayList<String>();
             for(int j=i; j<i+tailleExp;j++){
-              expMot.add(mots_tags.get(j).getMot().replaceAll("_"," "));
+              expMot.add(mots_tags.get(j).getMot().replaceAll("_"," ").replaceAll("-"," "));
             }
             if(exp.equals(String.join(" ", expMot))){
-              MotTag mt = new MotTag(exp_,"EXP");
+              MotTag mt = new MotTag(exp_,tag);
               mots_tags.set(i,mt);
               for(int j=i+1; j<i+tailleExp && j<mots_tags.size();j++){
                 mots_tags.remove(j);

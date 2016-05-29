@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
@@ -29,11 +30,17 @@ public class DesambiguisationBolt extends BaseRichBolt{
 	private HashMap<String,String> pluriel_singulier = null;
 	//Dictionnaire des verbes (présent passé pp)
 	private HashMap<String,String> verbes = null;
+	//Liste de mots finissant en s
+	public ArrayList<String> endWithS = null;
+
 
 	public DesambiguisationBolt(){
 		super();
+		//Création de la liste des mots finissant avec s
+		this.endWithS = new ArrayList<String>(Arrays.asList("minus","virus","plus","lens","bus","chaos","circus","nervous","famous","tennis"));
+
 		//Création du dictionnaires des plurieles irréguliers
-		pluriel_singulier = new HashMap<String,String>();
+		this.pluriel_singulier = new HashMap<String,String>();
 
 		String txtFile = "Dictionnaires/iregular_noun.txt";
 		BufferedReader br = null;
@@ -97,34 +104,43 @@ public class DesambiguisationBolt extends BaseRichBolt{
 		this.collector = outputCollector;
 	}
 
-	/*public String singularNoun(String noun){
-		//Check si le nom est un pluriel
-		if(this.NounDictionary.get(noun.toLowerCase())!=null){
-			noun=this.NounDictionary.get(noun.toLowerCase());
+	public String singularNoun(String noun){
+
+		if(this.pluriel_singulier.get(noun.toLowerCase())!=null){
+			noun=this.pluriel_singulier.get(noun.toLowerCase());
 		}
 		else if( noun.length()>=4 &&(noun.substring(noun.length()-3).toLowerCase().equals("ses")
-			|| noun.substring(noun.length()-3).toLowerCase().equals("xes")
-			|| noun.substring(noun.length()-3).toLowerCase().equals("zes"))){
+				|| noun.substring(noun.length()-3).toLowerCase().equals("xes")
+				|| noun.substring(noun.length()-3).toLowerCase().equals("zes"))){
 
 			noun=noun.substring(0,noun.length()-2).toLowerCase();
+			System.out.println(noun);
 		}
 		else if( noun.length()>=5 && (noun.substring(noun.length()-4).toLowerCase().equals("ches")
-			|| noun.substring(noun.length()-4).toLowerCase().equals("shes"))){
+				|| noun.substring(noun.length()-4).toLowerCase().equals("shes"))){
 
-			noun=noun.substring(0,noun.length()-1).toLowerCase();
+			noun=noun.substring(0,noun.length()-2).toLowerCase();
+			System.out.println(noun);
 		}
 		else if(noun.length()>=4 && noun.substring(noun.length()-3).toLowerCase().equals("ies")){
 			noun=noun.substring(0,noun.length()-3).toLowerCase() + "y";
+			System.out.println(noun);
+		}else if(noun.length()>=4 && noun.substring(noun.length()-3).toLowerCase().equals("ves")){
+			noun=noun.substring(0,noun.length()-3).toLowerCase() + "f";
+			System.out.println(noun);
 		}
-		else if(noun.length()>=2 && noun.substring(noun.length()-1).toLowerCase().equals("s")){
-			noun=noun.substring(0,noun.length()-1).toLowerCase();
+		else if(noun.length()>=2 && noun.substring(noun.length()-1).toLowerCase().equals("s") && !noun.substring(noun.length()-2).toLowerCase().equals("ss")){
+			if(!endWithS.contains(noun)){
+				noun=noun.substring(0,noun.length()-1).toLowerCase();
+				System.out.println(noun);
+			}
 		}
 
 		return noun;
-}*/
+	}
 
 	private String presentVerb(String verb){
-		if( this.verbes.get(verb.toLowerCase())!=null){
+		if(this.verbes.get(verb.toLowerCase())!=null){
 			verb=this.verbes.get(verb.toLowerCase());
 		}
 		return verb;
@@ -145,10 +161,10 @@ public class DesambiguisationBolt extends BaseRichBolt{
 				if(mt.getTag().equals("V")){
 					mt.setMot(presentVerb(mt.getMot()));
 					mots_tags.set(i,mt);
-				} /*else if(mt.getTag().equals("N") || mt.getTag().equals("A")){
+				} else if(mt.getTag().equals("N") || mt.getTag().equals("A")){
 					mt.setMot(singularNoun(mt.getMot()));
 					mots_tags.set(i,mt);
-				}*/
+				}
 			}
 
 			//Emettre le tweet la chaine sans abbréviation et les mots taggés désanbiguisés

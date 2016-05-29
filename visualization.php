@@ -25,7 +25,6 @@
       fclose($fichier);
 
       //Lance l'execution de la topologie storm
-
       exec("storm jar target/topology_pfe-0.0.1-SNAPSHOT-jar-with-dependencies.jar dz.pfe.storm.OpinionTweetTopology > output_storm 2>&1 &");
   ?>
   <!--Chargement de apache storm-->
@@ -88,30 +87,35 @@
 
   <!-- Scirpts custom, changement d'onglets et mise à jour des viz -->
   <script>
-  //interval entre chaque update de données
-  var updareInterval = 2000; // 2 secondes
   //Temps de chargement de apache storm
   var loadingTime = 10000; // 10 secondes
 
   //Attente du temps de lancement de apache storm avant de lancer l'affichage des viz
   window.setTimeout(function(){
+    //interval entre chaque update de données
+    var updareInterval = 4000; // 2 secondes
+
     //Cacher l'animation de chargement
     $(function(){
         $(".loading").fadeOut();
     });
 
     //Lancement de l'update chaque updateInterval
-    window.setInterval(update,updateInterval);
+    window.setInterval(update,updareInterval);
   },loadingTime);
 
   //Fonction de rechargement des vizualisations
   function update(){
+    //interval entre chaque update de données
+    var updareInterval = 2000; // 2 secondes
+    console.log("hoho");
     $(function(){
       $.get(
         'redis.php', //Script serveur qui récupère les informations de redis
         'false', //On n'envoie aucun paramètre à redis.php
         function(data){
-          //Ici se troue tout ce qu'on doit faire après avoir récupérer les informations de Redis
+          //Ici se trouve tout ce qu'on doit faire après avoir récupérer les informations de Redis
+          console.log(data);
         },
         'json' //Type de données reçues de redis.php, la on aime bien le json
       );

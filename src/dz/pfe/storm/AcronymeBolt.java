@@ -38,8 +38,10 @@ public class AcronymeBolt extends BaseRichBolt{
       //Lecture ligne par ligne
       while((ligne=br.readLine()) != null){
         //Découpage de la ligne avec  " – "
-        String[] acro = ligne.split(" – ");
-        dico_acronymes.put(acro[0],acro[1]);
+        if(!ligne.equals("")){
+          String[] acro = ligne.split(" – ");
+          dico_acronymes.put(acro[0],acro[1]);
+        }
       }
     } catch(Exception e){
       e.printStackTrace();
