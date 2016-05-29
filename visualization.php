@@ -93,7 +93,7 @@
   //Attente du temps de lancement de apache storm avant de lancer l'affichage des viz
   window.setTimeout(function(){
     //interval entre chaque update de données
-    var updareInterval = 4000; // 2 secondes
+    var updareInterval = 4000; // 4 secondes
 
     //Cacher l'animation de chargement
     $(function(){
@@ -106,9 +106,6 @@
 
   //Fonction de rechargement des vizualisations
   function update(){
-    //interval entre chaque update de données
-    var updareInterval = 2000; // 2 secondes
-    console.log("hoho");
     $(function(){
       $.get(
         'redis.php', //Script serveur qui récupère les informations de redis

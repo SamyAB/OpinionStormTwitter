@@ -39,8 +39,16 @@ public class ReportBolt extends BaseRichBolt{
       Status tweet = (Status) tuple.getValue(1);
       float score = (float) tuple.getValue(2);
 
+      int positionHist=0;
+      if(score>0) positionHist = 3;
+      else if(score < 0) positionHist = 1;
+      else positionHist = 2;
+
       //Création d'une chaine de caractères contenant l'ID du tweet et son score
-      String aEnvoyer = tweet.getId() + " | " + score;
+      String aEnvoyer = positionHist + " | " + score + " | " + tweet.getText() + " | " +
+      tweet.getUser().getName() + " | " + tweet.getUser().getScreenName() + " | " +
+      tweet.getFavoriteCount() + " | " + tweet.getRetweetCount() + " | " + tweet.getCreatedAt() + " | " +
+      tweet.getUser().getProfileImageURL() + " | " + tweet.getId() + " | " + motCles[0];
 
       //Enregistrement du tweet dans redis dans la liste TweetsList
       redis.lpush("TweetsList",aEnvoyer);
