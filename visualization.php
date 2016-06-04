@@ -3,33 +3,12 @@
 <head>
   <title>Twitter's Opinion : Visualisation</title>
   <meta charset = "utf-8"/>
+  <!-- le CSS général (de l'application) -->
   <link rel="stylesheet" type="text/css" href="webapp.css" />
+  <!-- le CSS des visualisations -->
+  <link rel="stylesheet" type="text/css" href="visualization.css" />
+  
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
-  <style>
-    .d3-tip {
-      line-height: 1;
-      padding: 12px;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      border-radius: 2px;
-    }
-    .bar rect {
-      fill: #5ea9dd;
-      shape-rendering: crispEdges;
-    }
-    .bar rect:hover{
-      fill: #808080
-
-    }
-    .axis path, .axis line {
-      fill: none;
-      stroke:black;
-      shape-rendering: crispEdges;
-    }
-    .container{
-      float:left;
-    }
-  </style>
 </head>
 <body>
 

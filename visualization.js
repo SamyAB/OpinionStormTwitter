@@ -406,8 +406,8 @@ function drawTweets(hash){
   }
 }
 
-//fonction de dessins de graphe
-function draw_graph(hash){
+//Fonction de dessins de graphe
+function drawGraph(hash){
 
 }
 
