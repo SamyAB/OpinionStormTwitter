@@ -1,5 +1,5 @@
 //Temps de chargement de apache storm
-var loadingTime = 50000; // 50 secondes
+var loadingTime = 60000; // 60 secondes
 //interval entre chaque update de données
 var updareInterval = 4000; // 4 secondes
 
@@ -94,40 +94,43 @@ function update(){
   });
 }
 
+//Fonction d'affichage des mots-clefs et du temps de début du traitement
 function afficherMotCle(startTime,keywords,selected){
+  //Reçoit le temps de début, les mot-clefs, et les section ou afficher la viz
+
   //Afficher les headers des viz dans les tabcontenthead = d3.select('#header');
   head = d3.selectAll(selected);
 
+  //Créer un svg qui continendra les mot-clefs
   container = head.append('svg').attr('height', 110).attr('width', 1000);
 
-  container.append('rect').attr('width', 180)
-    .attr('height', 50)
-    .attr('x', 25)
-    .attr('y', 25)
-    .attr('rx',25)
-    .attr('ry',25)
-    .attr('opacity',0.8)
-    .style('fill','#55ACEE');
+  //Créer un rectangle 180x50 dans container
+  container.append('rect').attr('width', 150).attr('height', 50)
+    .attr('x', 25).attr('y', 25) // À la position (25,25) du container
+    .attr('rx',25).attr('ry',25) // Au bords arrondis
+    .attr('opacity',0.8) // Avec un opacité de 80 %
+    .style('fill','#2b7bb9'); // Et d'une couleur couleur bleue foncée
 
-  container.append('text').text('Recherche :')
-    .attr('x',35)
-    .attr('y',60)
-    .attr('fill','#F8F8F8')
-    .style("font-size","30px")
-    .style('font-family','arial');
+  //Ajout de texte fixe dans le container
+  container.append('text').text('Mot-clefs : ') // Dont le text est "Mot-clefs : "
+    .attr('x',35).attr('y',60) // aux positions (35,60)
+    .attr('fill','#F8F8F8') // De couleur gris très clair
+    .style("font-size","27px") // De taille de police de 27PX
+    .style('font-family','Product Sans'); // De police Product Sans
 
-  container.append('text').text(keywords)
-    .attr('x',220)
-    .attr('y',60)
-    .attr('fill','#808080 ')
-    .style("font-size","28px")
-    .style('font-family','arial');
+  //Ajout de texte dynamique dans le conrainer
+  container.append('text').text(keywords) // Contenant les mot-clefs entrées
+    .attr('x',185).attr('y',60) // Aux positions (220,60) Même hauteur que le texte "Mot-clefs : "
+    .attr('fill','#808080 ') //En gris foncé
+    .style("font-size","25px") // De taille 25PX
+    .style('font-family','Product Sans'); // Et toujours en Product Sans
 
-  container.append('text').text(startTime)
-    .attr('x',35)
-    .attr('y',100)
-    .attr('fill','#808080 ')
-    .style("font-size","18px");
+  //Ajout de text en dessous des Mot-clefs
+  container.append('text').text(startTime) // texte contenant les temps de début du traitement
+    .attr('x',35).attr('y',100) // À la position (35,100) du container SVG
+    .attr('fill','#808080 ') // En gris foncé
+    .style('font-family','Product Sans') // De police Product Sans
+    .style("font-size","18px"); // De taille de police 18px
 }
 
 //Fonction de dessin de l'histograme
