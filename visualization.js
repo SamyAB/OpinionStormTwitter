@@ -162,7 +162,7 @@ function drawHistogram(hash) {
 
   var i=0;
   for(var opinion in hash){
-  	i=i+1;
+    i=i+1;
   	var bin =i;
   	if ((bin.toString() != "NaN") && (bin < histdata.length)) {
   		histdata[bin].numfill = hash[opinion];//d.pTwt;
@@ -177,54 +177,52 @@ function drawHistogram(hash) {
     .domain([0, (xmax - xmin)])
     .range([0, width]);
 
-// Scale for the placement of the bars
-var x2 = d3.scale.ordinal()
-  .domain(["Negative","Neutral","Positive",""])
-  .rangePoints([50, width]);
+  // Scale for the placement of the bars
+  var x2 = d3.scale.ordinal()
+    .domain(["Negative","Neutral","Positive",""])
+    .rangePoints([50, width]);
 
-var y = d3.scale.linear()
-  .domain([0, d3.max(histdata, function(d) {
-					return d.numfill;
-        }) + 5])
-  .range([height, 0]);
+  var y = d3.scale.linear()
+    .domain([0, d3.max(histdata, function(d) {
+		  return d.numfill;
+    }) + 5])
+    .range([height, 0]);
 
   var xAxis = d3.svg.axis()
     .scale(x2)
 	  .orient("bottom");
 
   var yAxis = d3.svg.axis()
-	  .scale(y)
-	  .ticks(10)
-	  .orient("left");
+    .scale(y)
+    .ticks(10)
+    .orient("left");
 
   var tip = d3.tip()
-	  .attr('class', 'd3-tip')
-	  .attr('width',300)
-	  .attr('height',120)
-	  .direction('e')
-	  .offset([0, 20])
-	  .html(function(d){
-	     return '<table id="tiptable">' + d.meta + "</table>";
-     });
-
+    .attr('class', 'd3-tip')
+    .attr('width',300)
+    .attr('height',120)
+    .direction('e')
+    .offset([0, 20])
+    .html(function(d){
+      return '<table id="tiptable">' + d.meta + "</table>";
+    });
 
   var svg = d3.select("#histograme").append("svg")
-	  .attr("width", width + margin.left + margin.right)
-	  .attr("height", height + margin.top + margin.bottom)
-	  .append("g")
-	  .attr("transform", "translate(" + margin.left + "," +
-						margin.top + ")");
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    svg.call(tip);
+  svg.call(tip);
 
-    var bar = svg.selectAll(".bar")
-	  .data(histdata)
-	  .enter().append("g")
-	  .attr("class", "bar")
-	  .attr("transform", function(d, i) {
+  var bar = svg.selectAll(".bar")
+    .data(histdata)
+    .enter().append("g")
+    .attr("class", "bar")
+    .attr("transform", function(d, i) {
       if(i==1){
-         return "translate(" +
-	       x2("Negative") + "," + y(d.numfill) + ")";
+        return "translate(" +
+	      x2("Negative") + "," + y(d.numfill) + ")";
       }else if(i==2){
         return "translate(" +
         x2("Neutral") + "," + y(d.numfill) + ")";
@@ -232,57 +230,58 @@ var y = d3.scale.linear()
         return "translate(" +
         x2("Positive") + "," + y(d.numfill) + ")";
       }
-     })
-	  .on('mouseover', tip.show)
-	  .on('mouseout', tip.hide);
+    })
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);
 
-    // add rectangles of correct size at correct location
-    bar.append("rect")
-	    .attr("x", x(binmargin))
-	    .attr("width", x(binsize - 2 * binmargin))
-	    .attr("height", function(d) { return height - y(d.numfill); });
+  // add rectangles of correct size at correct location
+  bar.append("rect")
+    .attr("x", x(binmargin))
+    .attr("width", x(binsize - 2 * binmargin))
+    .attr("height", function(d) { return height - y(d.numfill); });
 
-    // add the x axis and x-label
-    svg.append("g")
-	    .attr("class", "x axis")
-	    .attr("transform", "translate(0," + height + ")")
-	    .style({ 'stroke': 'none', 'fill': 'black', 'stroke-width': '1.5px'})
-	    .call(xAxis);
+  // add the x axis and x-label
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .style({ 'stroke': 'none', 'fill': 'black', 'stroke-width': '1.5px'})
+    .call(xAxis);
 
-    svg.append("text")
-	    .attr("class", "xlabel")
-	    .attr("text-anchor", "middle")
-	    .attr("x", width / 2)
-	    .attr("y", height + margin.bottom)
-	    .text("# Polarity");
+  svg.append("text")
+    .attr("class", "xlabel")
+    .attr("text-anchor", "middle")
+    .attr("x", width / 2)
+    .attr("y", height + margin.bottom)
+    .text("# Polarity");
 
-    // add the y axis and y-label
-    svg.append("g")
-	    .attr("class", "y axis")
-	    .attr("transform", "translate(0,0)")
-	    .style({ 'stroke': 'none', 'fill': 'black', 'stroke-width': '1.5px'})
-	    .call(yAxis);
+  // add the y axis and y-label
+  svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(0,0)")
+    .style({ 'stroke': 'none', 'fill': 'black', 'stroke-width': '1.5px'})
+    .call(yAxis);
 
-    svg.append("text")
-	    .attr("class", "ylabel")
-	    .attr("y", 0 - margin.left) // x and y switched due to rotation
-	    .attr("x", 0 - (height / 2))
-	    .attr("dy", "1em")
-	    .attr("transform", "rotate(-90)")
-	    .style("text-anchor", "middle")
-	    .text("# number of tweets");
+  svg.append("text")
+    .attr("class", "ylabel")
+    .attr("y", 0 - margin.left) // x and y switched due to rotation
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .attr("transform", "rotate(-90)")
+    .style("text-anchor", "middle")
+    .text("# number of tweets");
 
-    drawTweets(hash);
+  drawTweets(hash);
 }
 
+//Fonction de dessins des top tweets avec la visualization d'histogramme
 function drawTweets(hash){
   twt= d3.select('#histograme').append('svg').attr('height', 500).attr('width', 800);
   if(hash["Positive"]>=1){
     twt.append('text').text("Top Tweet Positif")
       .attr('x',50)
-	    .attr('y',22)
-		  .attr('fill','#808080 ')
-		  .style("font-size","25px");
+      .attr('y',22)
+      .attr('fill','#808080 ')
+      .style("font-size","25px");
 
     twt.append('rect').attr('width', 500)
       .attr('height', 150)
@@ -407,7 +406,7 @@ function drawTweets(hash){
   }
 }
 
-//visualisation graph
+//fonction de dessins de graphe
 function draw_graph(hash){
 
 }
