@@ -1,10 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Twitter's Opinion : Visualization</title>
+  <title>Twitter's Opinion : Visualisation</title>
   <meta charset = "utf-8"/>
   <link rel="stylesheet" type="text/css" href="webapp.css" />
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
+  <style>
+    .d3-tip {
+      line-height: 1;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 2px;
+    }
+    .bar rect {
+      fill: #5ea9dd;
+      shape-rendering: crispEdges;
+    }
+    .bar rect:hover{
+      fill: #808080
+
+    }
+    .axis path, .axis line {
+      fill: none;
+      stroke:black;
+      shape-rendering: crispEdges;
+    }
+    .container{
+      float:left;
+    }
+  </style>
 </head>
 <body>
 
@@ -46,16 +71,13 @@
         <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Visualization 4</a>
       </li>
       <li id="lastnav">
-        <a href="/webapp/">Accueil</a>
+        <a href="index.php">Accueil</a>
       </li>
     </ul>
   </nav>
 
   <section id="visualization1" class="tabcontent">
-    <h3>Visualization 1</h3>
-    <p>
-      Il y aura la première visualization ici
-    </p>
+
   </section>
   <section id="visualization2" class="tabcontent">
     <h3>Visualization 2</h3>
@@ -82,77 +104,14 @@
 
   <?php include("footer.php"); ?>
 
-  <!--Inclusion du script de jquery depuis le CDN google -->
+  <!--Inclusion du script de jquery depuis le CDN google d3.js d3plus.js d3.tip.js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+  <script src="http://www.d3plus.org/js/d3plus.js"></script>
 
   <!-- Scirpts custom, changement d'onglets et mise à jour des viz -->
-  <script>
-  //Temps de chargement de apache storm
-  var loadingTime = 10000; // 10 secondes
+  <script src="visualization.js"></script>
 
-  //Attente du temps de lancement de apache storm avant de lancer l'affichage des viz
-  window.setTimeout(function(){
-    //interval entre chaque update de données
-    var updareInterval = 4000; // 4 secondes
-
-    //Cacher l'animation de chargement
-    $(function(){
-        $(".loading").fadeOut();
-    });
-
-    //Lancement de l'update chaque updateInterval
-    window.setInterval(update,updareInterval);
-  },loadingTime);
-
-  //Fonction de rechargement des vizualisations
-  function update(){
-    $(function(){
-      $.get(
-        'redis.php', //Script serveur qui récupère les informations de redis
-        'false', //On n'envoie aucun paramètre à redis.php
-        function(data){
-          //Ici se trouve tout ce qu'on doit faire après avoir récupérer les informations de Redis
-          console.log(data);
-        },
-        'json' //Type de données reçues de redis.php, la on aime bien le json
-      );
-    });
-  }
-
-  //Fonction de changement d'onglet
-  function openViz(evt, vizNumber){
-    var i, tabcontent, tablinks;
-
-    //Cacher les éléments de la class tabcontent
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
-    //Enelever tout les éléments de la classe tablinks de la classe active
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tabcontent.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    //Afficher l'onglet cliqué
-    document.getElementById(vizNumber).style.display = "block";
-    evt.currentTarget.className += " active";
-  }
-
-  //Tuer storm en cas de leave de la page
-  $(function(){
-    $(window).bind('beforeunload', function(){
-      $.get(
-        'killall.php', //Script serveur qui tue storm
-        'false', //On n'envoie aucun paramètre à killall.php
-        function(data){
-          //Ne rien faire :o
-        },
-        'text' //Type de données reçues, on ne sait jamais :o
-      );
-    });
-  });
-  </script>
 </body>
 </html>

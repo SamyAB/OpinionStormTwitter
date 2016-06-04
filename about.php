@@ -33,6 +33,10 @@
       Réalisé dans le cadre d'un projet de fin d'études de master en Systèmes Informatiques
       Intelligents, à l'Université des Sciences et de la Technologie Houari Boumediene (USTHB).
     </p>
+    <h3>Titre</h3>
+    <p>
+      Diffusion des opinions dans les réseaux sociaux en temps-réel.
+    </p>
     <h4>Réalisé par </h4>
     <ul>
       <li>
@@ -48,7 +52,7 @@
         Azzouza Noureddine
       </li>
     </ul>
-    <h4>Co-encadré par</h4>
+    <h4>Encadré par</h4>
     <ul>
       <li>
         Akli Karima

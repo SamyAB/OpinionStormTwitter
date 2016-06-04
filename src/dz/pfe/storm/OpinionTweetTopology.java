@@ -28,9 +28,9 @@ public class OpinionTweetTopology{
     //Attacher le POStagBolt aux AcronymeBolt via shuffle avec un parallelism de 15
     topologie.setBolt("POStagBolt",new POSTagBolt(),15).shuffleGrouping("acronymeBolt");
     //Attacher le PreExpressionBolt aux POSTagBolt via shuffle un parallelism de 15
-    topologie.setBolt("LettresBolt",new LettresBolt(),15).shuffleGrouping("POStagBolt");
+    //topologie.setBolt("LettresBolt",new LettresBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher le PreExpressionBolt aux POSTagBolt via shuffle un parallelism de 15
-    topologie.setBolt("PreExpressionBolt",new ExpressionBolt(),15).shuffleGrouping("LettresBolt");
+    topologie.setBolt("PreExpressionBolt",new ExpressionBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher le DesambiguisationBolt aux PreExpressionBolt via shuffleGrouping parallelism de 15
     topologie.setBolt("DesambiguisationBolt",new DesambiguisationBolt(),15).shuffleGrouping("POStagBolt");
     //Attacher le PostExpressionBolt au DesambiguisationBolt via shuffleGrouping parallelism de 15
@@ -41,9 +41,6 @@ public class OpinionTweetTopology{
     topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
     //Attacher un ReportBolt aux scoreBolt via global avec un parallelisme de 1
     topologie.setBolt("ReportBolt",new ReportBolt(),1).globalGrouping("scoreBolt");
-
-    //Un petit sleep le temps de charger tout les dictionnaires
-    Utils.sleep(5000); // 5 secondes
 
     //Création de la configuration de la topologie
     //Instensiation
