@@ -9,7 +9,7 @@ var widthHist = 1200;
 var heightHist = 700;
 var tweets = [];
 var topTweets = {};
-var keywords = "";
+var keywords = window.keywords;
 var startTime = "";
 
 //Initialisation des comptes des tweets négatifs, positifs, neutres
@@ -28,7 +28,13 @@ window.setTimeout(function(){
       $(".loading").fadeOut();
   });
 
-  //Lancement de l'update chaque updateInterval
+  //Enregistrement du temps du début de traitements
+  startTime = Date();
+
+  //Dessin des mot-clefs et date de début en haut des visualisation
+  afficherMotCle(startTime,keywords,".keywordstime");
+
+  //Lancement de la fonction update chaque updateInterval
   window.setInterval(update,updareInterval);
 },loadingTime);
 
@@ -81,11 +87,6 @@ function update(){
           var mn = time.split(":")[1];
           var sec = time.split(":")[2];
 
-          if((comptes["Neutral"]+comptes["Positive"]+comptes["Negative"])==1){
-		          startTime = data.tweets[i][7].split(" ")[0]+" "+dy+" "+mh+" "+yr+" At "+time;
-              keywords = data.tweets[i][10];
-              afficherMotCle(startTime,keywords);
-          }
           drawHistogram(comptes);
         }
       },
@@ -137,8 +138,7 @@ function afficherMotCle(startTime,keywords,selected){
 function drawHistogram(hash) {
   //Effacer ce qu'il y avait avant.
   d3.select(".d3-tip").remove();
-  d3.select("#visualization1").selectAll("svg").remove();
-  afficherMotCle(startTime,keywords,"#visualization1");
+  d3.select("#histograme").selectAll("svg").remove();
 
   var binsize = 1;
   var minbin = 1;
@@ -208,7 +208,7 @@ var y = d3.scale.linear()
      });
 
 
-  var svg = d3.select("#visualization1").append("svg")
+  var svg = d3.select("#histograme").append("svg")
 	  .attr("width", width + margin.left + margin.right)
 	  .attr("height", height + margin.top + margin.bottom)
 	  .append("g")
@@ -276,7 +276,7 @@ var y = d3.scale.linear()
 }
 
 function drawTweets(hash){
-  twt= d3.select('#visualization1').append('svg').attr('height', 500).attr('width', 800);
+  twt= d3.select('#histograme').append('svg').attr('height', 500).attr('width', 800);
   if(hash["Positive"]>=1){
     twt.append('text').text("Top Tweet Positif")
       .attr('x',50)

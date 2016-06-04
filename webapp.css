@@ -46,7 +46,7 @@ body{
 }
 
 /*header*/
-header{
+#banner{
   text-align: center;
   width: 100%;
   background-image: url("texture.png");
@@ -66,10 +66,10 @@ header{
   bottom: 5px;
   right : 5px;
 }
-header a{
+#banner a{
   display: block;
 }
-header img{
+#banner img{
   float: left;
   padding : 5px;
   margin : 6px 0;

@@ -59,16 +59,16 @@
   <nav>
     <ul>
       <li>
-        <a href="#" class="tablinks active" onclick="openViz(event, 'visualization1')">Visualization 1</a>
+        <a href="#" class="tablinks active" onclick="openViz(event, 'visualization1')">Histograme</a>
       </li>
       <li>
-        <a href="#" class="tablinks" onclick="openViz(event, 'visualization2')">Visualization 2</a>
+        <a href="#" class="tablinks" onclick="openViz(event, 'visualization2')">Graphe</a>
       </li>
       <li>
-        <a href="#" class="tablinks" onclick="openViz(event, 'visualization3')">Visualization 3</a>
+        <a href="#" class="tablinks" onclick="openViz(event, 'visualization3')">Chronologie</a>
       </li>
       <li>
-        <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Visualization 4</a>
+        <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Tweets</a>
       </li>
       <li id="lastnav">
         <a href="index.php">Accueil</a>
@@ -77,25 +77,20 @@
   </nav>
 
   <section id="visualization1" class="tabcontent">
-
+    <header class="keywordstime"></header>
+    <article id="histograme"></article>
   </section>
   <section id="visualization2" class="tabcontent">
-    <h3>Visualization 2</h3>
-    <p>
-      Il y aura la seconde visualization ici
-    </p>
+    <header class="keywordstime"></header>
+    <article id="graphe"></article>
   </section>
   <section id="visualization3" class="tabcontent">
-    <h3>Visualization 3</h3>
-    <p>
-      Il y aura la troisième visualization ici
-    </p>
+    <header class="keywordstime"></header>
+    <article id="chronologie"></article>
   </section>
   <section id="visualization4" class="tabcontent">
-    <h3>Visualization 4</h3>
-    <p>
-      Il y aura la quatrième visualization ici
-    </p>
+    <header class="keywordstime"></header>
+    <article id="tweets"></article>
   </section>
 
   <?php
@@ -109,6 +104,11 @@
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
   <script src="http://www.d3plus.org/js/d3plus.js"></script>
+
+  <!--Script de sauvegarde des mot-clefs -->
+  <script>
+    window.keywords = '<?=$_POST["motCles"] ?>';
+  </script>
 
   <!-- Scirpts custom, changement d'onglets et mise à jour des viz -->
   <script src="visualization.js"></script>
