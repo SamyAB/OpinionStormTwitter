@@ -77,18 +77,20 @@ public class ScoreBolt extends BaseRichBolt{
 			while ((line = br.readLine()) != null) {
 				String[] swn = line.split(swnSplitBy);
 				String[] synsets = swn[4].split(" ");
-
+        String freq ="";
 				for(int i=0; i<synsets.length; i++)
 				{
 					ArrayList<String> key = new ArrayList<String>();
 					key.add(swn[0]);
 					key.add(swn[1]);
 					String word = synsets[i].split("#")[0];
+          freq=synsets[i].split("#")[1];
 					key.add(word);
 
 					ArrayList<String> value = new ArrayList<String>();
 					value.add(swn[2]);
 					value.add(swn[3]);
+          value.add(freq);
 					this.dico_senti.put(key, value);
 				}
 			}
@@ -147,18 +149,23 @@ public class ScoreBolt extends BaseRichBolt{
 		float scoreP=0;
 		float scoreN=0;
 		float nbOcc=0;
+    float nbPoid=0;
 		float[] score = new float[2];
 		for (Map.Entry<ArrayList<String>, ArrayList<String>> entry : this.dico_senti.entrySet()) {
 			ArrayList<String > key=entry.getKey();
 			if(key.get(0).equals(tag) && key.get(2).equals(word)){
-				scoreP+=(float) Float.parseFloat(entry.getValue().get(0));
-				scoreN+=(float) Float.parseFloat(entry.getValue().get(1));
+				scoreP+=(float) (Float.parseFloat(entry.getValue().get(0))*(1/Float.parseFloat(entry.getValue().get(2))));
+				scoreN+=(float) (Float.parseFloat(entry.getValue().get(1))*(1/Float.parseFloat(entry.getValue().get(2))));
 				nbOcc++;
+        nbPoid += (float)(1/Float.parseFloat(entry.getValue().get(2)));
 			}
 		}
 		if(nbOcc !=0){
-			score[0]=(float)(scoreP/(float)(nbOcc));
+		/*	score[0]=(float)(scoreP/(float)(nbOcc));
 			score[1]=(float)(scoreN/(float)(nbOcc));
+    */
+      score[0]=(float)(scoreP/(float)(nbPoid));
+			score[1]=(float)(scoreN/(float)(nbPoid));
 		}
     else {
       score[0] = (float)-1;

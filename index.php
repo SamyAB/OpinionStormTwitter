@@ -28,12 +28,12 @@
   </nav>
 
   <section id="recherche">
-    <h3>Mot-clefs</h3>
+    <h3>Mots-clés</h3>
     <p>
       Donnez dans le formulaire suivant les mot-clefs à viser pour la suivie des opinions sur twitter
     </p>
     <form action="visualization.php" method="post">
-      <input type="text" name="motCles" placeholder="Mot-clefs" />
+      <input type="text" name="motCles" placeholder="Mots-clés" />
       <input type="submit" value="Valider" />
     </form>
   </section>

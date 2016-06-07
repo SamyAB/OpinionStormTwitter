@@ -1,4 +1,4 @@
-//Temps de chargement de apache storm
+mots-clés//Temps de chargement de apache storm
 var loadingTime = 60000; // 60 secondes
 //interval entre chaque update de données
 var updareInterval = 4000; // 4 secondes
@@ -99,7 +99,7 @@ function update(){
 function afficherMotCle(startTime,keywords,selected){
   //Reçoit le temps de début, les mot-clefs, et les section ou afficher la viz
 
-  //Afficher les headers des viz dans les tabcontenthead = d3.select('#header');
+  //Afficher les headers des viz dans les tabcontenthead = d3.select('.keywordstime');
   head = d3.selectAll(selected);
 
   //Créer un svg qui continendra les mot-clefs
@@ -113,7 +113,7 @@ function afficherMotCle(startTime,keywords,selected){
     .style('fill','#2b7bb9'); // Et d'une couleur couleur bleue foncée
 
   //Ajout de texte fixe dans le container
-  container.append('text').text('Mot-clefs : ') // Dont le text est "Mot-clefs : "
+  container.append('text').text('Mots-clés : ') // Dont le text est "Mot-clefs : "
     .attr('x',35).attr('y',60) // aux positions (35,60)
     .attr('fill','#F8F8F8') // De couleur gris très clair
     .style("font-size","27px") // De taille de police de 27PX
@@ -408,6 +408,10 @@ function drawTweets(hash){
 
 //Fonction de dessins de graphe
 function drawGraph(hash){
+  //Effacer ce qu'il y avait avant.
+  d3.select(".d3-tip").remove();
+  d3.select("#graphe").selectAll("svg").remove();
+
 
 }
 
