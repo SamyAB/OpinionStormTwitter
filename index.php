@@ -7,7 +7,7 @@
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
-
+  <?php exec("killall java"); ?>
   <?php include("header.php"); ?>
 
   <nav>

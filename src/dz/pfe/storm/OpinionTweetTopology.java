@@ -68,8 +68,8 @@ public class OpinionTweetTopology{
       //lacement de la topologie sur le cluster local
       cluster.submitTopology("opinionTweetTopology",configuration,topologie.createTopology());
 
-      // Pour le moment on va laisser la topologie tourner pendant 15 secondes
-      Utils.sleep(60000);
+      // Pour le moment on va laisser la topologie tourner pendant 300 secondes
+      Utils.sleep(300000);
 
       //Arrêter la topologie
       cluster.killTopology("opinionTweetTopology");
