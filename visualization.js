@@ -1,16 +1,29 @@
-mots-clés//Temps de chargement de apache storm
 var loadingTime = 60000; // 60 secondes
 //interval entre chaque update de données
 var updareInterval = 4000; // 4 secondes
 
 //Variables utilisées dans la visualisation
 var comptes = {};
-var widthHist = 1200;
-var heightHist = 700;
 var tweets = [];
 var topTweets = {};
 var keywords = window.keywords;
 var startTime = "";
+var nbTwt = 0;
+var tweetData=[];
+var tweetPerSec=[];
+var months={};
+months["Jan"]='01';
+months["Feb"]='02';
+months["Mar"]='03';
+months["Apl"]='04';
+months["May"]='05';
+months["Jun"]='06';
+months["Jul"]='07';
+months["Aou"]='08';
+months["Seb"]='09';
+months["Oct"]='10';
+months["Nov"]='11';
+months["Dec"]='12';
 
 //Initialisation des comptes des tweets négatifs, positifs, neutres
 comptes["Negative"] = 0;
@@ -20,6 +33,54 @@ topTweets["Negative"]={ score :0, tweet_text :" ", name:"", screenName:"" , favo
 topTweets["Neutral"]={ score :0, tweet_text :" ", name:"", screenName:"",  favoriteCount:0 , retweetCount:0, ppURL:"https://g.twimg.com/dev/documentation/image/DTC_Services_1h_hero_bg.png",_time:"00:00:00"};
 topTweets["Positive"]={ score :0, tweet_text :" ", name:"", screenName:"", favoriteCount:0 , retweetCount:0,ppURL:"https://g.twimg.com/dev/documentation/image/DTC_Services_1h_hero_bg.png",_time:"00:00:00"};
 positionHist = -1;
+
+//Variables pour la viz de tweets
+tweetsNeg = [];
+tweetsPos = [];
+nbTwtN = 0;
+nbTwtP = 0;
+var p=0;
+var n=0;
+
+var currencyFormat = d3.format("0.2f");
+
+svgNeg = d3.select("#negative").append("svg").attr('height', 800).attr('width', 650);
+svgPos = d3.select("#positive").append("svg").attr('height', 800).attr('width', 650);;
+
+var yRectR=20;
+var yImgR=35;
+var yPseudoIdR=47;
+var yTwtR=59;
+var yScoreR=100;
+
+var yRectL=20;
+var yImgL=35;
+var yPseudoIdL=47;
+var yTwtL=59;
+var yScoreL=100;
+
+//Des trucs dans les airs
+//var startTime=vis.moment();
+var startTime = Date();
+var container = document.getElementById('chronologie');
+nbTwtD = 0;
+
+var options = {
+  editable: false,
+  timeAxis: {scale: 'millisecond', step: 1000},
+  maxHeight: "300px",
+  height:"300px",
+};
+
+var items = new vis.DataSet(tweetData);
+
+var timeline = new vis.Timeline(container, items, options);
+timeline.on('select', function (props) {
+  d3.select("#chronologie").selectAll("svg").remove();
+  if(tweets[props.items]!=null){
+    drawTweet(tweetPerSec[props.items]);
+  }
+});
 
 //Attente du temps de lancement de apache storm avant de lancer l'affichage des viz
 window.setTimeout(function(){
@@ -47,6 +108,10 @@ function update(){
       function(data){
         //Ici se trouve tout ce qu'on doit faire après avoir récupérer les informations de Redis
         for(var i=0; i< data.tweets.length ;i++){
+
+          tweets[nbTwt]={score:data.tweets[i][1] ,ppURL:data.tweets[i][8], pseudo:data.tweets[i][4],userId:data.tweets[i][3],tweet_text:data.tweets[i][2], postedAt:data.tweets[i][7].split(" ")[3]};
+          nbTwt = nbTwt+1;
+
           if(data.tweets[i][0]=="1"){
             comptes["Negative"] = comptes["Negative"]+1;
             if(Math.abs(parseFloat(topTweets["Negative"].score)) <= Math.abs(parseFloat(data.tweets[i][1]))){
@@ -64,10 +129,10 @@ function update(){
           if(data.tweets[i][0]=="3"){
             comptes["Positive"] = comptes["Positive"]+1;
             if(Math.abs(parseFloat(topTweets["Positive"].score)) <= Math.abs(parseFloat(data.tweets[i][1]))){
-              topTweets["Positive"].score=data.tweets[i][1];
+              topTweets["Positive"].score = data.tweets[i][1];
               topTweets["Positive"].tweet_text=data.tweets[i][2];
               topTweets["Positive"].name=data.tweets[i][3];
-              topTweets["Positive"].screenName=data.tweets[i][4];
+              topTweets["Positive"].screenName = data.tweets[i][4];
               topTweets["Positive"].favoriteCount=data.tweets[i][5];
             	topTweets["Positive"].retweetCount=data.tweets[i][6];
             	topTweets["Positive"].ppURL=data.tweets[i][8];
@@ -79,7 +144,7 @@ function update(){
             comptes["Neutral"] = comptes["Neutral"]+1;
           }
 
-          var mh=data.tweets[i][7].split(" ")[1];
+          var mh=months[data.tweets[i][7].split(" ")[1]];
           var yr=data.tweets[i][7].split(" ")[5];
           var dy=data.tweets[i][7].split(" ")[2];
           var time=data.tweets[i][7].split(" ")[3];
@@ -87,7 +152,155 @@ function update(){
           var mn = time.split(":")[1];
           var sec = time.split(":")[2];
 
+          if(data.tweets[i][0]=="1"){
+            tweetsNeg[nbTwtN]={tweet_text: data.tweets[i][2], pseudo: data.tweets[i][4], id: data.tweets[i][3], ppURL:data.tweets[i][8], tweet_color:'#3399CC', score:data.tweets[i][1]};
+            nbTwtN+=1;
+          } else if(data.tweets[i][0]=="3"){
+            tweetsPos[nbTwtP]={tweet_text: data.tweets[i][2], pseudo: data.tweets[i][4], id: data.tweets[i][3], ppURL:data.tweets[i][8], tweet_color:'greenyellow', score:data.tweets[i][1]};
+            nbTwtP+=1;
+          }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+          var found = false;
+          var color="gray";
+          var twtimg="http://bloximages.newyork1.vip.townnews.com/dailyprogress.com/content/tncms/live/global/resources/images/_site/social/twitter-logo-cutout.png?_dc=1410894165";
+          for(var j=0; j< tweetData.length; j++){
+            //found = false;
+            if(tweetData[j].start==(yr+"-"+mh+"-"+dy+" "+time)){
+           	  found=true;
+              tweetPerSec[j].nbScore +=1;
+              tweetPerSec[j].score=(parseFloat(tweetPerSec[j].score)+ parseFloat(data.tweets[i][1])).toFixed(2);
+              tweetPerSec[j].userId=data.tweets[i][3];
+              tweetPerSec[j].pseudo=data.tweets[i][4];
+              tweetPerSec[j].ppURL=data.tweets[i][8];
+              tweetPerSec[j].tweet_text=data.tweets[i][2];
+        	    tweetPerSec[j].start= yr+"-"+mh+"-"+dy+" "+time;
+        	    sco=parseFloat(parseFloat(tweetPerSec[j].score)/tweetPerSec[j].nbScore);
+
+              if(parseFloat(sco)<parseFloat(0.0)){
+                color="steelblue";
+                twtimg="http://www.open.ac.uk/community/main/sites/www.open.ac.uk.community.main/files/images/Twitter.png";
+                tweetPerSec[j].nbScoreN+=1;
+             } else if(parseFloat(sco)>parseFloat(0.0)){
+        	      color="green";
+        	      twtimg="http://www.twosisterscrafting.com/wp-content/icons/twitter.png";
+                tweetPerSec[j].nbScoreP+=1;
+             }else{
+               twtimg="http://bloximages.newyork1.vip.townnews.com/dailyprogress.com/content/tncms/live/global/resources/images/_site/social/twitter-logo-cutout.png?_dc=1410894165";
+             }
+             tweetPerSec[j].className=color;
+             tweetData[j].className=color;
+             tweetData[j].content = '<div>'+parseFloat(sco).toFixed(2)+'</div><img src="'+twtimg+'"style="width:32px; height:32px;">';
+            }
+          }
+
+          if(found==false){
+            tweetPerSec[nbTwtD]={nbScore:1,score:parseFloat(data.tweets[i][1]).toFixed(2), userId:data.tweets[i][3], pseudo:data.tweets[i][4],ppURL:data.tweets[i][8],tweet_text:data.tweets[i][2], year:yr, month:mh, day:dy, hour:hr, minute:mn, second: sec,start: yr+"-"+mh+"-"+dy+" "+time,nbScoreP:0,nbScoreN:0,className:color  };
+            if(parseFloat(data.tweets[i][1])<0.0){
+              color="steelblue";
+              twtimg="http://www.open.ac.uk/community/main/sites/www.open.ac.uk.community.main/files/images/Twitter.png";
+              tweetPerSec[nbTwtD].nbScoreN=1;
+              tweetPerSec[nbTwtD].className=color;
+            } else if(parseFloat(data.tweets[i][1])>0.0){
+        	    color="green";
+        	    twtimg="http://www.twosisterscrafting.com/wp-content/icons/twitter.png";
+              tweetPerSec[nbTwtD].nbScoreP=1;
+              tweetPerSec[nbTwtD].className=color;
+            } else{
+               twtimg="http://bloximages.newyork1.vip.townnews.com/dailyprogress.com/content/tncms/live/global/resources/images/_site/social/twitter-logo-cutout.png?_dc=1410894165";
+            }
+            tweetData[nbTwtD]={id:nbTwtD, content:'<div>'+parseFloat(data.tweets[i][1]).toFixed(2)+'</div><img src="'+twtimg+'"style="width:32px; height:32px;">', start: yr+"-"+mh+"-"+dy+" "+time, className:color };
+            nbTwtD++;
+          }
+
+          options = {
+        	   editable: false,
+             timeAxis: {scale: 'second', step: 5},
+             maxHeight: "350px",
+             height:"350px",
+             start: tweetData[0].start,
+             end: tweetData[nbTwtD-1].start
+          };
+
+          timeline.setOptions(options);
+          timeline.setItems(new vis.DataSet(tweetData));
+          timeline.redraw();
+
+          //Paramètrages du dessins des tweets dans la viz de tweets
+          //Positif
+          if(tweetsPos[0]!=null && p<nbTwtP){
+            len=0;
+            if((nbTwtP)==1){
+              p=0;
+              len=1;
+            } else if((nbTwtP)==2){
+              p=0;
+              len=2;
+            } else if((nbTwtP)==3){
+              p=0;
+              len=3;
+            } else if((nbTwtP)==4){
+              p=0;
+              len=4;
+            } else{
+              len=4;
+            }
+            svgPos.selectAll("rect").remove();
+            svgPos.selectAll("text").remove();
+            svgPos.selectAll("image").remove();
+            svgPos.selectAll("circle").remove();
+            yRectL=20;
+            yImgL=35;
+            yPseudoIdL=47;
+            yTwtL=59;
+            yScoreL=100;
+            for(var j=0; j<len && (p+j)<nbTwtP;j++){
+              drawPositiveTweet(tweetsPos[p+j],svgPos);
+            }
+            if(p+4 < nbTwtP){
+              p+=1;
+            }
+          }
+
+          //Négatif
+          if(tweetsNeg[0]!=null && n<nbTwtN){
+            len=0;
+            if((nbTwtN)==1){
+              n=0;
+              len=1;
+            } else if((nbTwtN)==2){
+              n=0;
+              len=2;
+            } else if((nbTwtN)==3){
+              n=0;
+              len=3;
+            } else if((nbTwtN)==4){
+              n=0;
+              len=4;
+            } else{
+              len=4;
+            }
+            svgNeg.selectAll("rect").remove();
+            svgNeg.selectAll("text").remove();
+            svgNeg.selectAll("image").remove();
+            svgNeg.selectAll("circle").remove();
+            yRectR=20;
+            yImgR=35;
+            yPseudoIdR=47;
+            yTwtR=59;
+            yScoreR=100;
+            for(var j=0; j<len && (n+j)<nbTwtN;j++){
+              drawNegativeTweet(tweetsNeg[n+j],svgNeg);
+            }
+            if(n+4 < nbTwtN){
+              n+=1;
+            }
+          }
+
+          //Redessiner
+          showInformationTweets();
           drawHistogram(comptes);
+          drawGraph(tweets);
         }
       },
       'json' //Type de données reçues de redis.php, la on aime bien le json
@@ -137,7 +350,7 @@ function afficherMotCle(startTime,keywords,selected){
 //Fonction de dessin de l'histograme
 function drawHistogram(hash) {
   //Effacer ce qu'il y avait avant.
-  d3.select(".d3-tip").remove();
+  d3.select(".d3-tip-histo").remove();
   d3.select("#histograme").selectAll("svg").remove();
 
   var binsize = 1;
@@ -148,7 +361,7 @@ function drawHistogram(hash) {
   // whitespace on either side of the bars in units of MPG
   var binmargin = .001;
   var margin = {top: 30, right: 30, bottom: 50, left: 60};
-  var width = 650 - margin.left - margin.right;
+  var width = 550 - margin.left - margin.right;
   var height = 350 - margin.top - margin.bottom;
 
   // Set the limits of the x axis
@@ -198,7 +411,7 @@ function drawHistogram(hash) {
     .orient("left");
 
   var tip = d3.tip()
-    .attr('class', 'd3-tip')
+    .attr('class', 'd3-tip-histo')
     .attr('width',300)
     .attr('height',120)
     .direction('e')
@@ -208,8 +421,8 @@ function drawHistogram(hash) {
     });
 
   var svg = d3.select("#histograme").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width",1200)
+    .attr("height",500)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -270,39 +483,31 @@ function drawHistogram(hash) {
     .style("text-anchor", "middle")
     .text("# number of tweets");
 
-  drawTweets(hash);
+  drawTweets(hash,svg);
 }
 
 //Fonction de dessins des top tweets avec la visualization d'histogramme
-function drawTweets(hash){
-  twt= d3.select('#histograme').append('svg').attr('height', 500).attr('width', 800);
+function drawTweets(hash,twt){
+  //twt= d3.select('#histograme').append('svg').attr('height', 500).attr('width', 600);
+  var nekes = 130;
   if(hash["Positive"]>=1){
     twt.append('text').text("Top Tweet Positif")
-      .attr('x',50)
+      .attr('x',700-nekes)
       .attr('y',22)
       .attr('fill','#808080 ')
       .style("font-size","25px");
 
     twt.append('rect').attr('width', 500)
       .attr('height', 150)
-      .attr('x', 200)
+      .attr('x', 750-nekes)
       .attr('y', 25)
 		  .attr('rx',25)
 		  .attr('ry',25)
-		  .attr('opacity',0.5)
+      .attr('opacity',0.8)
       .style('fill','#55ACEE');
 
-    imgs= twt.selectAll("image").data([0]);
-    imgs.enter()
-      .append("svg:image")
-      .attr("xlink:href", topTweets["Positive"].ppURL)
-      .attr("x", 215)
-      .attr("y", 40)
-      .attr("width", "60")
-      .attr("height", "60");
-
     tweet_pseudo=twt.append('text').text(topTweets["Positive"].screenName)
-		  .attr('x',279)
+		  .attr('x',829-nekes)
 		  .attr('y',55)
 		  .attr('fill','black')
 		  .style("font-size","18px")
@@ -310,13 +515,13 @@ function drawTweets(hash){
 		  .style('font-family','arial');
 
     twt.append('text').text(" " + "@"+topTweets["Positive"].name)
-		  .attr('x',275+tweet_pseudo.node().getBoundingClientRect().width+ 2)
+		  .attr('x',829+tweet_pseudo.node().getBoundingClientRect().width+ 2-nekes)
 		  .attr('y',55)
 		  .attr('fill','gray')
 		  .style('font-family','arial');
 
     tweet_text = twt.append('text').text(topTweets["Positive"].tweet_text)
-      .attr('x', 279)
+      .attr('x', 829-nekes)
       .attr('y', 65)
       .attr('fill', '#383838')
 		  .style('font-family','arial');
@@ -327,46 +532,47 @@ function drawTweets(hash){
       .draw();
 
     twt.append('text').text(topTweets["Positive"]._time)
-		  .attr('x',600)
+		  .attr('x',1150-nekes)
 		  .attr('y',165)
 		  .attr('fill','#F0F0F0 ')
 		  .style("font-size","15px");
 
     twt.append('text').text("+"+parseFloat(topTweets["Positive"].score).toFixed(2))
-      .attr('x', 225)
+      .attr('x', 775-nekes)
       .attr('y', 115)
       .attr('fill', "white")
 		  .style('font-family','arial')
 		  .style("font-size","13px")
 		  .style('font-weight','bold');
+
+      imgs= twt.selectAll("image").data([0]);
+      imgs.enter()
+        .append("svg:image")
+        .attr("xlink:href", topTweets["Positive"].ppURL)
+        .attr("x", 765-nekes)
+        .attr("y", 40)
+        .attr("width", "60")
+        .attr("height", "60");
   }
 
   if(hash["Negative"]>=1){
     twt.append('text').text("Top Tweet Négatif")
-		  .attr('x',50)
+		  .attr('x',700-nekes)
 		  .attr('y',198)
 		  .attr('fill','#808080 ')
 		  .style("font-size","25px");
 
     twt.append('rect').attr('width', 500)
       .attr('height', 150)
-      .attr('x', 200)
+      .attr('x', 750-nekes)
       .attr('y', 205)
 		  .attr('rx',25)
 		  .attr('ry',25)
-		  .attr('opacity',0.5)
+		  .attr('opacity',0.8)
       .style('fill','#55ACEE');
 
-    imgs.enter()
-      .append("svg:image")
-      .attr("xlink:href", topTweets["Negative"].ppURL)
-      .attr("x", 215)
-      .attr("y", 220)
-      .attr("width", "60")
-      .attr("height", "60");
-
     tweet_pseudo = twt.append('text').text(topTweets["Negative"].screenName)
-		  .attr('x',279)
+		  .attr('x',829-nekes)
 		  .attr('y',235)
 		  .attr('fill','black')
 		  .style("font-size","18px")
@@ -374,13 +580,13 @@ function drawTweets(hash){
 		  .style('font-family','Product Sans');
 
     twt.append('text').text(" " + "@"+topTweets["Negative"].name)
-		  .attr('x',275+tweet_pseudo.node().getBoundingClientRect().width+ 2)
+		  .attr('x',829+tweet_pseudo.node().getBoundingClientRect().width+ 2-nekes)
 		  .attr('y',235)
 		  .attr('fill','gray')
 		  .style('font-family','Product Sans');
 
     tweet_text = twt.append('text').text(topTweets["Negative"].tweet_text)
-      .attr('x', 279)
+      .attr('x', 829-nekes)
       .attr('y', 245)
       .attr('fill', '#383838')
 		  .style('font-family','Product Sans');
@@ -391,28 +597,581 @@ function drawTweets(hash){
       .draw();
 
     twt.append('text').text(topTweets["Negative"]._time)
-		  .attr('x',600)
+		  .attr('x',1150-nekes)
 		  .attr('y',345)
 		  .attr('fill','#F0F0F0 ')
 		  .style("font-size","15px");
 
     twt.append('text').text(parseFloat(topTweets["Negative"].score).toFixed(2))
-      .attr('x', 225)
+      .attr('x', 775-nekes)
       .attr('y', 295)
       .attr('fill', "white")
 		  .style('font-family','Product Sans')
 		  .style("font-size","13px")
 		  .style('font-weight','bold');
+
+    imgsN = twt.selectAll("image").data([0]);
+    imgsN.enter()
+      .append("svg:image")
+      .attr("xlink:href", topTweets["Negative"].ppURL)
+      .attr("x", 765-nekes)
+      .attr("y", 220)
+      .attr("width", "60")
+      .attr("height", "60");
   }
 }
 
 //Fonction de dessins de graphe
-function drawGraph(hash){
+function drawGraph(tweets){
   //Effacer ce qu'il y avait avant.
-  d3.select(".d3-tip").remove();
+  d3.select(".d3-tip-graph").remove();
   d3.select("#graphe").selectAll("svg").remove();
 
+  var dom=[];
+  var data=[]
 
+  var i=0;
+  var found;
+  for (k = 0; k < Object.size(tweets) ; k++){
+    found='0';
+
+    for(j in dom){
+      if(dom[j]==tweets[k].postedAt){
+        found='1';
+        data[j].score = parseFloat(data[j].score)+parseFloat(tweets[k].score);
+        data[j].nbTweet+=1;
+        data[j].ppURL=tweets[k].ppURL;
+        data[j].pseudo=tweets[k].pseudo;
+        data[j].userId=tweets[k].userId;
+        data[j].tweet=tweets[k].tweet_text;
+      }
+    }
+
+    if(found=='0'){
+      dom[i]=tweets[k].postedAt;
+      data[i]={score:tweets[k].score,
+          postedAt:tweets[k].postedAt,
+          ppURL:tweets[k].ppURL,
+          pseudo:tweets[k].pseudo,
+          userId:tweets[k].userId,
+          tweet:tweets[k].tweet_text,
+          nbTweet:1
+        };
+      i=i+1;
+    }
+
+  }
+
+  for(var j =0;j<Object.size(data);j++){
+    data[j].score=parseFloat(data[j].score)/data[j].nbTweet;
+  }
+
+  var height = 310;
+  var width = 1000;
+  var margin = {top: 20, right:20, bottom: 50, left: 20};
+
+  // formatters for axis and labels
+  var currencyFormat = d3.format("0.2f");
+
+  var svg = d3.select("#graphe")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom + 30)
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  svg.append("g").attr("class", "y axis");
+
+  svg.append("g").attr("class", "x axis");
+
+  var tip = d3.tip()
+    .attr('class', 'd3-tip-graph')
+    .offset([120, 40])
+    .html(function(d) {
+      return '<div>at '+d.postedAt+'<br> Moyenne des scores : '+ parseFloat(d.score/d.nbTweet).toFixed(2) + '</div><br><img src="'+d.ppURL+'"style="width:35px; height:35px;"> '+
+        d.pseudo.bold() + " @"+d.userId.fontcolor("gray")+ '<br>'+
+        d.tweet;
+  	});
+
+  svg.call(tip);
+  var xScale = d3.scale.ordinal()
+    .rangeRoundBands([margin.left, width], .1);
+
+  var yScale = d3.scale.linear()
+    .range([height, 0]);
+
+  var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+    .scale(yScale)
+    .orient("left");
+
+  // extract the x labels for the axis and scale domain
+  var xLabels =dom;
+
+  xScale.domain(xLabels);
+  yScale.domain([-3,3/*-1*Math.round(d3.max(data, function(d)
+  				 { return parseFloat(Math.abs(d.score));
+  				 })),
+  			       Math.round(d3.max(data, function(d)
+  				 { return parseFloat(Math.abs(d.score));
+  				 }))
+  				*/]);
+
+  var line = d3.svg.line()
+    .x(function(d) { return xScale(d.postedAt); })
+    .y(function(d) { return yScale(d.score); })
+    .interpolate("monotone");
+
+  svg.append("path")
+    .datum(data)
+    .attr("class","line")
+    .attr("d", line);
+
+  svg.select(".x.axis")
+    .attr("transform", "translate(0," + (height) + ")")
+    .call(xAxis.tickValues(xLabels.filter(function(d, i) {
+      if (i % 12 == 0) return d;
+    })))
+    .selectAll("text")
+    .style("text-anchor","end")
+    .attr("transform", function(d) {
+      return "rotate(-45)";
+    });
+
+  svg.select(".y.axis")
+    .attr("transform", "translate(" + (margin.left) + ",0)")
+    .call(yAxis.tickFormat(currencyFormat));
+
+  // chart title
+  svg.append("text")
+    .attr("x", (width + (margin.left + margin.right) )/ 2)
+    .attr("y", 0 + margin.top)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("font-family", "sans-serif")
+    .text("Scores");
+
+  // x axis label
+  svg.append("text")
+    .attr("x", (width + (margin.left + margin.right) )/ 2)
+    .attr("y", height + 10 + margin.bottom)
+    .attr("class", "text-label")
+    .attr("text-anchor", "middle")
+    .text("Time (HH:MM:SS)");
+
+  svg.append("svg:line")
+    .attr("x1", 0)
+    .attr("x2", width)
+    .attr("y1", yScale(0))
+    .attr("y2", yScale(0))
+    .style("stroke", "rgb(189, 189, 189)");
+
+  circle = svg.selectAll("circle")
+    .data(data)
+    .enter().append("circle")
+    .attr('class', 'datapoint')
+    .attr('cx', function(d) { return xScale(d.postedAt); })
+    .attr('cy', function(d) { return yScale(d.score); })
+    .attr('r', 7)
+    .attr('fill', 'white');
+
+  circle.attr('stroke', 'steelblue')
+    .attr('stroke-width', '3');
+
+  circle.on('mouseover', tip.show)
+    .on('mouseout', tip.hide);
+
+
+
+  showInformation();
+}
+
+//Information du graphe
+function showInformation(){
+  body = d3.select('#graphe');
+  svg = body.append('svg').attr('height', 500).attr('width', 500);
+
+  svg.append('text').text('Positifs')
+    .attr('x',45)
+    .attr('y',40)
+    .attr('fill','greenyellow')
+    .style("font-size","32px")
+    .style('font-family','arial');
+
+  svg.append('rect').attr('width', 165)
+    .attr('height', 50)
+    .attr('x', 50)
+    .attr('y', 50)
+    .attr('rx',25)
+    .attr('ry',25)
+    .attr('opacity',0.6)
+    .style('fill','greenyellow');
+
+  svg.append('text').text(comptes['Positive']+' tweets')
+    .attr('x',70)
+    .attr('y',85)
+    .attr('fill','white')
+    .style("font-size","25px")
+    .style('font-family','arial');
+
+  svg.append('text').text('Négatifs')
+    .attr('x',235)
+    .attr('y',40)
+    .attr('fill','steelblue')
+    .style("font-size","32px")
+    .style('font-family','arial');
+
+  svg.append('rect').attr('width', 165)
+    .attr('height', 50)
+    .attr('x', 240)
+    .attr('y', 50)
+    .attr('rx',25)
+    .attr('ry',25)
+    .attr('opacity',0.6)
+    .style('fill','steelblue');
+
+  svg.append('text').text(comptes['Negative'] + ' tweets')
+    .attr('x',260)
+    .attr('y',85)
+    .attr('fill','white')
+    .style("font-size","25px")
+    .style('font-family','arial');
+}
+
+function drawTweet(tweet){
+  body = d3.select('#chronologie');
+  svg = body.append('svg').attr('height', 500).attr('width', 1200);
+
+  rect = svg.append('rect').attr('width', 500)
+    .attr('height', 140)
+    .attr('x', 350)
+    .attr('y', 30)
+		.attr('rx',10)
+		.attr('ry',10)
+		.attr('opacity',0.4)
+    .style('fill','gray');
+
+  imgs = svg.selectAll("image").data([0]);
+
+  imgs.enter()
+    .append("svg:image")
+    .attr("xlink:href", tweet.ppURL)
+    .attr("x", "360")
+    .attr("y", "45")
+    .attr("width", "60")
+    .attr("height", "60");
+
+  tweet_pseudo=svg.append('text').text(tweet.pseudo)
+    .attr('x',430)
+    .attr('y',57)
+    .attr('fill','black')
+    .style("font-size","18px")
+    .style("font-weight", "bold")
+    .style('font-family','arial');
+
+  tweet_id=svg.append('text').text(" " + "@"+tweet.userId)
+    .attr('x',430 + tweet_pseudo.node().getBoundingClientRect().width+ 2)
+	   .attr('y',57)
+     .attr('fill','gray')
+     .style('font-family','arial');
+
+  var text="";
+  var y=79;
+  words=tweet.tweet_text.split(" ");
+
+  for(var i=0; i<words.length;i++){
+    if((text.length + words[i].length +1)<45){
+	     text+=" "; text+=words[i];
+    }else{
+	     svg.append('text').text(text)
+        .attr('x', 430)
+        .attr('y', y)
+        .attr('fill', 'black')
+        .style('font-family','arial');
+      y+=20;
+      text=words[i];
+    }
+  }
+
+  svg.append('text').text(text)
+    .attr('x', 430)
+    .attr('y', y)
+    .attr('fill', 'black')
+    .style('font-family','arial');
+
+  svg.append('text').text(tweet.start)
+		.attr('x',690)
+		.attr('y',160)
+		.attr('fill','white')
+		.style('font-family','arial');
+
+  svg.append('text').text("Sur "+tweet.nbScore+" tweet(s)")
+    .attr('x',893)
+    .attr('y',50)
+    .attr('fill','gray')
+    .style("font-size","18px")
+    .style('font-family','arial');
+
+  svg.append('rect').attr('width', 165)
+    .attr('height', 50)
+    .attr('x', 890)
+    .attr('y', 60)
+    .attr('rx',25)
+    .attr('ry',25)
+    .attr('opacity',0.8)
+    .style('fill','greenyellow');
+
+  svg.append('text').text(tweet.nbScoreP+ ' tweet(s) positif(s)')
+    .attr('x',899)
+    .attr('y',90)
+    .attr('fill','white')
+    .style('font-weight','bold')
+    .style('font-family','arial');
+
+  svg.append('rect').attr('width', 165)
+    .attr('height', 50)
+    .attr('x', 890)
+    .attr('y', 115)
+    .attr('rx',25)
+    .attr('ry',25)
+    .attr('opacity',0.6)
+    .style('fill','blue');
+
+  svg.append('text').text(tweet.nbScoreN+ ' tweet(s) négatif(s)')
+    .attr('x',899)
+    .attr('y',145)
+    .attr('fill','white')
+    .style('font-weight','bold')
+    .style('font-family','arial');
+
+  svg.append('circle')
+    .attr('cx',605)
+    .attr('cy',290)
+    .attr('r',80)
+    .attr('opacity',0.3)
+    .style('fill','gray');
+
+  svg.append('text').text('Score')
+    .attr('x',560)
+    .attr('y',280)
+    .attr('fill','white')
+    .style("font-size","35px")
+    .style('font-family','arial');
+
+  var signe="±";
+  if(tweet.score<0){signe="-";} else if(tweet.score>0){signe="+";}
+  score=svg.append('text').text(signe+Math.abs(parseFloat(tweet.score)/tweet.nbScore).toFixed(2))
+    .attr('x', 570)
+    .attr('y', 315)
+    .attr('fill', 'white')
+    .style('font-family','arial')
+    .style("font-size","25px");
+
+  comment="Neutre !";
+  if(tweet.className=="green"){comment="Positive ! ";}
+  else if(tweet.className=="steelblue"){comment="Négative !";}
+  svg.append('text').text(comment)
+    .attr('x',730)
+    .attr('y',300)
+    .attr('fill',tweet.className)
+    .style("font-size","35px")
+    .style('font-family','arial');
+}
+
+function showInformationTweets(){
+  /*Effecerce qu'il y avait*/
+  d3.select("#informationTweets").remove("svg");
+
+  body = d3.select('#informationTweets');
+  svg = body.append('svg').attr('height', 650).attr('width', 250);
+
+  svg.append('text').text('Positive')
+    .attr('x',40)
+    .attr('y',100)
+    .attr('fill','greenyellow')
+    .style("font-size","32px")
+    .style('font-family','arial');
+
+  svg.append('rect').attr('width', 165)
+    .attr('height', 50)
+    .attr('x', 50)
+    .attr('y', 110)
+    .attr('rx',25)
+    .attr('ry',25)
+    .attr('opacity',0.6)
+    .style('fill','greenyellow');
+
+  svg.append('text').text(comptes['Positive']+' tweets')
+    .attr('x',70)
+    .attr('y',145)
+    .attr('fill','white')
+    .style("font-size","25px")
+    .style('font-family','arial');
+
+  svg.append('text').text('Négative')
+    .attr('x',40)
+    .attr('y',200)
+    .attr('fill','#3399CC')
+    .style("font-size","32px")
+    .style('font-family','arial');
+
+  svg.append('rect').attr('width', 165)
+    .attr('height', 50)
+    .attr('x', 50)
+    .attr('y', 210)
+    .attr('rx',25)
+    .attr('ry',25)
+    .attr('opacity',0.6)
+    .style('fill','#3399CC');
+
+  svg.append('text').text(comptes['Negative']+' tweets')
+    .attr('x',70)
+    .attr('y',245)
+    .attr('fill','white')
+    .style("font-size","25px")
+    .style('font-family','arial');
+}
+
+function drawNegativeTweet(tweet,svg){
+  rect = svg.append('rect').attr('width', 500)
+    .attr('height', 140)
+    .attr('x', 40)
+    .attr('y', yRectR)
+    .attr('rx',10)
+    .attr('ry',10)
+    .style('fill','white');
+
+  yRectR+=155;
+
+  svg.append("image")
+    .attr("xlink:href", tweet.ppURL)
+    .attr("x", "50")
+    .attr("y", yImgR)
+    .attr("width", "60")
+    .attr("height", "60");
+
+  yImgR+=155;
+
+  tweet_pseudo=svg.append('text').text(tweet.pseudo)
+    .attr('x',120)
+    .attr('y',yPseudoIdR)
+    .attr('fill','black')
+    .style("font-size","18px")
+    .style("font-weight", "bold")
+    .style('font-family','arial');
+
+  tweet_id=svg.append('text').text(" " + "@"+tweet.id)
+    .attr('x',120 + tweet_pseudo.node().getBoundingClientRect().width+ 2)
+    .attr('y',yPseudoIdR)
+    .attr('fill','gray')
+    .style('font-family','arial');
+
+  yPseudoIdR+=155;
+
+  tweet_text = svg.append('text').text(tweet.tweet_text)
+    .attr('x', 120)
+    .attr('y', yTwtR)
+    .attr('fill', 'black')
+    .style('font-family','arial');
+
+  yTwtR+=155;
+
+  d3plus.textwrap()
+    .container(tweet_text)
+    .width(400)
+    .draw();
+
+  svg.append('circle')
+    .attr('cx',573)
+    .attr('cy',yScoreR-5)
+    .attr('r',27)
+    .style('fill','none')
+    .style('stroke-width','2.5px')
+    .style('stroke',tweet.tweet_color);
+
+  var signe="-";
+
+  score=svg.append('text').text(signe+currencyFormat(Math.abs(tweet.score)))
+    .attr('x', 550)
+    .attr('y', yScoreR)
+    .attr('fill', tweet.tweet_color)
+    .style('font-family','arial')
+    .style("font-size","18px")
+    .style('font-weight','bold');
+
+  yScoreR+=155;
+}
+
+function drawPositiveTweet(tweet,svg) {
+  rect = svg.append('rect').attr('width', 500)
+    .attr('height', 140)
+    .attr('x', 40)
+    .attr('y', yRectL)
+    .attr('rx',10)
+    .attr('ry',10)
+    .style('fill','white');
+
+  yRectL+=155;
+
+  svg.append("image")
+    .attr("xlink:href", tweet.ppURL)
+    .attr("x", "50")
+    .attr("y", yImgL)
+    .attr("width", "60")
+    .attr("height", "60");
+
+  yImgL+=155;
+
+  tweet_pseudo=svg.append('text').text(tweet.pseudo)
+    .attr('x',120)
+    .attr('y',yPseudoIdL)
+    .attr('fill','black')
+    .style("font-size","18px")
+    .style("font-weight", "bold")
+    .style('font-family','arial');
+
+  tweet_id=svg.append('text').text(" " + "@"+tweet.id)
+    .attr('x',120 + tweet_pseudo.node().getBoundingClientRect().width+ 2)
+    .attr('y',yPseudoIdL)
+    .attr('fill','gray')
+    .style('font-family','arial');
+
+  yPseudoIdL+=155;
+
+  tweet_text = svg.append('text').text(tweet.tweet_text)
+    .attr('x', 120)
+    .attr('y', yTwtL)
+    .attr('fill', 'black')
+    .style('font-family','arial');
+
+  yTwtL+=155;
+
+  d3plus.textwrap()
+    .container(tweet_text)
+    .width(400)
+    .draw();
+
+  svg.append('circle')
+    .attr('cx',573)
+    .attr('cy',yScoreL-5)
+    .attr('r',27)
+    .style('fill','none')
+    .style('stroke-width','2.5px')
+    .style('stroke',tweet.tweet_color);
+
+  var signe="+";
+
+  score=svg.append('text').text(signe+currencyFormat(Math.abs(tweet.score)))
+    .attr('x', 550)
+    .attr('y', yScoreL)
+    .attr('fill', tweet.tweet_color)
+    .style('font-family','arial')
+    .style("font-size","18px")
+    .style('font-weight','bold');
+
+  yScoreL+=155;
 }
 
 //Fonction de changement d'onglet
@@ -449,3 +1208,12 @@ $(function(){
     );
   });
 });
+
+//Size
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};

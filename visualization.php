@@ -5,9 +5,90 @@
   <meta charset = "utf-8"/>
   <!-- le CSS général (de l'application) -->
   <link rel="stylesheet" type="text/css" href="webapp.css" />
-  <!-- le CSS des visualisations -->
-  <link rel="stylesheet" type="text/css" href="visualization.css" />
-  
+  <link href="libjs/vis.css" rel="stylesheet" type="text/css" />
+  <!-- le CSS des visualisations ->
+  <link rel="stylesheet" type="text/css" href="visualization.css" />-->
+  <style>
+    .d3-tip-histo {
+      line-height: 1;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 2px;
+    }
+
+    .d3-tip-graph {
+      line-height: 1;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 2px;
+    }
+
+    .bar rect {
+      fill: #5ea9dd;
+      shape-rendering: crispEdges;
+    }
+    .bar rect:hover{
+      fill: #808080
+
+    }
+    .axis path, .axis line {
+      fill: none;
+      stroke:black;
+      shape-rendering: crispEdges;
+    }
+
+    .container{
+      float:left;
+    }
+
+    .line {
+      stroke: Steelblue;
+      fill:none;
+      stroke-width: 3;
+    }
+
+    .axis text {
+      font-size: 10px;
+      font-family: sans-serif;
+    }
+
+    .text-label {
+      font-size: 10px;
+      font-family: sans-serif;
+    }
+
+    .datapoint:hover{
+     fill: steelblue;
+    }
+
+    .xlabel, .ylabel {
+     font-size:20px;
+    }
+
+    .vis-item.green {
+      background-color: greenyellow;
+      border-color: green;
+    }
+
+    .vis-item.blue {
+      background-color: steelblue;
+      border-color: blue;
+    }
+
+    .vis-item.gray {
+      background-color: gray;
+      border-color: gray;
+    }
+
+    /* Celle-là pour la viz des tweets */
+    .containerLeft{
+      float: left;
+    }
+
+  </style>
+
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -69,7 +150,9 @@
   </section>
   <section id="visualization4" class="tabcontent">
     <header class="keywordstime"></header>
-    <article id="tweets"></article>
+    <article class="containerLeft" id="positive"></article>
+    <article class="containerLeft" id="negative"></article>
+    <article class="containerLeft" id="informationTweets"></article>
   </section>
 
   <?php
@@ -79,10 +162,11 @@
   <?php include("footer.php"); ?>
 
   <!--Inclusion du script de jquery depuis le CDN google d3.js d3plus.js d3.tip.js -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-  <script src="http://www.d3plus.org/js/d3plus.js"></script>
+  <script src="libjs/jquery.min.js"></script>
+  <script src="libjs/d3.v3.min.js" charset="utf-8"></script>
+  <script src="libjs/d3.tip.v0.6.3.js"></script>
+  <script src="libjs/d3plus.js"></script>
+  <script src="libjs/vis.js"></script>
 
   <!--Script de sauvegarde des mot-clefs -->
   <script>
