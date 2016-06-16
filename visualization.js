@@ -1,6 +1,8 @@
 var loadingTime = 60000; // 60 secondes
 //interval entre chaque update de données
 var updareInterval = 4000; // 4 secondes
+//Interval de mise à jour des recommandations
+var updateRecommandation = 120000; //deux minutes
 
 //Variables utilisées dans la visualisation
 var comptes = {};
@@ -97,7 +99,110 @@ window.setTimeout(function(){
 
   //Lancement de la fonction update chaque updateInterval
   window.setInterval(update,updareInterval);
+  //Lancement du timer pour la visualisation des recommandations
+  window.setInterval(getRecommandation,updateRecommandation)
 },loadingTime);
+
+//Fonction de récupération de recommandations
+function getRecommandation(){
+  $(function(){
+    $.get(
+      'recommandation.php', //Script serveur qui récupère les informations de redis
+      'false', //On n'envoie aucun paramètre à redis.php
+      function(data){
+        var svg= d3.select("#recommandation").append("svg").attr('height', 500).attr('width', 1200);
+      	//rectangle principale
+      	svg.append('rect').attr('width', 700)
+      		.attr('height', 300)
+      		.attr('x', 330)
+      		.attr('y', 140)
+      		.attr('rx',25)
+      		.attr('ry',25)
+      		.attr('opacity','0.7')
+      		.style('fill','#E8E8E8')
+      		.style('stroke-width','5px')
+      		.style('stroke','#E8E8E8');
+
+        svg.append('text').text('Recommandations ')
+      		.attr('x',280)
+      		.attr('y',130)
+      		.attr('fill','#B0B0B0 ')
+      		.style("font-size","35px");
+      	//positive recommandations
+
+      	svg.append('rect').attr('width', 300)
+      		.attr('height', 150)
+      		.attr('x', 390)
+      		.attr('y', 180)
+      		.attr('rx',25)
+      		.attr('ry',25)
+      		.attr('opacity',0.8)
+      		.style('fill','greenyellow');
+
+        svg.append('text').text('Unigramme ')
+      		.attr('x',410)
+      		.attr('y',210)
+      		.attr('fill','white')
+      		.style("font-size","25px");
+
+        svg.append('text').text(data.unigramPos[0] + ", "+data.unigramPos[1])
+      		.attr('x',410)
+      		.attr('y',235)
+      		.attr('fill','gray')
+      		.style("font-size","18px");
+
+        svg.append('text').text('Bigramme ')
+      		.attr('x',410)
+      		.attr('y',265)
+      		.attr('fill','white')
+      		.style("font-size","25px");
+
+        svg.append('text').text(data.bigramPos[0] + ", "+data.bigramPos[1])
+      		.attr('x',410)
+      		.attr('y',290)
+      		.attr('fill','gray')
+      		.style("font-size","18px");
+
+      	//negative recommandations
+
+      	svg.append('rect').attr('width', 300)
+      		.attr('height', 150)
+      		.attr('x', 670)
+      		.attr('y', 270)
+      		.attr('rx',25)
+      		.attr('ry',25)
+      		.attr('opacity',0.8)
+      		.style('fill','#55ACEE');
+
+        svg.append('text').text('Unigramme ')
+      		.attr('x',690)
+      		.attr('y',300)
+      		.attr('fill','white')
+      		.style("font-size","25px");
+
+        svg.append('text').text(data.unigramNeg[0] + ", "+data.unigramNeg[1])
+      		.attr('x',690)
+      		.attr('y',325)
+      		.attr('fill','gray')
+      		.style("font-size","18px");
+
+        svg.append('text').text('Bigramme ')
+      		.attr('x',690)
+      		.attr('y',355)
+      		.attr('fill','white')
+      		.style("font-size","25px");
+
+        svg.append('text').text(data.bigramNeg[0] + ", "+data.bigramNeg[1])
+      		.attr('x',690)
+      		.attr('y',380)
+      		.attr('fill','gray')
+      		.style("font-size","18px");
+
+      },
+      'json'
+    );
+  });
+}
 
 //Fonction de rechargement des vizualisations
 function update(){
@@ -160,7 +265,6 @@ function update(){
             nbTwtP+=1;
           }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
           var found = false;
           var color="gray";
           var twtimg="http://bloximages.newyork1.vip.townnews.com/dailyprogress.com/content/tncms/live/global/resources/images/_site/social/twitter-logo-cutout.png?_dc=1410894165";

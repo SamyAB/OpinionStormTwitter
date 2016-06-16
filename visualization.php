@@ -154,7 +154,7 @@
     <article class="containerLeft" id="negative"></article>
     <article class="containerLeft" id="informationTweets"></article>
   </section>
-
+  <section id="recommandation"></section>
   <?php
     }
   ?>
