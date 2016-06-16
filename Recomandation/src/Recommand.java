@@ -1,3 +1,5 @@
+package recommandation;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,17 +18,25 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.lambdaworks.redis.RedisClient;
+import com.lambdaworks.redis.RedisConnection;
+
 public class Recommand {
 
 	public ArrayList<String> StopWords;
+
 	public HashMap<String, HashMap<String,Float>> invFile;
 	public HashMap<String, HashMap<String,Float>> invFileBigram;
+
 	public HashMap<String,Float> sumDist;
 	public HashMap<String,Float> sumDistBigram;
 	public ArrayList<String> listMinDist;
 	public ArrayList<String> listMinDistBigram;
+
 	private String keywords;
 	private Timestamp temps;
+
+	private RedisConnection redis;
 
 
 	public Recommand(){
@@ -37,6 +48,44 @@ public class Recommand {
 
 		//Calcul du temps il y a deux minutes pour les reqêtes SQL
 		this.tempsMoinsTwoMinutes();
+
+		//Initialisation de Redis
+		RedisClient client = new RedisClient("localhost",6379);
+	    this.redis = client.connect();
+	}
+
+	private void redisReportPositif(){
+		String aEnvoyer = null;
+		for(String term : this.listMinDist){
+			aEnvoyer = aEnvoyer + term + " ";
+		}
+
+		redis.lpush("unigramPositif", aEnvoyer);
+
+		aEnvoyer = null;
+		for(String term : this.listMinDistBigram){
+			aEnvoyer = aEnvoyer + term + " | ";
+		}
+
+		redis.lpush("bigramPositif", aEnvoyer);
+
+	}
+
+	private void redisReportNegatif(){
+		String aEnvoyer = null;
+		for(String term : this.listMinDist){
+			aEnvoyer = aEnvoyer + term + " ";
+		}
+
+		redis.lpush("unigramNegatif", aEnvoyer);
+
+		aEnvoyer = null;
+		for(String term : this.listMinDistBigram){
+			aEnvoyer = aEnvoyer + term + " | ";
+		}
+
+		redis.lpush("bigramNegatif", aEnvoyer);
+
 	}
 
 	private void tempsMoinsTwoMinutes(){
@@ -78,49 +127,46 @@ public class Recommand {
 
 	}
 
-//Récuperation des tweets à partir de la base de données MySQL
+	//Récuperation des tweets à partir de la base de données MySQL
 
-	public ArrayList<String> getPositiveTweets(String mot_cle, String temps) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+	public ArrayList<String> getPositiveTweets() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 
 		ArrayList<String> tweets = new ArrayList<String>();
 
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&password=");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&password=azerty1234");
 
 		Statement st = con.createStatement();
-		String sql = ("SELECT text_tweet FROM statut, tweet_mot_cle WHERE statut.score > 0 AND"
-				+ " statue.id = tweet_mot_cle.id_tweet AND tweet_mot_cle="+ this.keywords + " AND"
-						+ " statut.temps_tweet >="+ this.temps+ " ;");
-		ResultSet rs = st.executeQuery(sql);
-		if(rs.next()) {
+		String sql = ("SELECT text_tweet FROM twitter_analytics.status, twitter_analytics.tweet_mot_cle WHERE id_tweet = id AND score > 0 AND mot_cle = '" + this.keywords + "' AND temps_tweet > '"+ this.temps + "';");
 
-		 String str = rs.getString("text_tweet");
-		 tweets.add(str);
-		 System.out.println("Pos : " + str);
+		int i = 0;
+		ResultSet rs = st.executeQuery(sql);
+		while(rs.next()) {
+
+			String str = rs.getString("text_tweet");
+			tweets.add(str);
+			i++;
 
 		}
-
+		System.out.println(i);
 		con.close();
 
 		return tweets;
 	}
 
-	public ArrayList<String> getNegativeTweets(String mot_cle, String temps) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
+	public ArrayList<String> getNegativeTweets() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
 
 		ArrayList<String> tweets = new ArrayList<String>();
 
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&password=");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost/twitter_analytics?"+"user=twitter_admin&password=azerty1234");
 
 		Statement st = con.createStatement();
-		String sql = ("SELECT text_tweet FROM statut, tweet_mot_cle WHERE statut.score < 0 AND"
-				+ " statue.id = tweet_mot_cle.id_tweet AND tweet_mot_cle="+ this.keywords + " AND"
-						+ " statut.temps_tweet >="+ this.temps+ " ;");
+		String sql = ("SELECT text_tweet FROM twitter_analytics.status, twitter_analytics.tweet_mot_cle WHERE id_tweet = id AND score < 0 AND mot_cle = '" + this.keywords + "' AND temps_tweet > '"+ this.temps + "';");
 		ResultSet rs = st.executeQuery(sql);
-		if(rs.next()) {
-		 String str = rs.getString("text_tweet");
-		 tweets.add(str);
-		 System.out.println("Neg : "+str);
+		while(rs.next()) {
+			String str = rs.getString("text_tweet");
+			tweets.add(str);
 		}
 
 		con.close();
@@ -132,7 +178,7 @@ public class Recommand {
 	public void stopWordDico(){
 		StopWords= new ArrayList<String>();
 
-		String txtFile = "/home/hakubi/workspace/Recomandation/stop-word-list.txt";
+		String txtFile = "Dictionnaires/stop-word-list.txt";
 		BufferedReader br = null;
 		String line = "";
 
@@ -142,7 +188,6 @@ public class Recommand {
 			br = new BufferedReader(new FileReader(txtFile));
 			while ((line = br.readLine()) != null) {
 
-				// use comma as separator
 				String stopWord = line;
 
 				StopWords.add(stopWord);
@@ -276,7 +321,7 @@ public class Recommand {
 	}
 
 	//Calculs des distances cosinus
-	 public HashMap<String,HashMap<String,Float>> cosDist(){
+	public HashMap<String,HashMap<String,Float>> cosDist(){
 
 		HashMap<String,Float> sommeDj = new HashMap<String,Float>();
 
@@ -462,36 +507,53 @@ public class Recommand {
 
 	}
 
-//Exécution des recommandations unigramme et bigramme
-	public void UnigramRecommandation(ArrayList<String> tweets){
+	//Exécution des recommandations unigramme et bigramme
+	public void unigramRecommandation(ArrayList<String> tweets){
 		this.fichierInverse(tweets);
 		this.calculateTfIdf(tweets.size());
 		this.cosDist();
 		this.moyenneCosDist();
-		System.out.println("\nUnigram recommandations:");
 		this.MinDist();
 
 	}
 
-	public void BigramRecommandation(ArrayList<String> tweets){
+	public void bigramRecommandation(ArrayList<String> tweets){
 		this.fichierInverseBigram(tweets);
 		this.calculateTfIdfBigram(tweets.size());
 		this.cosDistBigram();
 		this.moyenneCosDistBigram();
-		//this.showFichierInvBigram();
-		System.out.println("\nBigram recommandations:");
 		this.MinDistBigram();
 
 	}
 
 
 	public static void main(String[] args) {
+		//Créer un objet de ce type
 		Recommand rec = new Recommand();
+		ArrayList<String> tweetsPositifs = null;
+		ArrayList<String> tweetsNegatifs = null;
 
 
-		//
-		//this.UnigramRecommandation(tweets);
-		//this.BigramRecommandation(tweets);
+		//Reste du traitement
+		try {
+			//Récupération textes des tweets d'il y a 2 minutes
+			//Les positif
+			tweetsNegatifs =  rec.getNegativeTweets();
+			rec.unigramRecommandation(tweetsNegatifs);
+			rec.bigramRecommandation(tweetsNegatifs);
+			rec.redisReportNegatif();
+
+
+			//Les positif
+			tweetsPositifs = rec.getPositiveTweets();
+			rec.unigramRecommandation(tweetsPositifs);
+			rec.bigramRecommandation(tweetsNegatifs);
+			rec.redisReportPositif();
+
+
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 }
