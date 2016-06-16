@@ -1,4 +1,7 @@
 <?php
+  //Execution de la classe de recommandation.
+  exec("java -cp \".:lettuce-2.3.3.jar:mysql-connector-java-5.1.38-bin.jar\" Recommand");
+  
   try{
     //Création d'un objet redis et connexion à redis sur loaclhost
     $redis = new Redis();
