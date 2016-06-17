@@ -931,30 +931,53 @@ function showInformation(){
   body = d3.select('#graphe');
   svg = body.append('svg').attr('height', 500).attr('width', 500);
 
-  svg.append('text').text('Positifs')
-    .attr('x',45)
-    .attr('y',40)
-    .attr('fill','#2b7bb9')
-    .style("font-size","32px")
-    .style('font-family','arial');
-
-  svg.append('rect').attr('width', 165)
+  //Pour le nombre de tweets positifs
+  svg.append('rect').attr('width', 365)
     .attr('height', 50)
-    .attr('x', 50)
-    .attr('y', 50)
+    .attr('x', 45)
+    .attr('y', 10)
     .attr('rx',25)
     .attr('ry',25)
-    //.attr('opacity',0.6)
     .style('fill','#2b7bb9');
 
-  svg.append('text').text(comptes['Positive']+' tweets')
-    .attr('x',70)
-    .attr('y',85)
+  svg.append('text').text('Nombre de tweet(s) positif(s) :')//+' tweets')
+    .attr('x',65)
+    .attr('y',45)
     .attr('fill','white')
     .style("font-size","25px")
-    .style('font-family','arial');
+    .style('font-family','Product Sans');
 
-  svg.append('text').text('Négatifs')
+  svg.append('text').text(comptes['Positive'])
+    .attr('x',420)
+    .attr('y',45)
+    .attr('fill','#808080')
+    .style("font-size","25px")
+    .style('font-family','Product Sans');
+
+  //Pour le nombre de tweets négatifs
+  svg.append('rect').attr('width', 365)
+    .attr('height', 50)
+    .attr('x', 45)
+    .attr('y', 70)
+    .attr('rx',25)
+    .attr('ry',25)
+    .style('fill','#5ea9dd');
+
+  svg.append('text').text('Nombre de tweet(s) négatif(s) :')//+' tweets')
+    .attr('x',65)
+    .attr('y',105)
+    .attr('fill','white')
+    .style("font-size","25px")
+    .style('font-family','Product Sans');
+
+  svg.append('text').text(comptes['Negative'])
+    .attr('x',420)
+    .attr('y',105)
+    .attr('fill','#808080')
+    .style("font-size","25px")
+    .style('font-family','Product Sans');
+
+  /*svg.append('text').text('Négatifs')
     .attr('x',235)
     .attr('y',40)
     .attr('fill','#5ea9dd')
@@ -975,7 +998,7 @@ function showInformation(){
     .attr('y',85)
     .attr('fill','white')
     .style("font-size","25px")
-    .style('font-family','arial');
+    .style('font-family','arial');*/
 }
 
 //Dessin des tweets pour la chronologie
