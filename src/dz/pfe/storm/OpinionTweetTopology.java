@@ -19,6 +19,8 @@ public class OpinionTweetTopology{
     //Cette topologie est appelée à changer avec l'insertion d'au moins un autre bolt
     //TweetSpout avec un parallèlisme de 1
     topologie.setSpout("tweetSpout",tweetSpout,1);
+
+    /*
     //Attacher le SpaceSeparationBolt au spout via shuffle avec parallelism 10
     topologie.setBolt("SpaceSepatarionBolt",new SpaceSeparationBolt(),10).shuffleGrouping("tweetSpout");
     //Attacher le bolt de correction au bolt SpaceSepatarionBolt avec un parallelism de 10
@@ -36,7 +38,9 @@ public class OpinionTweetTopology{
     //Attacher le PostExpressionBolt au DesambiguisationBolt via shuffleGrouping parallelism de 15
     topologie.setBolt("PostExpressionBolt",new ExpressionBolt(),15).shuffleGrouping("DesambiguisationBolt");
     //Attacher le ScoreBolt aux PostExpressionBolt via shuffle avec un parallelism de 15
-    topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("PostExpressionBolt");
+    */
+
+    topologie.setBolt("scoreBolt",new ScoreBolt(),15).shuffleGrouping("tweetSpout");
     //Attacher un DAOBolt aux scoreBolt via global avec un parallelism de 1
     topologie.setBolt("DAOBolt",new DAOBolt(),1).globalGrouping("scoreBolt");
     //Attacher un ReportBolt aux scoreBolt via global avec un parallelisme de 1

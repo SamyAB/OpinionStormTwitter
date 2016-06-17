@@ -1,4 +1,4 @@
-var loadingTime = 60000; // 60 secondes
+var loadingTime = 10000; // 60 secondes
 //interval entre chaque update de données
 var updareInterval = 4000; // 4 secondes
 //Interval de mise à jour des recommandations
@@ -530,7 +530,7 @@ function drawHistogram(hash) {
     });
 
   var svg = d3.select("#histograme").append("svg")
-    .attr("width",1200)
+    .attr("width",1300)
     .attr("height",500)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -606,7 +606,7 @@ function drawTweets(hash,twt){
       .attr('fill','#808080 ')
       .style("font-size","25px");
 
-    twt.append('rect').attr('width', 500)
+    twt.append('rect').attr('width', 550)
       .attr('height', 150)
       .attr('x', 750-nekes)
       .attr('y', 25)
@@ -624,8 +624,8 @@ function drawTweets(hash,twt){
 		  .style('font-family','arial');
 
     twt.append('text').text(" " + "@"+topTweets["Positive"].name)
-		  .attr('x',829+tweet_pseudo.node().getBoundingClientRect().width+ 2-nekes)
-		  .attr('y',55)
+		  .attr('x',829 - nekes)
+		  .attr('y',55 + 20)
 		  .attr('fill','gray')
 		  .style('font-family','arial');
 
@@ -634,12 +634,12 @@ function drawTweets(hash,twt){
     words=topTweets["Positive"].tweet_text.split(" ");
 
     for(var i=0; i<words.length;i++){
-      if((text.length + words[i].length +1)<45){
+      if((text.length + words[i].length +1)<55){
          text+=" "; text+=words[i];
       }else{
          twt.append('text').text(text)
           .attr('x', 829-nekes)
-          .attr('y', y)
+          .attr('y', y + 30)
           .attr('fill', '#383838')
           .style('font-family','arial');
         y+=18;
@@ -647,10 +647,9 @@ function drawTweets(hash,twt){
       }
     }
 
-
     twt.append('text').text(text)
     .attr('x', 829-nekes)
-    .attr('y', y)
+    .attr('y', y + 30)
     .attr('fill', '#383838')
     .style('font-family','arial');
 
@@ -685,7 +684,7 @@ function drawTweets(hash,twt){
 		  .attr('fill','#808080 ')
 		  .style("font-size","25px");
 
-    twt.append('rect').attr('width', 500)
+    twt.append('rect').attr('width', 550)
       .attr('height', 150)
       .attr('x', 750-nekes)
       .attr('y', 205)
@@ -703,8 +702,8 @@ function drawTweets(hash,twt){
 		  .style('font-family','Product Sans');
 
     twt.append('text').text(" " + "@"+topTweets["Negative"].name)
-		  .attr('x',829+tweet_pseudo.node().getBoundingClientRect().width+ 2-nekes)
-		  .attr('y',235)
+		  .attr('x',829 - nekes)
+		  .attr('y',235 + 20)
 		  .attr('fill','gray')
 		  .style('font-family','Product Sans');
 
@@ -718,7 +717,7 @@ function drawTweets(hash,twt){
       }else{
          twt.append('text').text(text)
           .attr('x', 829-nekes)
-          .attr('y', y)
+          .attr('y', y + 30)
           .attr('fill', '#383838')
           .style('font-family','arial');
         y+=18;
@@ -728,7 +727,7 @@ function drawTweets(hash,twt){
 
     twt.append('text').text(text)
         .attr('x', 829-nekes)
-        .attr('y', y)
+        .attr('y', y + 30)
         .attr('fill', '#383838')
         .style('font-family','arial');
 
@@ -930,7 +929,7 @@ function showInformation(){
   svg.append('text').text('Positifs')
     .attr('x',45)
     .attr('y',40)
-    .attr('fill','greenyellow')
+    .attr('fill','#2b7bb9')
     .style("font-size","32px")
     .style('font-family','arial');
 
@@ -940,8 +939,8 @@ function showInformation(){
     .attr('y', 50)
     .attr('rx',25)
     .attr('ry',25)
-    .attr('opacity',0.6)
-    .style('fill','greenyellow');
+    //.attr('opacity',0.6)
+    .style('fill','#2b7bb9');
 
   svg.append('text').text(comptes['Positive']+' tweets')
     .attr('x',70)
@@ -953,7 +952,7 @@ function showInformation(){
   svg.append('text').text('Négatifs')
     .attr('x',235)
     .attr('y',40)
-    .attr('fill','steelblue')
+    .attr('fill','#5ea9dd')
     .style("font-size","32px")
     .style('font-family','arial');
 
@@ -963,8 +962,8 @@ function showInformation(){
     .attr('y', 50)
     .attr('rx',25)
     .attr('ry',25)
-    .attr('opacity',0.6)
-    .style('fill','steelblue');
+    //.attr('opacity',0.6)
+    .style('fill','#5ea9dd');
 
   svg.append('text').text(comptes['Negative'] + ' tweets')
     .attr('x',260)
@@ -974,6 +973,7 @@ function showInformation(){
     .style('font-family','arial');
 }
 
+//Dessin des tweets pour la chronologie
 function drawTweet(tweet){
   body = d3.select('#chronologie');
   svg = body.append('svg').attr('height', 500).attr('width', 1200);
@@ -1055,7 +1055,7 @@ function drawTweet(tweet){
     .attr('rx',25)
     .attr('ry',25)
     .attr('opacity',0.8)
-    .style('fill','greenyellow');
+    .style('fill','#2b7bb9');
 
   svg.append('text').text(tweet.nbScoreP+ ' tweet(s) positif(s)')
     .attr('x',899)
@@ -1071,7 +1071,7 @@ function drawTweet(tweet){
     .attr('rx',25)
     .attr('ry',25)
     .attr('opacity',0.6)
-    .style('fill','blue');
+    .style('fill','#5ea9dd');
 
   svg.append('text').text(tweet.nbScoreN+ ' tweet(s) négatif(s)')
     .attr('x',899)
@@ -1104,8 +1104,8 @@ function drawTweet(tweet){
     .style("font-size","25px");
 
   comment="Neutre !";
-  if(tweet.className=="green"){comment="Positive ! ";}
-  else if(tweet.className=="steelblue"){comment="Négative !";}
+  if(tweet.className=="green"){comment="Positif ! ";}
+  else if(tweet.className=="steelblue"){comment="Négatif !";}
   svg.append('text').text(comment)
     .attr('x',730)
     .attr('y',300)
@@ -1124,7 +1124,7 @@ function showInformationTweets(){
   svg.append('text').text('Positive')
     .attr('x',40)
     .attr('y',100)
-    .attr('fill','greenyellow')
+    .attr('fill','#2b7bb9')
     .style("font-size","32px")
     .style('font-family','arial');
 
@@ -1135,7 +1135,7 @@ function showInformationTweets(){
     .attr('rx',25)
     .attr('ry',25)
     .attr('opacity',0.6)
-    .style('fill','greenyellow');
+    .style('fill','#2b7bb9');
 
   svg.append('text').text(comptes['Positive']+' tweets')
     .attr('x',70)
@@ -1168,6 +1168,7 @@ function showInformationTweets(){
     .style('font-family','arial');
 }
 
+//Colonne des tweets négatifs dans la visualisation des tweets
 function drawNegativeTweet(tweet,svg){
   rect = svg.append('rect').attr('width', 500)
     .attr('height', 140)
@@ -1175,7 +1176,9 @@ function drawNegativeTweet(tweet,svg){
     .attr('y', yRectR)
     .attr('rx',10)
     .attr('ry',10)
-    .style('fill','white');
+    .attr('fill','white')
+    .style('stroke','#5ea9dd')
+    .style('stroke-width','3.5px');
 
   yRectR+=155;
 
@@ -1191,15 +1194,16 @@ function drawNegativeTweet(tweet,svg){
   tweet_pseudo=svg.append('text').text(tweet.pseudo)
     .attr('x',120)
     .attr('y',yPseudoIdR)
-    .attr('fill','black')
+    .attr('fill','#808080')
     .style("font-size","18px")
     .style("font-weight", "bold")
     .style('font-family','arial');
 
   tweet_id=svg.append('text').text(" " + "@"+tweet.id)
-    .attr('x',120 + tweet_pseudo.node().getBoundingClientRect().width+ 2)
-    .attr('y',yPseudoIdR)
-    .attr('fill','gray')
+    .attr('x',120)
+    .attr('y',yPseudoIdR + 20)
+    .attr('fill','black')
+    .attr("font-weight", "bold")
     .style('font-family','arial');
 
   yPseudoIdR+=155;
@@ -1210,14 +1214,14 @@ function drawNegativeTweet(tweet,svg){
     words=tweet.tweet_text.split(" ");
 
     for(var i=0; i<words.length;i++){
-      if((text.length + words[i].length +1)<45){
+      if((text.length + words[i].length +1)<53){
   	     text+=" "; text+=words[i];
       }else{
   	     svg.append('text').text(text)
           .attr('x', 120)
-          .attr('y', y)
-          .attr('fill', 'black')
-          .style('font-family','arial');
+          .attr('y', y + 30)
+          .attr('fill', '#808080')
+          .style('font-family','Product Sans');
         y+=20;
         text=words[i];
       }
@@ -1225,39 +1229,26 @@ function drawNegativeTweet(tweet,svg){
 
     svg.append('text').text(text)
       .attr('x', 120)
-      .attr('y', y)
-      .attr('fill', 'black')
-      .style('font-family','arial');
+      .attr('y', y + 30)
+      .attr('fill', '#808080')
+      .style('font-family','Product Sans');
 
-/*
-
-  tweet_text = svg.append('text').text(tweet.tweet_text)
-    .attr('x', 120)
-    .attr('y', yTwtR)
-    .attr('fill', 'black')
-    .style('font-family','arial');
-*/
   yTwtR+=155;
-/*
-  d3plus.textwrap()
-    .container(tweet_text)
-    .width(400)
-    .draw();
-*/
+
   svg.append('circle')
     .attr('cx',573)
     .attr('cy',yScoreR-5)
     .attr('r',27)
     .style('fill','none')
     .style('stroke-width','2.5px')
-    .style('stroke',tweet.tweet_color);
+    .style('stroke','#5ea9dd');
 
   var signe="-";
 
   score=svg.append('text').text(signe+currencyFormat(Math.abs(tweet.score)))
     .attr('x', 550)
     .attr('y', yScoreR)
-    .attr('fill', tweet.tweet_color)
+    .attr('fill', '#5ea9dd')
     .style('font-family','arial')
     .style("font-size","18px")
     .style('font-weight','bold');
@@ -1265,6 +1256,7 @@ function drawNegativeTweet(tweet,svg){
   yScoreR+=155;
 }
 
+//Colonne des tweets négatifs dans la visualisation des tweets
 function drawPositiveTweet(tweet,svg) {
   rect = svg.append('rect').attr('width', 500)
     .attr('height', 140)
@@ -1272,7 +1264,9 @@ function drawPositiveTweet(tweet,svg) {
     .attr('y', yRectL)
     .attr('rx',10)
     .attr('ry',10)
-    .style('fill','white');
+    .attr('fill','white')
+    .style('stroke-width','3.5px')
+    .style('stroke','#2b7bb9');
 
   yRectL+=155;
 
@@ -1285,74 +1279,65 @@ function drawPositiveTweet(tweet,svg) {
 
   yImgL+=155;
 
+  //Pseudo
   tweet_pseudo=svg.append('text').text(tweet.pseudo)
     .attr('x',120)
     .attr('y',yPseudoIdL)
-    .attr('fill','black')
+    .attr('fill','#808080')
     .style("font-size","18px")
     .style("font-weight", "bold")
     .style('font-family','arial');
 
+  //Nom @user
   tweet_id=svg.append('text').text(" " + "@"+tweet.id)
-    .attr('x',120 + tweet_pseudo.node().getBoundingClientRect().width+ 2)
-    .attr('y',yPseudoIdL)
-    .attr('fill','gray')
+    .attr('x',120)
+    .attr('y',yPseudoIdL + 20)
+    .attr('fill','black')
+    .attr("font-weight", "bold")
     .style('font-family','arial');
 
   yPseudoIdL+=155;
 
-      var text="";
-      var y=yTwtL;
-      words=tweet.tweet_text.split(" ");
+  var text="";
+  var y=yTwtL;
+  words=tweet.tweet_text.split(" ");
 
-      for(var i=0; i<words.length;i++){
-        if((text.length + words[i].length +1)<45){
-    	     text+=" "; text+=words[i];
-        }else{
-    	     svg.append('text').text(text)
-            .attr('x', 120)
-            .attr('y', y)
-            .attr('fill', 'black')
-            .style('font-family','arial');
-          y+=20;
-          text=words[i];
-        }
-      }
-
-      svg.append('text').text(text)
+  for(var i=0; i<words.length;i++){
+    if((text.length + words[i].length +1)<53){
+       text+=" "; text+=words[i];
+    }else{
+       svg.append('text').text(text)
         .attr('x', 120)
-        .attr('y', y)
-        .attr('fill', 'black')
-        .style('font-family','arial');
+        .attr('y', y + 30)
+        .attr('fill', '#808080')
+        .style('font-family','Product Sans');
+      y+=20;
+      text=words[i];
+    }
+  }
 
-/*
-  tweet_text = svg.append('text').text(tweet.tweet_text)
+  svg.append('text').text(text)
     .attr('x', 120)
-    .attr('y', yTwtL)
-    .attr('fill', 'black')
-    .style('font-family','arial');
-*/
+    .attr('y', y + 30)
+    .attr('fill', '#808080')
+    .style('font-family','Product Sans');
+
   yTwtL+=155;
-/*
-  d3plus.textwrap()
-    .container(tweet_text)
-    .width(400)
-    .draw();
-*/
+
   svg.append('circle')
     .attr('cx',573)
     .attr('cy',yScoreL-5)
     .attr('r',27)
     .style('fill','none')
     .style('stroke-width','2.5px')
-    .style('stroke',tweet.tweet_color);
+    .style('stroke','#2b7bb9');
 
   var signe="+";
 
   score=svg.append('text').text(signe+currencyFormat(Math.abs(tweet.score)))
     .attr('x', 550)
     .attr('y', yScoreL)
-    .attr('fill', tweet.tweet_color)
+    .attr('fill','#2b7bb9')
     .style('font-family','arial')
     .style("font-size","18px")
     .style('font-weight','bold');

@@ -344,6 +344,7 @@ public class ScoreBolt extends BaseRichBolt{
       //Récupération des informations reçues dans le tuple
       String[] motCles = (String[]) tuple.getValue(0);
       Status tweet = (Status) tuple.getValue(1);
+      /*/////////////////////////////////
       String tweet_text = (String) tuple.getValue(2);
       ArrayList<MotTag> mots_tags = (ArrayList<MotTag>) tuple.getValue(3);
 
@@ -369,6 +370,8 @@ public class ScoreBolt extends BaseRichBolt{
       System.out.println("TweetScore= "+ scoreTweet +"\n\n\n");
 
       //Emettre le status et son score
+      */ ////////////////////////////////////////////
+      float scoreTweet = (float) ((Math.random()-0.5) * 5);
       this.collector.emit(new Values(motCles,tweet,scoreTweet));
     }
   }

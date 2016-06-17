@@ -83,6 +83,10 @@
     }
 
     /* Celle-là pour la viz des tweets */
+    #visualization4,#visualization3 {
+      overflow: hidden;
+    }
+
     .containerLeft{
       float: left;
     }
