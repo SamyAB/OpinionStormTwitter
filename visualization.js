@@ -602,67 +602,70 @@ function drawTweets(hash,twt){
   if(hash["Positive"]>=1){
     twt.append('text').text("Top Tweet Positif")
       .attr('x',700-nekes)
-      .attr('y',22)
-      .attr('fill','#808080 ')
+      .attr('y',0)
+      .attr('fill','#808080')
       .style("font-size","25px");
 
-    twt.append('rect').attr('width', 550)
+    twt.append('rect').attr('width', 500)
       .attr('height', 150)
       .attr('x', 750-nekes)
-      .attr('y', 25)
-		  .attr('rx',25)
-		  .attr('ry',25)
-      .attr('opacity',0.8)
-      .style('fill','#55ACEE');
+      .attr('y', 15)
+		  .attr('rx',10)
+		  .attr('ry',10)
+      .attr('fill','white')
+      .style('stroke-width','3.5px')
+      .style('stroke','#2b7bb9');
 
     tweet_pseudo=twt.append('text').text(topTweets["Positive"].screenName)
-		  .attr('x',829-nekes)
-		  .attr('y',55)
-		  .attr('fill','black')
+		  .attr('x',835-nekes)
+		  .attr('y',45)
+		  .attr('fill','#808080')
 		  .style("font-size","18px")
 		  .style("font-weight", "bold")
 		  .style('font-family','arial');
 
     twt.append('text').text(" " + "@"+topTweets["Positive"].name)
-		  .attr('x',829 - nekes)
-		  .attr('y',55 + 20)
-		  .attr('fill','gray')
+		  .attr('x',835 - nekes)
+		  .attr('y',45 + 20)
+		  .attr('fill','black')
 		  .style('font-family','arial');
 
     var text="";
-    var y=70;
+    var y=60;
     words=topTweets["Positive"].tweet_text.split(" ");
 
     for(var i=0; i<words.length;i++){
-      if((text.length + words[i].length +1)<55){
+      if((text.length + words[i].length +1)<53){
          text+=" "; text+=words[i];
       }else{
          twt.append('text').text(text)
-          .attr('x', 829-nekes)
+          .attr('x', 835 -nekes)
           .attr('y', y + 30)
-          .attr('fill', '#383838')
-          .style('font-family','arial');
+          .attr('fill', '#808080')
+          .style('font-family','Product Sans');
         y+=18;
         text=words[i];
       }
     }
 
     twt.append('text').text(text)
-    .attr('x', 829-nekes)
+    .attr('x', 835 -nekes)
     .attr('y', y + 30)
-    .attr('fill', '#383838')
-    .style('font-family','arial');
+    .attr('fill', '#808080')
+    .style('font-family','Product Sans');
 
+    //Temps du top tweet
     twt.append('text').text(topTweets["Positive"]._time)
-		  .attr('x',1150-nekes)
-		  .attr('y',165)
-		  .attr('fill','#F0F0F0 ')
+		  .attr('x',1180-nekes)
+		  .attr('y',155)
+		  .attr('fill','#2b7bb9 ')
 		  .style("font-size","15px");
 
+    //Score du top tweet
     twt.append('text').text("+"+parseFloat(topTweets["Positive"].score).toFixed(2))
       .attr('x', 775-nekes)
-      .attr('y', 115)
-      .attr('fill', "white")
+      .attr('y', 105)
+      .attr('fill', "#2b7bb9")
 		  .style('font-family','arial')
 		  .style("font-size","13px")
 		  .style('font-weight','bold');
@@ -672,7 +675,7 @@ function drawTweets(hash,twt){
         .append("svg:image")
         .attr("xlink:href", topTweets["Positive"].ppURL)
         .attr("x", 765-nekes)
-        .attr("y", 40)
+        .attr("y", 30)
         .attr("width", "60")
         .attr("height", "60");
   }
@@ -684,73 +687,75 @@ function drawTweets(hash,twt){
 		  .attr('fill','#808080 ')
 		  .style("font-size","25px");
 
-    twt.append('rect').attr('width', 550)
+    twt.append('rect').attr('width', 500)
       .attr('height', 150)
       .attr('x', 750-nekes)
-      .attr('y', 205)
-		  .attr('rx',25)
-		  .attr('ry',25)
-		  .attr('opacity',0.8)
-      .style('fill','#55ACEE');
+      .attr('y', 213)
+		  .attr('rx',10)
+		  .attr('ry',10)
+      .attr('fill','white')
+      .style('stroke-width','3.5px')
+      .style('stroke','#55ACEE');
 
     tweet_pseudo = twt.append('text').text(topTweets["Negative"].screenName)
-		  .attr('x',829-nekes)
-		  .attr('y',235)
-		  .attr('fill','black')
+		  .attr('x',835-nekes)
+		  .attr('y',243)
+		  .attr('fill','#808080')
 		  .style("font-size","18px")
 		  .style("font-weight", "bold")
-		  .style('font-family','Product Sans');
+		  .style('font-family','arial');
 
     twt.append('text').text(" " + "@"+topTweets["Negative"].name)
-		  .attr('x',829 - nekes)
-		  .attr('y',235 + 20)
-		  .attr('fill','gray')
+		  .attr('x',835-nekes)
+		  .attr('y',243 + 20)
+		  .attr('fill','black')
 		  .style('font-family','Product Sans');
 
     text="";
-    y=245;
+    y=258;
     words=topTweets["Negative"].tweet_text.split(" ");
 
     for(var i=0; i<words.length;i++){
-      if((text.length + words[i].length +1)<45){
+      if((text.length + words[i].length +1)<53){
          text+=" "; text+=words[i];
       }else{
          twt.append('text').text(text)
-          .attr('x', 829-nekes)
+          .attr('x', 835-nekes)
           .attr('y', y + 30)
-          .attr('fill', '#383838')
-          .style('font-family','arial');
+          .attr('fill', '#808080')
+          .style('font-family','Product Sans');
         y+=18;
         text=words[i];
       }
     }
 
     twt.append('text').text(text)
-        .attr('x', 829-nekes)
+        .attr('x', 835-nekes)
         .attr('y', y + 30)
-        .attr('fill', '#383838')
-        .style('font-family','arial');
+        .attr('fill', '#808080')
+        .style('font-family','Product Sans');
 
+    //Temps du top tweet négatif
     twt.append('text').text(topTweets["Negative"]._time)
-		  .attr('x',1150-nekes)
-		  .attr('y',345)
-		  .attr('fill','#F0F0F0 ')
+		  .attr('x',1180-nekes)
+		  .attr('y',353)
+		  .attr('fill','#55ACEE ')
 		  .style("font-size","15px");
 
+    //Score du top tweet négatif
     twt.append('text').text(parseFloat(topTweets["Negative"].score).toFixed(2))
       .attr('x', 775-nekes)
-      .attr('y', 295)
-      .attr('fill', "white")
-		  .style('font-family','Product Sans')
+      .attr('y', 303)
+      .attr('fill', "#55ACEE")
+		  .style('font-family','arial')
 		  .style("font-size","13px")
 		  .style('font-weight','bold');
 
-    imgsN = twt.selectAll("image").data([0]);
-    imgsN.enter()
-      .append("svg:image")
+    //Photo de profil de l'utilisateur du top négatif
+    twt.append("image")
       .attr("xlink:href", topTweets["Negative"].ppURL)
       .attr("x", 765-nekes)
-      .attr("y", 220)
+      .attr("y", 228)
       .attr("width", "60")
       .attr("height", "60");
   }
