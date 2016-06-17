@@ -111,7 +111,7 @@ function getRecommandation(){
       'false', //On n'envoie aucun paramètre à redis.php
       function(data){
         //effacer les recommandations précédentes
-        d3.select("#recommandation").remove("svg");
+        d3.select("#recommandation").selectAll("svg").remove();
 
         var svg= d3.select("#recommandation").append("svg").attr('height', 500).attr('width', 1200);
       	//rectangle principale
@@ -126,7 +126,6 @@ function getRecommandation(){
       		.style('stroke-width','5px')
       		.style('stroke','#E8E8E8');
 
-        log
 
         svg.append('text').text('Recommandations ')
       		.attr('x',280)
@@ -150,6 +149,7 @@ function getRecommandation(){
       		.attr('fill','white')
       		.style("font-size","25px");
 
+
         svg.append('text').text(data.unigramPos[0] + ", "+data.unigramPos[1])
       		.attr('x',410)
       		.attr('y',235)
@@ -161,7 +161,7 @@ function getRecommandation(){
       		.attr('y',265)
       		.attr('fill','white')
       		.style("font-size","25px");
-
+        //data.bigramPos[0].replace("∕"," ") et data.bigramPos[1].replace("∕"," ")
         svg.append('text').text(data.bigramPos[0] + ", "+data.bigramPos[1])
       		.attr('x',410)
       		.attr('y',290)
@@ -196,7 +196,7 @@ function getRecommandation(){
       		.attr('y',355)
       		.attr('fill','white')
       		.style("font-size","25px");
-
+        //data.bigramNeg[0].replace("∕"," ") et data.bigramNeg[1].replace("∕"," ")
         svg.append('text').text(data.bigramNeg[0] + ", "+data.bigramNeg[1])
       		.attr('x',690)
       		.attr('y',380)
@@ -647,16 +647,12 @@ function drawTweets(hash,twt){
       }
     }
 
-    //tweet_text = twt.append('text').text(text)
-      //.attr('x', 829-nekes)
-      //.attr('y', 65)
-      //.attr('fill', '#383838')
-		  //.style('font-family','arial');
 
-    //d3plus.textwrap()
-      //.container(tweet_text)
-      //.width(380)
-      //.draw();
+    twt.append('text').text(text)
+    .attr('x', 829-nekes)
+    .attr('y', y)
+    .attr('fill', '#383838')
+    .style('font-family','arial');
 
     twt.append('text').text(topTweets["Positive"]._time)
 		  .attr('x',1150-nekes)
@@ -712,16 +708,29 @@ function drawTweets(hash,twt){
 		  .attr('fill','gray')
 		  .style('font-family','Product Sans');
 
-    tweet_text = twt.append('text').text(topTweets["Negative"].tweet_text)
-      .attr('x', 829-nekes)
-      .attr('y', 245)
-      .attr('fill', '#383838')
-		  .style('font-family','Product Sans');
+    text="";
+    y=245;
+    words=topTweets["Negative"].tweet_text.split(" ");
 
-    d3plus.textwrap()
-      .container(tweet_text)
-      .width(380)
-      .draw();
+    for(var i=0; i<words.length;i++){
+      if((text.length + words[i].length +1)<45){
+         text+=" "; text+=words[i];
+      }else{
+         twt.append('text').text(text)
+          .attr('x', 829-nekes)
+          .attr('y', y)
+          .attr('fill', '#383838')
+          .style('font-family','arial');
+        y+=18;
+        text=words[i];
+      }
+    }
+
+    twt.append('text').text(text)
+        .attr('x', 829-nekes)
+        .attr('y', y)
+        .attr('fill', '#383838')
+        .style('font-family','arial');
 
     twt.append('text').text(topTweets["Negative"]._time)
 		  .attr('x',1150-nekes)
@@ -1195,19 +1204,46 @@ function drawNegativeTweet(tweet,svg){
 
   yPseudoIdR+=155;
 
+
+    var text="";
+    var y=yTwtR;
+    words=tweet.tweet_text.split(" ");
+
+    for(var i=0; i<words.length;i++){
+      if((text.length + words[i].length +1)<45){
+  	     text+=" "; text+=words[i];
+      }else{
+  	     svg.append('text').text(text)
+          .attr('x', 120)
+          .attr('y', y)
+          .attr('fill', 'black')
+          .style('font-family','arial');
+        y+=20;
+        text=words[i];
+      }
+    }
+
+    svg.append('text').text(text)
+      .attr('x', 120)
+      .attr('y', y)
+      .attr('fill', 'black')
+      .style('font-family','arial');
+
+/*
+
   tweet_text = svg.append('text').text(tweet.tweet_text)
     .attr('x', 120)
     .attr('y', yTwtR)
     .attr('fill', 'black')
     .style('font-family','arial');
-
+*/
   yTwtR+=155;
-
+/*
   d3plus.textwrap()
     .container(tweet_text)
     .width(400)
     .draw();
-
+*/
   svg.append('circle')
     .attr('cx',573)
     .attr('cy',yScoreR-5)
@@ -1265,19 +1301,44 @@ function drawPositiveTweet(tweet,svg) {
 
   yPseudoIdL+=155;
 
+      var text="";
+      var y=yTwtL;
+      words=tweet.tweet_text.split(" ");
+
+      for(var i=0; i<words.length;i++){
+        if((text.length + words[i].length +1)<45){
+    	     text+=" "; text+=words[i];
+        }else{
+    	     svg.append('text').text(text)
+            .attr('x', 120)
+            .attr('y', y)
+            .attr('fill', 'black')
+            .style('font-family','arial');
+          y+=20;
+          text=words[i];
+        }
+      }
+
+      svg.append('text').text(text)
+        .attr('x', 120)
+        .attr('y', y)
+        .attr('fill', 'black')
+        .style('font-family','arial');
+
+/*
   tweet_text = svg.append('text').text(tweet.tweet_text)
     .attr('x', 120)
     .attr('y', yTwtL)
     .attr('fill', 'black')
     .style('font-family','arial');
-
+*/
   yTwtL+=155;
-
+/*
   d3plus.textwrap()
     .container(tweet_text)
     .width(400)
     .draw();
-
+*/
   svg.append('circle')
     .attr('cx',573)
     .attr('cy',yScoreL-5)
