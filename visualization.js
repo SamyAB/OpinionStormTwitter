@@ -976,29 +976,6 @@ function showInformation(){
     .attr('fill','#808080')
     .style("font-size","25px")
     .style('font-family','Product Sans');
-
-  /*svg.append('text').text('Négatifs')
-    .attr('x',235)
-    .attr('y',40)
-    .attr('fill','#5ea9dd')
-    .style("font-size","32px")
-    .style('font-family','arial');
-
-  svg.append('rect').attr('width', 165)
-    .attr('height', 50)
-    .attr('x', 240)
-    .attr('y', 50)
-    .attr('rx',25)
-    .attr('ry',25)
-    //.attr('opacity',0.6)
-    .style('fill','#5ea9dd');
-
-  svg.append('text').text(comptes['Negative'] + ' tweets')
-    .attr('x',260)
-    .attr('y',85)
-    .attr('fill','white')
-    .style("font-size","25px")
-    .style('font-family','arial');*/
 }
 
 //Dessin des tweets pour la chronologie
