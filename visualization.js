@@ -46,8 +46,8 @@ var n=0;
 
 var currencyFormat = d3.format("0.2f");
 
-svgNeg = d3.select("#negative").append("svg").attr('height', 800).attr('width', 650);
-svgPos = d3.select("#positive").append("svg").attr('height', 800).attr('width', 650);;
+svgNeg = d3.select("#negative").append("svg").attr('height', 660).attr('width', 650);
+svgPos = d3.select("#positive").append("svg").attr('height', 660).attr('width', 650);;
 
 var yRectR=20;
 var yImgR=35;
@@ -97,6 +97,8 @@ window.setTimeout(function(){
   //Dessin des mot-clefs et date de début en haut des visualisation
   afficherMotCle(startTime,keywords,".keywordstime");
 
+  //Premier update
+  update();
   //Lancement de la fonction update chaque updateInterval
   window.setInterval(update,updareInterval);
   //Lancement du timer pour la visualisation des recommandations
@@ -126,14 +128,13 @@ function getRecommandation(){
       		.style('stroke-width','5px')
       		.style('stroke','#E8E8E8');
 
-
         svg.append('text').text('Recommandations ')
       		.attr('x',280)
       		.attr('y',130)
       		.attr('fill','#B0B0B0 ')
       		.style("font-size","35px");
-      	//positive recommandations
 
+        //positive recommandations
       	svg.append('rect').attr('width', 300)
       		.attr('height', 150)
       		.attr('x', 390)
@@ -149,8 +150,7 @@ function getRecommandation(){
       		.attr('fill','white')
       		.style("font-size","25px");
 
-
-        svg.append('text').text(data.unigramPos[0] + ", "+data.unigramPos[1])
+        svg.append('text').text(data.unigramPos[0][0] + ", "+data.unigramPos[0][1])
       		.attr('x',410)
       		.attr('y',235)
       		.attr('fill','gray')
@@ -161,15 +161,14 @@ function getRecommandation(){
       		.attr('y',265)
       		.attr('fill','white')
       		.style("font-size","25px");
-        //data.bigramPos[0].replace("∕"," ") et data.bigramPos[1].replace("∕"," ")
-        svg.append('text').text(data.bigramPos[0] + ", "+data.bigramPos[1])
+
+        svg.append('text').text(data.bigramPos[0][0] + ", "+data.bigramPos[0][1])
       		.attr('x',410)
       		.attr('y',290)
       		.attr('fill','gray')
       		.style("font-size","18px");
 
       	//negative recommandations
-
       	svg.append('rect').attr('width', 300)
       		.attr('height', 150)
       		.attr('x', 670)
@@ -185,7 +184,7 @@ function getRecommandation(){
       		.attr('fill','white')
       		.style("font-size","25px");
 
-        svg.append('text').text(data.unigramNeg[0] + ", "+data.unigramNeg[1])
+        svg.append('text').text(data.unigramNeg[0][0] + ", "+data.unigramNeg[0][1])
       		.attr('x',690)
       		.attr('y',325)
       		.attr('fill','gray')
@@ -197,7 +196,7 @@ function getRecommandation(){
       		.attr('fill','white')
       		.style("font-size","25px");
         //data.bigramNeg[0].replace("∕"," ") et data.bigramNeg[1].replace("∕"," ")
-        svg.append('text').text(data.bigramNeg[0] + ", "+data.bigramNeg[1])
+        svg.append('text').text(data.bigramNeg[0][0] + ", "+data.bigramNeg[0][1])
       		.attr('x',690)
       		.attr('y',380)
       		.attr('fill','gray')
@@ -1119,58 +1118,58 @@ function drawTweet(tweet){
     .style('font-family','arial');
 }
 
+//Dessin des informations sur le nombre de tweets sur la visualisation "tweets"
 function showInformationTweets(){
   /*Effecerce qu'il y avait*/
-  d3.select("#informationTweets").remove("svg");
+  d3.select("#informationTweets").select("svg").remove();
 
-  body = d3.select('#informationTweets');
-  svg = body.append('svg').attr('height', 650).attr('width', 250);
+  svg = d3.select('#informationTweets').append('svg').attr('height', 300).attr('width', 1300);
 
-  svg.append('text').text('Positive')
-    .attr('x',40)
-    .attr('y',100)
-    .attr('fill','#2b7bb9')
-    .style("font-size","32px")
-    .style('font-family','arial');
-
-  svg.append('rect').attr('width', 165)
+  //Pour le nombre de tweets positifs
+  svg.append('rect').attr('width', 365)
     .attr('height', 50)
-    .attr('x', 50)
-    .attr('y', 110)
+    .attr('x', 95)
+    .attr('y', 10)
     .attr('rx',25)
     .attr('ry',25)
-    .attr('opacity',0.6)
     .style('fill','#2b7bb9');
 
-  svg.append('text').text(comptes['Positive']+' tweets')
-    .attr('x',70)
-    .attr('y',145)
+  svg.append('text').text('Nombre de tweet(s) positif(s) :')
+    .attr('x',115)
+    .attr('y',45)
     .attr('fill','white')
     .style("font-size","25px")
-    .style('font-family','arial');
+    .style('font-family','Product Sans');
 
-  svg.append('text').text('Négative')
-    .attr('x',40)
-    .attr('y',200)
-    .attr('fill','#3399CC')
-    .style("font-size","32px")
-    .style('font-family','arial');
+  svg.append('text').text(comptes['Positive'])
+    .attr('x',470)
+    .attr('y',45)
+    .attr('fill','#808080')
+    .style("font-size","25px")
+    .style('font-family','Product Sans');
 
-  svg.append('rect').attr('width', 165)
+  //Pour le nombre de tweets négatifs
+  svg.append('rect').attr('width', 365)
     .attr('height', 50)
-    .attr('x', 50)
-    .attr('y', 210)
+    .attr('x', 745)
+    .attr('y', 10)
     .attr('rx',25)
     .attr('ry',25)
-    .attr('opacity',0.6)
-    .style('fill','#3399CC');
+    .style('fill','#5ea9dd');
 
-  svg.append('text').text(comptes['Negative']+' tweets')
-    .attr('x',70)
-    .attr('y',245)
+  svg.append('text').text('Nombre de tweet(s) négatif(s) :')//+' tweets')
+    .attr('x',765)
+    .attr('y',45)
     .attr('fill','white')
     .style("font-size","25px")
-    .style('font-family','arial');
+    .style('font-family','Product Sans');
+
+  svg.append('text').text(comptes['Negative'])
+    .attr('x',1120)
+    .attr('y',45)
+    .attr('fill','#808080')
+    .style("font-size","25px")
+    .style('font-family','Product Sans');
 }
 
 //Colonne des tweets négatifs dans la visualisation des tweets

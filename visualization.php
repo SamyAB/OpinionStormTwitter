@@ -83,12 +83,19 @@
     }
 
     /* Celle-là pour la viz des tweets */
-    #visualization4,#visualization3 {
+    #visualization4{
       overflow: hidden;
     }
 
     .containerLeft{
       float: left;
+    }
+
+    #informationTweets{
+      height: 500px;
+      width: 1300px;
+      overflow: hidden;
+      clear: both;
     }
 
   </style>
