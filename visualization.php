@@ -130,6 +130,9 @@
       <li>
         <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Tweets</a>
       </li>
+      <li>
+        <a href="#" class="tablinks" onclick="openViz(event,'recommandation')">Recommandations</a>
+      </li>
       <li id="lastnav">
         <a href="index.php">Accueil</a>
       </li>
@@ -154,7 +157,7 @@
     <article class="containerLeft" id="negative"></article>
     <article class="containerLeft" id="informationTweets"></article>
   </section>
-  <section id="recommandation"></section>
+  <section id="recommandation" class="tabcontent"></section>
   <?php
     }
   ?>

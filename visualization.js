@@ -110,6 +110,9 @@ function getRecommandation(){
       'recommandation.php', //Script serveur qui récupère les informations de redis
       'false', //On n'envoie aucun paramètre à redis.php
       function(data){
+        //effacer les recommandations précédentes
+        d3.select("#recommandation").remove("svg");
+
         var svg= d3.select("#recommandation").append("svg").attr('height', 500).attr('width', 1200);
       	//rectangle principale
       	svg.append('rect').attr('width', 700)
@@ -122,6 +125,8 @@ function getRecommandation(){
       		.style('fill','#E8E8E8')
       		.style('stroke-width','5px')
       		.style('stroke','#E8E8E8');
+
+        log
 
         svg.append('text').text('Recommandations ')
       		.attr('x',280)
@@ -569,7 +574,7 @@ function drawHistogram(hash) {
     .attr("text-anchor", "middle")
     .attr("x", width / 2)
     .attr("y", height + margin.bottom)
-    .text("# Polarity");
+    .text("# Polarité");
 
   // add the y axis and y-label
   svg.append("g")
@@ -585,7 +590,7 @@ function drawHistogram(hash) {
     .attr("dy", "1em")
     .attr("transform", "rotate(-90)")
     .style("text-anchor", "middle")
-    .text("# number of tweets");
+    .text("# nombre de tweets");
 
   drawTweets(hash,svg);
 }
@@ -624,16 +629,34 @@ function drawTweets(hash,twt){
 		  .attr('fill','gray')
 		  .style('font-family','arial');
 
-    tweet_text = twt.append('text').text(topTweets["Positive"].tweet_text)
-      .attr('x', 829-nekes)
-      .attr('y', 65)
-      .attr('fill', '#383838')
-		  .style('font-family','arial');
+    var text="";
+    var y=70;
+    words=topTweets["Positive"].tweet_text.split(" ");
 
-    d3plus.textwrap()
-      .container(tweet_text)
-      .width(380)
-      .draw();
+    for(var i=0; i<words.length;i++){
+      if((text.length + words[i].length +1)<45){
+         text+=" "; text+=words[i];
+      }else{
+         twt.append('text').text(text)
+          .attr('x', 829-nekes)
+          .attr('y', y)
+          .attr('fill', '#383838')
+          .style('font-family','arial');
+        y+=18;
+        text=words[i];
+      }
+    }
+
+    //tweet_text = twt.append('text').text(text)
+      //.attr('x', 829-nekes)
+      //.attr('y', 65)
+      //.attr('fill', '#383838')
+		  //.style('font-family','arial');
+
+    //d3plus.textwrap()
+      //.container(tweet_text)
+      //.width(380)
+      //.draw();
 
     twt.append('text').text(topTweets["Positive"]._time)
 		  .attr('x',1150-nekes)
@@ -863,14 +886,14 @@ function drawGraph(tweets){
     .attr("y", height + 10 + margin.bottom)
     .attr("class", "text-label")
     .attr("text-anchor", "middle")
-    .text("Time (HH:MM:SS)");
+    .text("Temps (HH:MM:SS)");
 
   svg.append("svg:line")
     .attr("x1", 0)
     .attr("x2", width)
     .attr("y1", yScale(0))
     .attr("y2", yScale(0))
-    .style("stroke", "rgb(189, 189, 189)");
+    .style("stroke", "#55acee");
 
   circle = svg.selectAll("circle")
     .data(data)
@@ -886,8 +909,6 @@ function drawGraph(tweets){
 
   circle.on('mouseover', tip.show)
     .on('mouseout', tip.hide);
-
-
 
   showInformation();
 }

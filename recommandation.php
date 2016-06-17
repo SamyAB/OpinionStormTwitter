@@ -1,7 +1,7 @@
 <?php
   //Execution de la classe de recommandation.
-  exec("java -cp \".:lettuce-2.3.3.jar:mysql-connector-java-5.1.38-bin.jar\" Recommand");
-  
+  exec("java -jar reco.jar 2>&1 recommandation_output");
+
   try{
     //Création d'un objet redis et connexion à redis sur loaclhost
     $redis = new Redis();
@@ -14,11 +14,11 @@
     $bigramNeg = array();
 
     //Récupération des chaines de caractère représentant les termes puis de les ajouter aux arrays
-    $termsUnigramPos = $redis->rpop("unigramPositif");
+    $termsUnigramPos = $redis->rpop("unigram");
     $aMettre = explode(" ",$termsUnigramPos);
     array_push($unigramPos,$aMettre);
 
-    $termsBigramPos = $redis->rpop("bigramPositif");
+    $termsBigramPos = $redis->rpop("bigram");
     $aMettre = explode(" | ",$termsBigramPos);
     array_push($bigramPos,$aMettre);
 

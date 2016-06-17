@@ -130,6 +130,8 @@ his
 how
 however
 hundred
+http
+https
 i
 ie
 if
@@ -207,6 +209,7 @@ please
 put
 rather
 re
+rt
 same
 see
 seem
@@ -311,6 +314,7 @@ with
 within
 without
 would
+www
 yet
 you
 your
