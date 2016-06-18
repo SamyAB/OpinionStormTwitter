@@ -91,13 +91,23 @@ window.setTimeout(function(){
       $(".loading").fadeOut();
   });
 
+  //Affichage du messager de patienter des recommandations
+  document.getElementById("recommandation").style.display = "block";
+
   //Enregistrement du temps du début de traitements
   startTime = Date();
 
   //Dessin des mot-clefs et date de début en haut des visualisation
   afficherMotCle(startTime,keywords,".keywordstime");
 
-  //Premier update
+  //Estomper le message de patienter des recommandation au bout de deux minutes
+  window.setTimeout(function(){
+    $(function(){
+      $("#recowait").fadeOut();
+    });
+  },updateRecommandation);
+
+  //Premier update des visualisations
   update();
   //Lancement de la fonction update chaque updateInterval
   window.setInterval(update,updareInterval);
@@ -115,20 +125,17 @@ function getRecommandation(){
         //effacer les recommandations précédentes
         d3.select("#recommandation").selectAll("svg").remove();
 
-        var svg= d3.select("#recommandation").append("svg").attr('height', 500).attr('width', 1200);
-      	//rectangle principale
+        var svg= d3.select("#recommandation").append("svg").attr('height', 500).attr('width', 1300);
+
       	svg.append('rect').attr('width', 700)
-      		.attr('height', 300)
-      		.attr('x', 330)
-      		.attr('y', 140)
+      		.attr('height', 150)
+      		.attr('x', 10)
+      		.attr('y', 10)
       		.attr('rx',25)
       		.attr('ry',25)
-      		.attr('opacity','0.7')
-      		.style('fill','#E8E8E8')
-      		.style('stroke-width','5px')
-      		.style('stroke','#E8E8E8');
+      		.style('fill','#2b7bb9')
 
-        svg.append('text').text('Recommandations ')
+        /*svg.append('text').text('Recommandations ')
       		.attr('x',280)
       		.attr('y',130)
       		.attr('fill','#B0B0B0 ')
@@ -200,7 +207,7 @@ function getRecommandation(){
       		.attr('x',690)
       		.attr('y',380)
       		.attr('fill','gray')
-      		.style("font-size","18px");
+      		.style("font-size","18px");*/
 
       },
       'json'

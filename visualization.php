@@ -98,6 +98,30 @@
       clear: both;
     }
 
+    /*pour les recommandations*/
+    #recommandation{
+      height: 500px;
+      clear : both;
+      overflow: hidden;
+      background-color: white;
+      position : relative;
+      display: none;
+    }
+
+    #recowait{
+      color : #808080;
+      font : 'Product Sans';
+      font-size : 40px;
+      position : absolute;
+      top : 35%;
+      left : 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      border : 3.5px solid #808080;
+      border-radius: 15px;
+      padding : 20px;
+    }
+
   </style>
 
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
@@ -141,9 +165,6 @@
       <li>
         <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Tweets</a>
       </li>
-      <li>
-        <a href="#" class="tablinks" onclick="openViz(event,'recommandation')">Recommandations</a>
-      </li>
       <li id="lastnav">
         <a href="index.php">Accueil</a>
       </li>
@@ -168,7 +189,11 @@
     <article class="containerLeft" id="negative"></article>
     <article class="containerLeft" id="informationTweets"></article>
   </section>
-  <section id="recommandation" class="tabcontent"></section>
+  <section id="recommandation">
+    <p id="recowait">
+      Les recommandations de mots-clés ne sont disponibles qu'après 2 minutes d'exécution. Veuillez patienter
+    </p>
+  </section>
   <?php
     }
   ?>
