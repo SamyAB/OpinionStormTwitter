@@ -663,7 +663,7 @@ function drawTweets(hash,twt){
     words=topTweets["Positive"].tweet_text.split(" ");
 
     for(var i=0; i<words.length;i++){
-      if((text.length + words[i].length +1)<53){
+      if((text.length + words[i].length +1)<50){
          text+=" "; text+=words[i];
       }else{
          twt.append('text').text(text)
@@ -744,7 +744,7 @@ function drawTweets(hash,twt){
     words=topTweets["Negative"].tweet_text.split(" ");
 
     for(var i=0; i<words.length;i++){
-      if((text.length + words[i].length +1)<53){
+      if((text.length + words[i].length +1)<50){
          text+=" "; text+=words[i];
       }else{
          twt.append('text').text(text)
@@ -1247,7 +1247,7 @@ function drawNegativeTweet(tweet,svg){
     words=tweet.tweet_text.split(" ");
 
     for(var i=0; i<words.length;i++){
-      if((text.length + words[i].length +1)<53){
+      if((text.length + words[i].length +1)<50){
   	     text+=" "; text+=words[i];
       }else{
   	     svg.append('text').text(text)
@@ -1336,7 +1336,7 @@ function drawPositiveTweet(tweet,svg) {
   words=tweet.tweet_text.split(" ");
 
   for(var i=0; i<words.length;i++){
-    if((text.length + words[i].length +1)<53){
+    if((text.length + words[i].length +1)<50){
        text+=" "; text+=words[i];
     }else{
        svg.append('text').text(text)
