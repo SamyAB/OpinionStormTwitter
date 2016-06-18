@@ -2,7 +2,7 @@ var loadingTime = 10000; // 60 secondes
 //interval entre chaque update de données
 var updareInterval = 4000; // 4 secondes
 //Interval de mise à jour des recommandations
-var updateRecommandation = 120000; //deux minutes
+var updateRecommandation = 10000; //deux minutes
 
 //Variables utilisées dans la visualisation
 var comptes = {};
@@ -92,7 +92,7 @@ window.setTimeout(function(){
   });
 
   //Affichage du messager de patienter des recommandations
-  document.getElementById("recommandation").style.display = "block";
+  //document.getElementById("recommandation").style.display = "block";
 
   //Enregistrement du temps du début de traitements
   startTime = Date();
@@ -125,7 +125,23 @@ function getRecommandation(){
         //effacer les recommandations précédentes
         d3.select("#recommandation").selectAll("svg").remove();
 
-        var svg= d3.select("#recommandation").append("svg").attr('height', 500).attr('width', 1300);
+        //Vider ce qu'il y avait précédemment
+        $("#recommandation").empty();
+        //Y mettre un titre
+        $("#recommandation").append("<h1>Recommandation de mots-clés :</h1>");
+
+        //Les paragraphe à ajouter
+        var uniPos = "<p class=\"paraReco\"><span class=\"paraRecoPos\">Les termes les plus utilisés dans les tweets positifs : </span><span class=\"terme\">&nbsp;&nbsp; " + data.unigramPos[0][0] + ", "+data.unigramPos[0][1] +".</span></p>";
+        var biPos = "<p class=\"paraReco\" id=\"recoSepa\"><span class=\"paraRecoPos\">Les paires de termes les plus utilisées dans les tweets positifs : </span><span class=\"terme\">&nbsp;&nbsp; " + data.bigramPos[0][0] + ", "+data.bigramPos[0][1] +".</span></p>";
+        var uniNeg = "<p class=\"paraReco\"><span class=\"paraRecoNeg\">Les termes les plus utilisés dans les tweets négatifs : </span><span class=\"terme\">&nbsp;&nbsp; " + data.unigramNeg[0][0] + ", "+data.unigramNeg[0][1] +".</span></p>";
+        var biNeg = "<p class=\"paraReco\"><span class=\"paraRecoNeg\">Les paires de termes les plus utilisées dans les tweets négatifs : </span><span class=\"terme\">&nbsp;&nbsp; " + data.bigramNeg[0][0] + ", "+data.bigramNeg[0][1] +".</span></p>";
+
+        $("#recommandation").append(uniPos);
+        $("#recommandation").append(biPos);
+        $("#recommandation").append(uniNeg);
+        $("#recommandation").append(biNeg);
+
+        /*var svg= d3.select("#recommandation").append("svg").attr('height', 500).attr('width', 1300);
 
       	svg.append('rect').attr('width', 700)
       		.attr('height', 150)
@@ -133,7 +149,7 @@ function getRecommandation(){
       		.attr('y', 10)
       		.attr('rx',25)
       		.attr('ry',25)
-      		.style('fill','#2b7bb9')
+      		.style('fill','#2b7bb9')*/
 
         /*svg.append('text').text('Recommandations ')
       		.attr('x',280)
@@ -935,7 +951,7 @@ function drawGraph(tweets){
 //Information du graphe
 function showInformation(){
   body = d3.select('#graphe');
-  svg = body.append('svg').attr('height', 500).attr('width', 500);
+  svg = body.append('svg').attr('height', 150).attr('width', 500);
 
   //Pour le nombre de tweets positifs
   svg.append('rect').attr('width', 365)
@@ -1130,7 +1146,7 @@ function showInformationTweets(){
   /*Effecerce qu'il y avait*/
   d3.select("#informationTweets").select("svg").remove();
 
-  svg = d3.select('#informationTweets').append('svg').attr('height', 300).attr('width', 1300);
+  svg = d3.select('#informationTweets').append('svg').attr('height', 100).attr('width', 1300);
 
   //Pour le nombre de tweets positifs
   svg.append('rect').attr('width', 365)

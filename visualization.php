@@ -92,7 +92,7 @@
     }
 
     #informationTweets{
-      height: 500px;
+      height: 100px;
       width: 1300px;
       overflow: hidden;
       clear: both;
@@ -120,6 +120,47 @@
       border : 3.5px solid #808080;
       border-radius: 15px;
       padding : 20px;
+    }
+
+    #recommandation h1{
+      color : #808080;
+      font-family: 'Product Sans';
+      font-size : 30px;
+      margin : 10px;
+      font-weight: normal;
+    }
+
+    .paraReco {
+      margin-right: 10px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+
+    #recoSepa{
+      margin-bottom : 35px;
+    }
+
+    .paraRecoPos, .paraRecoNeg {
+      color:white;
+      border-radius: 15px;
+      font-family: 'Product Sans';
+      font-size : 25px;
+    }
+
+    .paraRecoPos{
+      border : 3.5px solid #2b7bb9;
+      background-color: #2b7bb9;
+    }
+
+    .paraRecoNeg{
+      border : 3.5px solid #5ea9dd;
+      background-color: #5ea9dd;
+    }
+
+    .terme{
+      color : #808080;
+      font-family: 'Product Sans';
+      font-size: 23px;
     }
 
   </style>
@@ -165,6 +206,9 @@
       <li>
         <a href="#" class="tablinks" onclick="openViz(event, 'visualization4')">Tweets</a>
       </li>
+      <li>
+        <a href="#" class="tablinks" onclick="openViz(event, 'recommandation')">Recommandations</a>
+      </li>
       <li id="lastnav">
         <a href="index.php">Accueil</a>
       </li>
@@ -189,7 +233,7 @@
     <article class="containerLeft" id="negative"></article>
     <article class="containerLeft" id="informationTweets"></article>
   </section>
-  <section id="recommandation">
+  <section id="recommandation" class="tabcontent">
     <p id="recowait">
       Les recommandations de mots-clés ne sont disponibles qu'après 2 minutes d'exécution. Veuillez patienter
     </p>
