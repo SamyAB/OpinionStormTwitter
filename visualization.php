@@ -9,6 +9,10 @@
   <!-- le CSS des visualisations ->
   <link rel="stylesheet" type="text/css" href="visualization.css" />-->
   <style>
+    #vizBody{
+      background-color: white;
+    }
+
     .d3-tip-histo {
       line-height: 1;
       padding: 12px;
@@ -167,7 +171,7 @@
 
   <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
 </head>
-<body>
+<body id="vizBody">
 
   <?php include("header.php"); ?>
 

@@ -2,7 +2,7 @@ var loadingTime = 10000; // 60 secondes
 //interval entre chaque update de données
 var updareInterval = 4000; // 4 secondes
 //Interval de mise à jour des recommandations
-var updateRecommandation = 10000; //deux minutes
+var updateRecommandation = 120000; //deux minutes
 
 //Variables utilisées dans la visualisation
 var comptes = {};
@@ -942,8 +942,8 @@ function drawGraph(tweets){
   circle.attr('stroke', 'steelblue')
     .attr('stroke-width', '3');
 
-  circle.on('mouseover', tip.show)
-    .on('mouseout', tip.hide);
+  //circle.on('mouseover', tip.show)
+    //.on('mouseout', tip.hide);
 
   showInformation();
 }
