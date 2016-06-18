@@ -21,6 +21,7 @@ amoungst
 amount
 an
 and
+&
 another
 any
 anyhow
