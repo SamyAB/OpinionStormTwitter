@@ -513,7 +513,13 @@ function drawHistogram(hash) {
   		user_name = " @" + topTweets[opinion].name;
   		fav ="❤ " +topTweets[opinion].favoriteCount;
   		rt="⭯  "  + topTweets[opinion].retweetCount;
-  		histdata[bin].meta = "<tr><td>" +hash[opinion]+ " "+ opinion + " tweets"+ "</td></tr>";
+      if(opinion =='Negative'){
+        histdata[bin].meta = "<tr><td>" +hash[opinion]+ " tweet(s) négatif(s)"+ "</td></tr>";
+      } else if(opinion == 'Neutral'){
+        histdata[bin].meta = "<tr><td>" +hash[opinion]+ " tweet(s) neutre(s)"+ "</td></tr>";
+      } else{
+        histdata[bin].meta = "<tr><td>" +hash[opinion]+ " tweet(s) positif(s)"+ "</td></tr>";
+      }
   	}
   }
 
