@@ -1,4 +1,4 @@
-var loadingTime = 10000; // 60 secondes
+var loadingTime = 60000; // 60 secondes
 //interval entre chaque update de données
 var updareInterval = 4000; // 4 secondes
 //Interval de mise à jour des recommandations
